@@ -19,5 +19,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mTabLayout = findViewById(R.id.tabLayout);
+        mPager = findViewById(R.id.viewPager);
+
+        mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+        mTabLayout.setupWithViewPager(mPager);
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+
+        boolean backStackPopped = false;
+
+        if (mPager.getCurrentItem() == 0) {
+            for (Fragment fragment : fm.getFragments()) {
+                if (fragment.getTag() == "ViewScanFragment") {
+                    fm.popBackStackImmediate();
+                    backStackPopped = true;
+                }
+            }
+        }
+
+        if (!backStackPopped) {
+            finish();
+        }
     }
 }
