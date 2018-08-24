@@ -6,12 +6,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.swinburne.irtsa.irtsa.R;
 
 public class ViewScanFragment extends Fragment {
+    private ImageView mScanImage;
+    private MenuItem mSave;
+
     public ViewScanFragment() {
         setHasOptionsMenu(true);
     }
@@ -23,12 +28,37 @@ public class ViewScanFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        //Call the openSaveDialog when the save icon is selected
+        if (id == R.id.save) {
+            openSaveDialog();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void openSaveDialog() {
+        SaveDialog saveDialog = new SaveDialog();
+
+        saveDialog.show(getFragmentManager(), "Save Dialog");
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view_scan, container, false);
+        View v = inflater.inflate(R.layout.fragment_view_scan, container, false);
+
+        initialiseUI(v);
+
+        return v;
+    }
+
+    private void initialiseUI(View v) {
+        mScanImage = v.findViewById(R.id.scanImage);
+        mScanImage.setImageResource(R.drawable.phase);
     }
 
 }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.swinburne.irtsa.irtsa.R;
+import com.swinburne.irtsa.irtsa.scan.StartScanFragment;
 
 public class ScanContainerFragment extends Fragment {
 
@@ -28,5 +29,9 @@ public class ScanContainerFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        StartScanFragment startScanFragment = new StartScanFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.scanContainer, startScanFragment, "StartScanFragment").commit();
     }
 }
