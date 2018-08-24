@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.swinburne.irtsa.irtsa.R;
+import com.swinburne.irtsa.irtsa.gallery.GalleryFragment;
 
 public class GalleryContainerFragment extends Fragment {
 
@@ -27,6 +28,10 @@ public class GalleryContainerFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        GalleryFragment galleryFragment = new GalleryFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.galleryContainer, galleryFragment, "GalleryFragment").commit();
 
     }
 
