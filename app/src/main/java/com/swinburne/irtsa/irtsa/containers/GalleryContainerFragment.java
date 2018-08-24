@@ -1,6 +1,5 @@
 package com.swinburne.irtsa.irtsa.containers;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,10 +9,10 @@ import android.view.ViewGroup;
 
 import com.swinburne.irtsa.irtsa.R;
 
-public class ScanContainerFragment extends Fragment {
+public class GalleryContainerFragment extends Fragment {
 
 
-    public ScanContainerFragment() {
+    public GalleryContainerFragment() {
         // Required empty public constructor
     }
 
@@ -22,11 +21,13 @@ public class ScanContainerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_scan_container, container, false);
+        return inflater.inflate(R.layout.fragment_gallery_container, container, false);
     }
 
     @Override
     public void onStart() {
         super.onStart();
+
     }
+
 }
