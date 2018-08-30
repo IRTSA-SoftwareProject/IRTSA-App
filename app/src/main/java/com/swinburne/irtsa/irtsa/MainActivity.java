@@ -1,47 +1,47 @@
 package com.swinburne.irtsa.irtsa;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
-    private ViewPager mPager;
-    private PagerAdapter mPagerAdapter;
-    private TabLayout mTabLayout;
+  private ViewPager pager;
+  private PagerAdapter pagerAdapter;
+  private TabLayout tabLayout;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mTabLayout = findViewById(R.id.tabLayout);
-        mPager = findViewById(R.id.viewPager);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    tabLayout = findViewById(R.id.tabLayout);
+    pager = findViewById(R.id.viewPager);
 
-        mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
-        mTabLayout.setupWithViewPager(mPager);
+    pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+    pager.setAdapter(pagerAdapter);
+    tabLayout.setupWithViewPager(pager);
+  }
+
+  @Override
+  public void onBackPressed() {
+    FragmentManager fm = getSupportFragmentManager();
+
+    boolean backStackPopped = false;
+
+    if (pager.getCurrentItem() == 0) {
+      for (Fragment fragment : fm.getFragments()) {
+        if (fragment.getTag() == "ViewScanFragment") {
+          fm.popBackStackImmediate();
+          backStackPopped = true;
+        }
+      }
     }
 
-    @Override
-    public void onBackPressed() {
-        FragmentManager fm = getSupportFragmentManager();
-
-        boolean backStackPopped = false;
-
-        if (mPager.getCurrentItem() == 0) {
-            for (Fragment fragment : fm.getFragments()) {
-                if (fragment.getTag() == "ViewScanFragment") {
-                    fm.popBackStackImmediate();
-                    backStackPopped = true;
-                }
-            }
-        }
-
-        if (!backStackPopped) {
-            finish();
-        }
+    if (!backStackPopped) {
+      finish();
     }
+  }
 }

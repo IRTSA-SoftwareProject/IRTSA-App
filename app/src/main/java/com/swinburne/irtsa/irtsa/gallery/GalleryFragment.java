@@ -9,39 +9,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.swinburne.irtsa.irtsa.R;
-import com.swinburne.irtsa.irtsa.model.Scan;
-
-import java.util.ArrayList;
 
 public class GalleryFragment extends Fragment {
-    private ArrayList<Scan> mImages;
-    private RecyclerView recyclerView;
-    private GalleryAdapter mAdapter;
+  private RecyclerView recyclerView;
+  private GalleryAdapter adapter;
 
-    public GalleryFragment() {
-    }
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
+    // Inflate the layout for this fragment
 
+    View v = inflater.inflate(R.layout.fragment_gallery, container, false);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    initialiseUi(v);
 
-        View v = inflater.inflate(R.layout.fragment_gallery, container, false);
+    return v;
+  }
 
-        initialiseUI(v);
+  private void initialiseUi(View v) {
+    adapter = new GalleryAdapter(getActivity().getApplicationContext());
 
-        return v;
-    }
-
-    private void initialiseUI(View v) {
-        mImages = new ArrayList<>();
-        mAdapter = new GalleryAdapter(getActivity().getApplicationContext());
-
-        recyclerView = v.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        recyclerView.setAdapter(mAdapter);
-    }
-
-
+    recyclerView = v.findViewById(R.id.recyclerView);
+    recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+    recyclerView.setAdapter(adapter);
+  }
 }
