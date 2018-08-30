@@ -8,7 +8,7 @@ import com.swinburne.irtsa.irtsa.containers.GalleryContainerFragment;
 import com.swinburne.irtsa.irtsa.containers.ScanContainerFragment;
 
 /**
- * This adapter specifies which Fragments the ViewPager will display.
+ * This adapter specifies the two container Fragments the ViewPager will display.
  */
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -32,11 +32,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         final Fragment result;
         switch (position) {
             case 0:
-                // First fragment of the Scan tab
                 result = new ScanContainerFragment();
                 break;
             case 1:
-                // Second fragment of the Gallery tab
                 result = new GalleryContainerFragment();
                 break;
             default:

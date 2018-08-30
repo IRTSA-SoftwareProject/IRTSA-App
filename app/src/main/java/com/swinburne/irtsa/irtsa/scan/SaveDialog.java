@@ -21,7 +21,6 @@ import java.util.List;
 import static java.security.AccessController.getContext;
 
 public class SaveDialog extends AppCompatDialogFragment {
-
     private EditText mFname;
     private EditText mDescription;
     public Bitmap mBitmap;
@@ -33,10 +32,6 @@ public class SaveDialog extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         //Define where to get the layout from for the dialogs view
         View view = inflater.inflate(R.layout.dialog_save, null);
-
-        Bundle passedData = getArguments();
-//        final byte[] imageToSave = passedData.getByteArray("passedImage");
-
 
         mFname = view.findViewById(R.id.fName);
         mDescription = view.findViewById(R.id.fDescription);
@@ -53,7 +48,6 @@ public class SaveDialog extends AppCompatDialogFragment {
                 //Create the save button
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int i) {
-
                         ScanInterface scanAccessObject = new ScanAccessObject(getContext());
 
                         Scan testScan = new Scan();
@@ -63,16 +57,6 @@ public class SaveDialog extends AppCompatDialogFragment {
                         testScan.image = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.phase);
 
                         scanAccessObject.insertScan(testScan);
-
-                        List<Scan> allScans;
-
-                        allScans = scanAccessObject.getAllScans();
-
-                        for (Scan scan : allScans) {
-                            System.out.println(scan.name);
-                        }
-
-                        System.out.println();
                     }
                 });
         //Build the dialog in order for it to popup

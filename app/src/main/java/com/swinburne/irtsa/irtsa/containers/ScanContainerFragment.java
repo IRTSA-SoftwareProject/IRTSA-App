@@ -1,6 +1,5 @@
 package com.swinburne.irtsa.irtsa.containers;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +10,10 @@ import android.view.ViewGroup;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.scan.StartScanFragment;
 
+/**
+ * This Fragment's layout consists purely of an empty FrameLayout.
+ * This Fragment serves as a container for the Scan fragments.
+ */
 public class ScanContainerFragment extends Fragment {
 
 
@@ -26,6 +29,9 @@ public class ScanContainerFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_scan_container, container, false);
     }
 
+    /**
+     * Immediately load the StartScanFragment once this container Fragment becomes visible.
+     */
     @Override
     public void onStart() {
         super.onStart();

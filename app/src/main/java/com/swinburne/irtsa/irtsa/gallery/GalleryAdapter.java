@@ -16,33 +16,29 @@ import com.swinburne.irtsa.irtsa.model.ScanInterface;
 import java.util.List;
 
 /**
- * Created by Lionel on 8/25/2018.
+ * Adapter to provide Scan data to the RecyclerView in the GalleryFragment
  */
-
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
-
     private List<Scan> scans;
-    private Context context;
     private ImageView thumbImage;
     private TextView thumbTitle;
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        //public ImageView thumb;
+    /**
+     * Retrieve all scans from the database to initialise scans member variable
+     *
+     * @param context Context of the current state of the application.
+     */
+    public GalleryAdapter(Context context){
+        ScanInterface scanAccessObject = new ScanAccessObject(context);
+        scans = scanAccessObject.getAllScans();
+    }
 
+    public class ViewHolder extends RecyclerView.ViewHolder{
         public ViewHolder (View view){
             super(view);
             thumbImage = view.findViewById(R.id.imageThumb);
             thumbTitle = view.findViewById(R.id.imageTitle);
         }
-    }
-
-    public GalleryAdapter(Context context){
-        this.context = context;
-
-        ScanInterface scanAccessObject = new ScanAccessObject(context);
-
-        scans = scanAccessObject.getAllScans();
-
     }
 
     @Override
@@ -58,7 +54,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position){
-        // Code to add image into each view.
+        // Add image and text into each view.
         thumbImage.setImageBitmap(scans.get(position).image);
         thumbTitle.setText(scans.get(position).name);
 

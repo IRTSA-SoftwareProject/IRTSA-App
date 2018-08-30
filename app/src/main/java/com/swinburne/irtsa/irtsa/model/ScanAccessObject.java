@@ -41,7 +41,7 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
      * Deletes a scan from the SQLite database.
      *
      * @param id ID of the scan we want to delete
-     * @return Represents if the delete operation was performed successfully
+     * @return Represents whether the delete operation was successful.
      */
     @Override
     public Boolean deleteScan(Integer  id) {
@@ -53,7 +53,7 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
     /**
      * Get all scans from the SQLite database.
      *
-     * @return List containing all scans in the database.
+     * @return List containing all scans retrieved from database.
      */
     @Override
     public List<Scan> getAllScans() {
@@ -81,10 +81,10 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
     }
 
     /**
-     * Inserts a Scan object into the database.
+     * Inserts a Scan into the database.
      *
-     * @param scan The Scan object to insert into the database.
-     * @return Boolean representing if the Insert operation ran successfully.
+     * @param scan The Scan to insert into the database.
+     * @return Represents whether the insert operation was successful.
      */
     @Override
     public Boolean insertScan(Scan scan) {
