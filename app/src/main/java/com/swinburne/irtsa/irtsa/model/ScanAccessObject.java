@@ -22,11 +22,6 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
         super(context, context.getExternalFilesDir(null) + "/ScanDB.db", null, 1);
     }
 
-    /**
-     * Creates the scan table.
-     *
-     * @param db Instance of the SQLite database.
-     */
     @Override
     public void onCreate(SQLiteDatabase db){
         db.execSQL(CREATE_SCAN_TABLE);
@@ -37,12 +32,6 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
 
     }
 
-    /**
-     * Deletes a scan from the SQLite database.
-     *
-     * @param id ID of the scan we want to delete
-     * @return Represents whether the delete operation was successful.
-     */
     @Override
     public Boolean deleteScan(Integer  id) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -50,11 +39,6 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
         return db.delete(TABLE_SCAN, COLUMN_ID + "=" + id, null) > 0;
     }
 
-    /**
-     * Get all scans from the SQLite database.
-     *
-     * @return List containing all scans retrieved from database.
-     */
     @Override
     public List<Scan> getAllScans() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -80,12 +64,6 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
         return result;
     }
 
-    /**
-     * Inserts a Scan into the database.
-     *
-     * @param scan The Scan to insert into the database.
-     * @return Represents whether the insert operation was successful.
-     */
     @Override
     public Boolean insertScan(Scan scan) {
         SQLiteDatabase db = this.getWritableDatabase();

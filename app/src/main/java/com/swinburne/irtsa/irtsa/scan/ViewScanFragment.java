@@ -23,7 +23,8 @@ public class ViewScanFragment extends Fragment {
     }
 
     /**
-     * Called when the toolbar (menu) is created.
+     * When the options menu (toolbar) is created, inflate the required Toolbar menu layout
+     * and set the save icon to visible.
      *
      * @param menu Menu View to contain the inflated menu.
      * @param inflater Inflates the menu resource into the Menu View

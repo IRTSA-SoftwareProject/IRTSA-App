@@ -16,7 +16,6 @@ import com.swinburne.irtsa.irtsa.scan.StartScanFragment;
  */
 public class ScanContainerFragment extends Fragment {
 
-
     public ScanContainerFragment() {
         // Required empty public constructor
     }

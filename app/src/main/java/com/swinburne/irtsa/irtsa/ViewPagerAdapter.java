@@ -22,7 +22,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     /**
-     * Runs once at runtime. Specifies the Fragment to display at each ViewPager position.
+     * Runs once at runtime to initialise the ViewPager.
+     * Specifies the Fragment to display at each ViewPager position.
      *
      * @param position The position (tab) of the ViewPager.
      * @return The fragment to be displayed at the specified position.

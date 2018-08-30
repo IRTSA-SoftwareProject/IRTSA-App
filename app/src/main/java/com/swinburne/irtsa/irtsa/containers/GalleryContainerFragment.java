@@ -27,7 +27,7 @@ public class GalleryContainerFragment extends Fragment {
     }
 
     /**
-     * Immediately load the GalleryFragment once this container Fragment is created.
+     * Immediately load the GalleryFragment once this container Fragment becomes visible.
      */
     @Override
     public void onStart() {
