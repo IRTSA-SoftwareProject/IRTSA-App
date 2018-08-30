@@ -2,6 +2,9 @@ package com.swinburne.irtsa.irtsa.model;
 
 import java.util.List;
 
+/**
+ * Defines constants and methods to access the Scan table in the SQLite database.
+ */
 public interface ScanInterface {
     String TABLE_SCAN = "SCAN";
     String COLUMN_NAME = "Name";

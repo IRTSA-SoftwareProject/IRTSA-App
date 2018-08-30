@@ -12,6 +12,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+/**
+ * Logic to retrieve/store Scan objects in the Scan table of the SQLite database.
+ */
 public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface {
 
     public ScanAccessObject(Context context) {
@@ -19,6 +22,11 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
         super(context, context.getExternalFilesDir(null) + "/ScanDB.db", null, 1);
     }
 
+    /**
+     * Creates the scan table.
+     *
+     * @param db Instance of the SQLite database.
+     */
     @Override
     public void onCreate(SQLiteDatabase db){
         db.execSQL(CREATE_SCAN_TABLE);
@@ -29,6 +37,12 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
 
     }
 
+    /**
+     * Deletes a scan from the SQLite database.
+     *
+     * @param id ID of the scan we want to delete
+     * @return Represents if the delete operation was performed successfully
+     */
     @Override
     public Boolean deleteScan(Integer  id) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -36,6 +50,11 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
         return db.delete(TABLE_SCAN, COLUMN_ID + "=" + id, null) > 0;
     }
 
+    /**
+     * Get all scans from the SQLite database.
+     *
+     * @return List containing all scans in the database.
+     */
     @Override
     public List<Scan> getAllScans() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -61,6 +80,12 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
         return result;
     }
 
+    /**
+     * Inserts a Scan object into the database.
+     *
+     * @param scan The Scan object to insert into the database.
+     * @return Boolean representing if the Insert operation ran successfully.
+     */
     @Override
     public Boolean insertScan(Scan scan) {
         SQLiteDatabase db = this.getWritableDatabase();
