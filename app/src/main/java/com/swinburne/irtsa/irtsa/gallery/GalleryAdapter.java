@@ -16,7 +16,8 @@ import com.swinburne.irtsa.irtsa.model.ScanInterface;
 import java.util.List;
 
 /**
- * Adapter to provide Scan data to the RecyclerView in the GalleryFragment
+ * Adapter to provide Scan data to the RecyclerView in the GalleryFragment.
+ * This adapter makes use of the ViewHolder pattern to facilitate smooth scrolling.
  */
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     private List<Scan> scans;
@@ -33,6 +34,10 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         scans = scanAccessObject.getAllScans();
     }
 
+    /**
+     * Simple ViewHolder object that initialises thumbImage and thumbTitle to references
+     * of the ViewHolder's ImageView and TextView
+     */
     public class ViewHolder extends RecyclerView.ViewHolder{
         public ViewHolder (View view){
             super(view);
@@ -41,6 +46,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         }
     }
 
+    /**
+     * Method that returns the amount of gallery items displayed in the gallery.
+     *
+     * @return The size (count) of Scan objects in the Scan List.
+     */
     @Override
     public int getItemCount(){
         return scans.size();
@@ -52,11 +62,19 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         return new ViewHolder(view);
     }
 
+    /**
+     * Sets the thumbnail and text of a Gallery Item.
+     * The position of the ViewHolder is used to index the scans List and retrieve Scan information.
+     * When this method is called, thumbImage and thumbTitle are already set to reference the
+     * Text and Image View's contained in the ViewHolder at the position passed in as a parameter.
+     *
+     * @param holder The ViewHolder being created.
+     * @param position The position of the ViewHolder in relation to the others.
+     */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position){
         // Add image and text into each view.
         thumbImage.setImageBitmap(scans.get(position).image);
         thumbTitle.setText(scans.get(position).name);
-
     }
 }
