@@ -20,62 +20,51 @@ import java.util.List;
 
 import static java.security.AccessController.getContext;
 
+/**
+ * Modal Dialog Fragment that displays when a user taps the save icon on the toolbar.
+ */
 public class SaveDialog extends AppCompatDialogFragment {
-
     private EditText mFname;
     private EditText mDescription;
-    public Bitmap mBitmap;
 
-    //Function that creates a dialog
+    /**
+     * Initialises the EditText's on the dialog and registers an onClickListener on the Save button.
+     *
+     * @param savedInstanceState Saved representation of the dialog's state.
+     * @return The dialog to be displayed.
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        //Define where to get the layout from for the dialogs view
+        // Inflate the Dialog's resource file.
         View view = inflater.inflate(R.layout.dialog_save, null);
-
-        Bundle passedData = getArguments();
-//        final byte[] imageToSave = passedData.getByteArray("passedImage");
-
 
         mFname = view.findViewById(R.id.fName);
         mDescription = view.findViewById(R.id.fDescription);
 
-        //set the characteristics of the dialog view
+        // Set the properties of the dialog view
         builder.setView(view)
                 .setTitle("Save Scan")
-                //Create the cancel button
+                // Create the Cancel button
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int i) {
-
                     }
                 })
-                //Create the save button
+                // Create the Save button and register an onClickListener that saves the new scan.
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int i) {
-
                         ScanInterface scanAccessObject = new ScanAccessObject(getContext());
 
                         Scan testScan = new Scan();
                         testScan.name = mFname.getText().toString();
                         testScan.description = mDescription.getText().toString();
-                        //testScan.image = BitmapFactory.decodeByteArray(R.drawable.phase,0, R.drawable.phase.length);
                         testScan.image = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.phase);
 
                         scanAccessObject.insertScan(testScan);
-
-                        List<Scan> allScans;
-
-                        allScans = scanAccessObject.getAllScans();
-
-                        for (Scan scan : allScans) {
-                            System.out.println(scan.name);
-                        }
-
-                        System.out.println();
                     }
                 });
-        //Build the dialog in order for it to popup
+        //Return the built Dialog
         return builder.create();
     }
 }

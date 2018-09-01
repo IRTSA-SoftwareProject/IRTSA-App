@@ -12,6 +12,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+/**
+ * Logic to retrieve/store Scan objects in the Scan table of the SQLite database.
+ */
 public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface {
 
     public ScanAccessObject(Context context) {

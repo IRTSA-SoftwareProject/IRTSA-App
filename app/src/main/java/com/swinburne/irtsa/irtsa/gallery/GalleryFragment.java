@@ -13,20 +13,21 @@ import com.swinburne.irtsa.irtsa.model.Scan;
 
 import java.util.ArrayList;
 
+/**
+ * Fragment that displays the saved scan gallery.
+ */
 public class GalleryFragment extends Fragment {
-    private ArrayList<Scan> mImages;
     private RecyclerView recyclerView;
     private GalleryAdapter mAdapter;
 
     public GalleryFragment() {
+        // Required empty public constructor.
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View v = inflater.inflate(R.layout.fragment_gallery, container, false);
 
         initialiseUI(v);
@@ -34,8 +35,12 @@ public class GalleryFragment extends Fragment {
         return v;
     }
 
+    /**
+     * Initialise GalleryAdapter and RecyclerView
+     *
+     * @param v The inflated root View of this Fragment.
+     */
     private void initialiseUI(View v) {
-        mImages = new ArrayList<>();
         mAdapter = new GalleryAdapter(getActivity().getApplicationContext());
 
         recyclerView = v.findViewById(R.id.recyclerView);
