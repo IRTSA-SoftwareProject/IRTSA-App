@@ -24,6 +24,10 @@ public class GalleryFragment extends Fragment {
         // Required empty public constructor.
     }
 
+    public void refreshGallery() {
+        mAdapter.refreshScans();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

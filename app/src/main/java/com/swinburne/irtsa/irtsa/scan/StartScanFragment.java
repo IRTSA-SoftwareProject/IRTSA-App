@@ -66,9 +66,9 @@ public class StartScanFragment extends Fragment {
      */
     private void beginScan() {
         ViewScanFragment viewScanFragment = new ViewScanFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getParentFragment().getChildFragmentManager().beginTransaction();
         // Store the Fragment in the Fragment back-stack
-        transaction.addToBackStack(null);
+        transaction.addToBackStack("StartScanFragment");
         transaction.replace(R.id.scanContainer, viewScanFragment, "ViewScanFragment").commit();
     }
 
