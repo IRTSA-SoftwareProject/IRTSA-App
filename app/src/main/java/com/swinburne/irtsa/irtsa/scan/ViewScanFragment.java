@@ -16,71 +16,66 @@ import com.swinburne.irtsa.irtsa.R;
  * Fragment that displays the details of a completed scan.
  */
 public class ViewScanFragment extends Fragment {
-    private ImageView mScanImage;
+  private ImageView scanImage;
 
-    public ViewScanFragment() {
-        setHasOptionsMenu(true);
+  public ViewScanFragment() {
+    setHasOptionsMenu(true);
+  }
+
+  /**
+   * When the options menu (toolbar) is created, inflate the required Toolbar menu layout
+   * and set the save icon to visible.
+   *
+   * @param menu Menu View to contain the inflated menu.
+   * @param inflater Inflates the menu resource into the Menu View
+   */
+  @Override
+  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    inflater.inflate(R.menu.toolbar_save, menu);
+    menu.findItem(R.id.save).setVisible(true);
+    super.onCreateOptionsMenu(menu, inflater);
+  }
+
+  /**
+   * Opens the SaveDialog Fragment if the save menu icon is selected.
+   *
+   * @param item Selected menu item.
+   * @return
+   */
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    int id = item.getItemId();
+    //Call the openSaveDialog when the save icon is selected
+    if (id == R.id.save) {
+      openSaveDialog();
     }
+    return super.onOptionsItemSelected(item);
+  }
 
-    /**
-     * When the options menu (toolbar) is created, inflate the required Toolbar menu layout
-     * and set the save icon to visible.
-     *
-     * @param menu Menu View to contain the inflated menu.
-     * @param inflater Inflates the menu resource into the Menu View
-     */
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.toolbar_save, menu);
-        menu.findItem(R.id.save).setVisible(true);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+  /**
+   * Display the modal SaveDialog Fragment.
+   */
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
+    // Inflate the layout for this fragment
+    View v = inflater.inflate(R.layout.fragment_view_scan, container, false);
 
-    /**
-     * Opens the SaveDialog Fragment if the save menu icon is selected.
-     *
-     * @param item Selected menu item.
-     * @return
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+    initialiseUi(v);
 
-        if (id == R.id.save) {
-            openSaveDialog();
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    return v;
+  }
 
-    /**
-     * Display the modal SaveDialog Fragment.
-     */
-    public void openSaveDialog() {
-        SaveDialog saveDialog = new SaveDialog();
+  /**
+   * Initialise the ImageView and have it display an image.
+   */
+  private void openSaveDialog() {
+    SaveDialog saveDialog = new SaveDialog();
+    saveDialog.show(getFragmentManager(), "Save Dialog");
+  }
 
-        saveDialog.show(getFragmentManager(), "Save Dialog");
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_view_scan, container, false);
-
-        initialiseUI(v);
-
-        return v;
-    }
-
-    /**
-     * Initialise the ImageView and have it display an image.
-     *
-     * @param v The StartScanFragment's top level View
-     */
-    private void initialiseUI(View v) {
-        mScanImage = v.findViewById(R.id.scanImage);
-        mScanImage.setImageResource(R.drawable.phase);
-    }
-
+  private void initialiseUi(View v) {
+    scanImage = v.findViewById(R.id.scanImage);
+    scanImage.setImageResource(R.drawable.phase);
+  }
 }

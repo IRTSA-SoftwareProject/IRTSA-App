@@ -20,67 +20,72 @@ import java.util.List;
  * This adapter makes use of the ViewHolder pattern to facilitate smooth scrolling.
  */
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
-    private List<Scan> scans;
-    private ImageView thumbImage;
-    private TextView thumbTitle;
-    private ScanInterface scanAccessObject;
+  private List<Scan> scans;
+  private ImageView thumbImage;
+  private TextView thumbTitle;
+  private ScanInterface scanAccessObject;
 
+  /**
+   * Retrieve all scans from the database to initialise scans member variable.
+   *
+   * @param context Context of the current state of the application.
+   */
+  public GalleryAdapter(Context context) {
+    scanAccessObject = new ScanAccessObject(context);
+    scans = scanAccessObject.getAllScans();
+  }
+
+  public void refreshScans() {
+    scans = scanAccessObject.getAllScans();
+    notifyDataSetChanged();
+  }
+
+  /**
+   * Simple ViewHolder object that initialises thumbImage and thumbTitle to references.
+   * of the ViewHolder's ImageView and TextView
+   */
+  public class ViewHolder extends RecyclerView.ViewHolder {
     /**
-     * Retrieve all scans from the database to initialise scans member variable
-     *
-     * @param context Context of the current state of the application.
+     * View holder constructor.
+     * @param view The view
      */
-    public GalleryAdapter(Context context){
-        scanAccessObject = new ScanAccessObject(context);
-        scans = scanAccessObject.getAllScans();
+    public ViewHolder(View view) {
+      super(view);
+      thumbImage = view.findViewById(R.id.imageThumb);
+      thumbTitle = view.findViewById(R.id.imageTitle);
     }
+  }
 
-    public void refreshScans() {
-        scans = scanAccessObject.getAllScans();
-        notifyDataSetChanged();
-    }
+  /**
+   * Method that returns the amount of gallery items displayed in the gallery.
+   *
+   * @return The size (count) of Scan objects in the Scan List.
+   */
+  @Override
+  public int getItemCount() {
+    return scans.size();
+  }
 
-    /**
-     * Simple ViewHolder object that initialises thumbImage and thumbTitle to references
-     * of the ViewHolder's ImageView and TextView
-     */
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        public ViewHolder (View view){
-            super(view);
-            thumbImage = view.findViewById(R.id.imageThumb);
-            thumbTitle = view.findViewById(R.id.imageTitle);
-        }
-    }
+  @Override
+  public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+    View view = layoutInflater.inflate(R.layout.gallery_item, parent, false);
+    return new ViewHolder(view);
+  }
 
-    /**
-     * Method that returns the amount of gallery items displayed in the gallery.
-     *
-     * @return The size (count) of Scan objects in the Scan List.
-     */
-    @Override
-    public int getItemCount(){
-        return scans.size();
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false);
-        return new ViewHolder(view);
-    }
-
-    /**
-     * Sets the thumbnail and text of a Gallery Item.
-     * The position of the ViewHolder is used to index the scans List and retrieve Scan information.
-     * When this method is called, thumbImage and thumbTitle are already set to reference the
-     * Text and Image View's contained in the ViewHolder at the position passed in as a parameter.
-     *
-     * @param holder The ViewHolder being created.
-     * @param position The position of the ViewHolder in relation to the others.
-     */
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position){
-        // Add image and text into each view.
-        thumbImage.setImageBitmap(scans.get(position).image);
-        thumbTitle.setText(scans.get(position).name);
-    }
+  /**
+   * Sets the thumbnail and text of a Gallery Item.
+   * The position of the ViewHolder is used to index the scans List and retrieve Scan information.
+   * When this method is called, thumbImage and thumbTitle are already set to reference the
+   * Text and Image View's contained in the ViewHolder at the position passed in as a parameter.
+   *
+   * @param holder The ViewHolder being created.
+   * @param position The position of the ViewHolder in relation to the others.
+   */
+  @Override
+  public void onBindViewHolder(ViewHolder holder, int position) {
+    // Add image and text into each view.
+    thumbImage.setImageBitmap(scans.get(position).image);
+    thumbTitle.setText(scans.get(position).name);
+  }
 }

@@ -15,28 +15,25 @@ import com.swinburne.irtsa.irtsa.scan.StartScanFragment;
  * This Fragment serves as a container for the Scan fragments.
  */
 public class ScanContainerFragment extends Fragment {
+  public ScanContainerFragment() {
+    // Required empty public constructor
+  }
 
-    public ScanContainerFragment() {
-        // Required empty public constructor
-    }
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
+    // Inflate the layout for this fragment
+    return inflater.inflate(R.layout.fragment_scan_container, container, false);
+  }
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_scan_container, container, false);
-    }
-
-    /**
-     * Immediately load the StartScanFragment once this container Fragment becomes visible.
-     */
-    @Override
-    public void onStart() {
-        super.onStart();
-        StartScanFragment startScanFragment = new StartScanFragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
-        transaction.replace(R.id.scanContainer, startScanFragment, "StartScanFragment").commit();
-    }
+  /**
+   * Immediately load the StartScanFragment once this container Fragment becomes visible.
+   */
+  @Override
+  public void onStart() {
+    super.onStart();
+    StartScanFragment startScanFragment = new StartScanFragment();
+    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+    transaction.replace(R.id.scanContainer, startScanFragment, "StartScanFragment").commit();
+  }
 }
