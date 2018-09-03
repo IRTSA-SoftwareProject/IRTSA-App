@@ -23,6 +23,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     private List<Scan> scans;
     private ImageView thumbImage;
     private TextView thumbTitle;
+    private ScanInterface scanAccessObject;
 
     /**
      * Retrieve all scans from the database to initialise scans member variable
@@ -30,8 +31,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
      * @param context Context of the current state of the application.
      */
     public GalleryAdapter(Context context){
-        ScanInterface scanAccessObject = new ScanAccessObject(context);
+        scanAccessObject = new ScanAccessObject(context);
         scans = scanAccessObject.getAllScans();
+    }
+
+    public void refreshScans() {
+        scans = scanAccessObject.getAllScans();
+        notifyDataSetChanged();
     }
 
     /**
