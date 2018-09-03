@@ -18,11 +18,19 @@ import com.swinburne.irtsa.irtsa.model.ScanInterface;
 
 import java.util.List;
 
+/**
+ * Modal Dialog Fragment that displays when a user taps the save icon on the toolbar.
+ */
 public class SaveDialog extends AppCompatDialogFragment {
   private EditText name;
   private EditText description;
 
-  //Function that creates a dialog
+  /**
+   * Initialises the EditText's on the dialog and registers an onClickListener on the Save button.
+   *
+   * @param savedInstanceState Saved representation of the dialog's state.
+   * @return The dialog to be displayed.
+   */
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

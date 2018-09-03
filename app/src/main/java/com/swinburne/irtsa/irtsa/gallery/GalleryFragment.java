@@ -10,9 +10,20 @@ import android.view.ViewGroup;
 
 import com.swinburne.irtsa.irtsa.R;
 
+/**
+ * Fragment that displays the saved scan gallery.
+ */
 public class GalleryFragment extends Fragment {
   private RecyclerView recyclerView;
   private GalleryAdapter adapter;
+
+  public GalleryFragment() {
+      // Required empty public constructor.
+  }
+
+  public void refreshGallery() {
+      adapter.refreshScans();
+  }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -16,22 +16,36 @@ import com.swinburne.irtsa.irtsa.model.ScanInterface;
 import java.util.List;
 
 /**
- * Created by Lionel on 8/25/2018.
+ * Adapter to provide Scan data to the RecyclerView in the GalleryFragment.
+ * This adapter makes use of the ViewHolder pattern to facilitate smooth scrolling.
  */
-
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
-
   private List<Scan> scans;
-  private Context context;
   private ImageView thumbImage;
   private TextView thumbTitle;
+  private ScanInterface scanAccessObject;
 
-  public class ViewHolder extends RecyclerView.ViewHolder {
-    /**
-     * Thumbnail view holder.
-     * @param view View with thumbnail and title
-     */
-    public ViewHolder(View view) {
+  /**
+   * Retrieve all scans from the database to initialise scans member variable
+   *
+   * @param context Context of the current state of the application.
+   */
+  public GalleryAdapter(Context context){
+    scanAccessObject = new ScanAccessObject(context);
+    scans = scanAccessObject.getAllScans();
+  }
+
+  public void refreshScans() {
+    scans = scanAccessObject.getAllScans();
+    notifyDataSetChanged();
+  }
+
+  /**
+   * Simple ViewHolder object that initialises thumbImage and thumbTitle to references
+   * of the ViewHolder's ImageView and TextView
+   */
+  public class ViewHolder extends RecyclerView.ViewHolder{
+    public ViewHolder (View view){
       super(view);
       thumbImage = view.findViewById(R.id.imageThumb);
       thumbTitle = view.findViewById(R.id.imageTitle);
@@ -39,20 +53,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   }
 
   /**
-   * Gallery adapter constructor.
-   * @param context Scan context
+   * Method that returns the amount of gallery items displayed in the gallery.
+   *
+   * @return The size (count) of Scan objects in the Scan List.
    */
-  public GalleryAdapter(Context context) {
-    this.context = context;
-
-    ScanInterface scanAccessObject = new ScanAccessObject(context);
-
-    scans = scanAccessObject.getAllScans();
-
-  }
-
   @Override
-  public int getItemCount() {
+  public int getItemCount(){
     return scans.size();
   }
 
@@ -63,9 +69,18 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     return new ViewHolder(view);
   }
 
+  /**
+   * Sets the thumbnail and text of a Gallery Item.
+   * The position of the ViewHolder is used to index the scans List and retrieve Scan information.
+   * When this method is called, thumbImage and thumbTitle are already set to reference the
+   * Text and Image View's contained in the ViewHolder at the position passed in as a parameter.
+   *
+   * @param holder The ViewHolder being created.
+   * @param position The position of the ViewHolder in relation to the others.
+   */
   @Override
-  public void onBindViewHolder(ViewHolder holder, int position) {
-    // Code to add image into each view.
+  public void onBindViewHolder(ViewHolder holder, int position){
+    // Add image and text into each view.
     thumbImage.setImageBitmap(scans.get(position).image);
     thumbTitle.setText(scans.get(position).name);
   }

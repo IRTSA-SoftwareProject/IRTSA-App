@@ -10,13 +10,14 @@ import android.view.ViewGroup;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.scan.StartScanFragment;
 
+/**
+ * This Fragment's layout consists purely of an empty FrameLayout.
+ * This Fragment serves as a container for the Scan fragments.
+ */
 public class ScanContainerFragment extends Fragment {
-
-
   public ScanContainerFragment() {
     // Required empty public constructor
   }
-
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,12 +26,14 @@ public class ScanContainerFragment extends Fragment {
     return inflater.inflate(R.layout.fragment_scan_container, container, false);
   }
 
+  /**
+   * Immediately load the StartScanFragment once this container Fragment becomes visible.
+   */
   @Override
   public void onStart() {
     super.onStart();
     StartScanFragment startScanFragment = new StartScanFragment();
     FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
     transaction.replace(R.id.scanContainer, startScanFragment, "StartScanFragment").commit();
   }
 }

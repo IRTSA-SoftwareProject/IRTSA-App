@@ -12,6 +12,9 @@ import android.widget.ImageView;
 
 import com.swinburne.irtsa.irtsa.R;
 
+/**
+ * Fragment that displays the details of a completed scan.
+ */
 public class ViewScanFragment extends Fragment {
   private ImageView scanImage;
 
@@ -19,6 +22,13 @@ public class ViewScanFragment extends Fragment {
     setHasOptionsMenu(true);
   }
 
+  /**
+   * When the options menu (toolbar) is created, inflate the required Toolbar menu layout
+   * and set the save icon to visible.
+   *
+   * @param menu Menu View to contain the inflated menu.
+   * @param inflater Inflates the menu resource into the Menu View
+   */
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     inflater.inflate(R.menu.toolbar_save, menu);
@@ -26,6 +36,12 @@ public class ViewScanFragment extends Fragment {
     super.onCreateOptionsMenu(menu, inflater);
   }
 
+  /**
+   * Opens the SaveDialog Fragment if the save menu icon is selected.
+   *
+   * @param item Selected menu item.
+   * @return
+   */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
@@ -36,6 +52,9 @@ public class ViewScanFragment extends Fragment {
     return super.onOptionsItemSelected(item);
   }
 
+  /**
+   * Display the modal SaveDialog Fragment.
+   */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
@@ -47,6 +66,9 @@ public class ViewScanFragment extends Fragment {
     return v;
   }
 
+  /**
+   * Initialise the ImageView and have it display an image.
+   */
   private void openSaveDialog() {
     SaveDialog saveDialog = new SaveDialog();
     saveDialog.show(getFragmentManager(), "Save Dialog");

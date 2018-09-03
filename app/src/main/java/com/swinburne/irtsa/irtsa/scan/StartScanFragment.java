@@ -12,11 +12,20 @@ import android.widget.Button;
 
 import com.swinburne.irtsa.irtsa.R;
 
+/**
+ * Fragment with a button that begins a scan.
+ */
 public class StartScanFragment extends Fragment {
   public StartScanFragment() {
     setHasOptionsMenu(true);
   }
 
+  /**
+   * Called when the toolbar (menu) is created.
+   *
+   * @param menu Menu View to contain the inflated menu.
+   * @param inflater Inflates the menu resource into the Menu View
+   */
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     inflater.inflate(R.menu.toolbar_scan, menu);
@@ -34,6 +43,11 @@ public class StartScanFragment extends Fragment {
     return rootView;
   }
 
+  /**
+   * Initialise the Button and set an OnClickListener
+   *
+   * @param rootView The StartScanFragment's top level View
+   */
   private void initialiseUi(View rootView) {
     Button startScanButton = rootView.findViewById(R.id.startScanButton);
     startScanButton.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +58,11 @@ public class StartScanFragment extends Fragment {
     });
   }
 
+  /**
+   * Replace the Fragment in the scanContainer with a new ViewScanFragment.
+   * Add the StartScanFragment to the back-stack so it can be restored if
+   * the user presses the back button.
+   */
   private void beginScan() {
     ViewScanFragment viewScanFragment = new ViewScanFragment();
     FragmentTransaction transaction = getFragmentManager().beginTransaction();

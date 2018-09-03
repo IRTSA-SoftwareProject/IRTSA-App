@@ -12,6 +12,9 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Logic to retrieve/store Scan objects in the Scan table of the SQLite database.
+ */
 public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface {
 
   public ScanAccessObject(Context context) {
@@ -62,8 +65,6 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
 
   @Override
   public Boolean insertScan(Scan scan) {
-
-
     //Convert the Bitmap into a byte array
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     scan.image.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
