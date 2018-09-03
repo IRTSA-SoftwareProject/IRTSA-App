@@ -18,11 +18,11 @@ public class GalleryFragment extends Fragment {
   private GalleryAdapter adapter;
 
   public GalleryFragment() {
-      // Required empty public constructor.
+    // Required empty public constructor.
   }
 
   public void refreshGallery() {
-      adapter.refreshScans();
+    adapter.refreshScans();
   }
 
   @Override

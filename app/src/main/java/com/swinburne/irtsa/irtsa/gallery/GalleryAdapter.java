@@ -26,11 +26,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   private ScanInterface scanAccessObject;
 
   /**
-   * Retrieve all scans from the database to initialise scans member variable
+   * Retrieve all scans from the database to initialise scans member variable.
    *
    * @param context Context of the current state of the application.
    */
-  public GalleryAdapter(Context context){
+  public GalleryAdapter(Context context) {
     scanAccessObject = new ScanAccessObject(context);
     scans = scanAccessObject.getAllScans();
   }
@@ -41,11 +41,15 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   }
 
   /**
-   * Simple ViewHolder object that initialises thumbImage and thumbTitle to references
+   * Simple ViewHolder object that initialises thumbImage and thumbTitle to references.
    * of the ViewHolder's ImageView and TextView
    */
-  public class ViewHolder extends RecyclerView.ViewHolder{
-    public ViewHolder (View view){
+  public class ViewHolder extends RecyclerView.ViewHolder {
+    /**
+     * View holder constructor.
+     * @param view The view
+     */
+    public ViewHolder(View view) {
       super(view);
       thumbImage = view.findViewById(R.id.imageThumb);
       thumbTitle = view.findViewById(R.id.imageTitle);
@@ -58,7 +62,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
    * @return The size (count) of Scan objects in the Scan List.
    */
   @Override
-  public int getItemCount(){
+  public int getItemCount() {
     return scans.size();
   }
 
@@ -79,7 +83,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
    * @param position The position of the ViewHolder in relation to the others.
    */
   @Override
-  public void onBindViewHolder(ViewHolder holder, int position){
+  public void onBindViewHolder(ViewHolder holder, int position) {
     // Add image and text into each view.
     thumbImage.setImageBitmap(scans.get(position).image);
     thumbTitle.setText(scans.get(position).name);
