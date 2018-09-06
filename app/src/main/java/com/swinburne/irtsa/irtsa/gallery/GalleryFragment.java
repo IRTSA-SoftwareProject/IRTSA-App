@@ -48,6 +48,11 @@ public class GalleryFragment extends Fragment implements ToolbarSetter {
     recyclerView.setAdapter(adapter);
   }
 
+  /**
+   * Change the icons that are viewable on the top menu toolbar
+   *
+   * @param menu the menu at the top of the application
+   */
   @Override
   public void setToolbar(Menu menu) {
     menu.findItem(R.id.settings).setVisible(false);

@@ -62,6 +62,12 @@ public class StartScanFragment extends Fragment implements ToolbarSetter {
     transaction.replace(R.id.scanContainer, viewScanFragment, "ViewScanFragment").commit();
   }
 
+  /**
+   * Change the icons that are viewable on the top menu toolbar
+   *
+   * @param menu the menu at the top of the application
+   */
+
   @Override
   public void setToolbar(Menu menu) {
     menu.findItem(R.id.settings).setVisible(true);

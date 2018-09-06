@@ -24,8 +24,8 @@ public class ViewScanFragment extends Fragment implements ToolbarSetter {
   }
 
   /**
-   * When the options menu (toolbar) is created, inflate the required Toolbar menu layout
-   * and set the save icon to visible.
+   * When the view scan fragment is opened the icons are changed in the
+   * top menu toolbar.
    *
    * @param menu Menu View to contain the inflated menu.
    * @param inflater Inflates the menu resource into the Menu View
@@ -80,6 +80,11 @@ public class ViewScanFragment extends Fragment implements ToolbarSetter {
     scanImage.setImageResource(R.drawable.phase);
   }
 
+  /**
+   * Change the icons that are viewable on the top menu toolbar
+   *
+   * @param menu the menu at the top of the application
+   */
   @Override
   public void setToolbar(Menu menu) {
     menu.findItem(R.id.settings).setVisible(false);

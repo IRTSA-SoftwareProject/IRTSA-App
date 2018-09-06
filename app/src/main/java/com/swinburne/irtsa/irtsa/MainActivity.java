@@ -75,9 +75,11 @@ public class MainActivity extends AppCompatActivity {
   }
 
   /**
-   * Called when the toolbar (menu) is created.
+   * Called when the toolbar (menu) is created and set visible icons
+   * for the default screen that the app launches on.
    *
    * @param menu Menu View to contain the inflated menu.
+   * @return true that the menu is created
    */
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
