@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/IRTSA-App.iml" filepath="$PROJECT_DIR$/IRTSA-App.iml" />
+<<<<<<< HEAD
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+=======
       <module fileurl="file://$USER_HOME$/Desktop/IRTSA Application/IRTSA-App/IRTSA-App.iml" filepath="$USER_HOME$/Desktop/IRTSA Application/IRTSA-App/IRTSA-App.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../../../../Lionel/AndroidStudioProjects/FYP-App/IRTSA-App/IRTSA-App.iml" filepath="$PROJECT_DIR$/../../../../../Lionel/AndroidStudioProjects/FYP-App/IRTSA-App/IRTSA-App.iml" />
       <module fileurl="file://C:/Lionel/AndroidStudioProjects/Official/IRTSA-App/IRTSA-App.iml" filepath="C:/Lionel/AndroidStudioProjects/Official/IRTSA-App/IRTSA-App.iml" />
@@ -10,6 +13,7 @@
       <module fileurl="file://$USER_HOME$/Desktop/IRTSA Application/IRTSA-App/app/app.iml" filepath="$USER_HOME$/Desktop/IRTSA Application/IRTSA-App/app/app.iml" />
       <module fileurl="file://C:/Lionel/AndroidStudioProjects/Official/IRTSA-App/app/app.iml" filepath="C:/Lionel/AndroidStudioProjects/Official/IRTSA-App/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../../../../Lionel/AndroidStudioProjects/FYP-App/IRTSA-App/app/app.iml" filepath="$PROJECT_DIR$/../../../../../Lionel/AndroidStudioProjects/FYP-App/IRTSA-App/app/app.iml" />
+>>>>>>> development
     </modules>
   </component>
 </project>
