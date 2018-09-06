@@ -8,6 +8,7 @@ import com.swinburne.irtsa.irtsa.containers.GalleryContainerFragment;
 import com.swinburne.irtsa.irtsa.containers.ScanContainerFragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +18,14 @@ import java.util.Map;
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
   private Map<Integer, Fragment> fragmentMap;
 
-  /*
-   * Constructor that calls the superclass.
-   *
-   * @param fm FragmentManager required to initialise the superclass.
-   */
+  /**
+  * Constructor that calls the superclass.
+  *
+  * @param fm FragmentManager required to initialise the superclass.
+  */
   public ViewPagerAdapter(FragmentManager fm) {
     super(fm);
+    fragmentMap = new HashMap<>();
   }
 
   /**
@@ -36,19 +38,23 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
   @Override
   public Fragment getItem(int position) {
     final Fragment result;
-    switch (position) {
-      case 0:
-        // First fragment of the Scan tab
-        result = new ScanContainerFragment();
-        break;
-      case 1:
-        // Second fragment of the Gallery tab
-        result = new GalleryContainerFragment();
-        break;
-      default:
-        result = null;
-        break;
+
+    if (fragmentMap.containsKey(position)) {
+      return fragmentMap.get(position);
+    } else {
+      switch (position) {
+        case 0:
+          result = new ScanContainerFragment();
+          break;
+        case 1:
+          result = new GalleryContainerFragment();
+          break;
+        default:
+          result = null;
+          break;
+      }
     }
+    fragmentMap.put(position, result);
     return result;
   }
 
