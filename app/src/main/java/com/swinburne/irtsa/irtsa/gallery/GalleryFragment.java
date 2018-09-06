@@ -4,16 +4,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.swinburne.irtsa.irtsa.R;
+import com.swinburne.irtsa.irtsa.ToolbarSetter;
 
 /**
  * Fragment that displays the saved scan gallery.
  */
-public class GalleryFragment extends Fragment {
+public class GalleryFragment extends Fragment implements ToolbarSetter {
   private RecyclerView recyclerView;
   private GalleryAdapter adapter;
 
@@ -43,5 +46,14 @@ public class GalleryFragment extends Fragment {
     recyclerView = v.findViewById(R.id.recyclerView);
     recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
     recyclerView.setAdapter(adapter);
+  }
+
+  @Override
+  public void setToolbar(Menu menu) {
+    menu.findItem(R.id.settings).setVisible(false);
+    menu.findItem(R.id.save).setVisible(false);
+    menu.findItem(R.id.select).setVisible(true);
+    menu.findItem(R.id.share).setVisible(true);
+    menu.findItem(R.id.delete).setVisible(true);
   }
 }

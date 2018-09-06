@@ -11,11 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.swinburne.irtsa.irtsa.R;
+import com.swinburne.irtsa.irtsa.ToolbarSetter;
 
 /**
  * Fragment that displays the details of a completed scan.
  */
-public class ViewScanFragment extends Fragment {
+public class ViewScanFragment extends Fragment implements ToolbarSetter {
   private ImageView scanImage;
 
   public ViewScanFragment() {
@@ -31,8 +32,8 @@ public class ViewScanFragment extends Fragment {
    */
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    inflater.inflate(R.menu.toolbar_save, menu);
     menu.findItem(R.id.save).setVisible(true);
+    menu.findItem(R.id.settings).setVisible(false);
     super.onCreateOptionsMenu(menu, inflater);
   }
 
@@ -77,5 +78,14 @@ public class ViewScanFragment extends Fragment {
   private void initialiseUi(View v) {
     scanImage = v.findViewById(R.id.scanImage);
     scanImage.setImageResource(R.drawable.phase);
+  }
+
+  @Override
+  public void setToolbar(Menu menu) {
+    menu.findItem(R.id.settings).setVisible(false);
+    menu.findItem(R.id.save).setVisible(true);
+    menu.findItem(R.id.select).setVisible(false);
+    menu.findItem(R.id.share).setVisible(false);
+    menu.findItem(R.id.delete).setVisible(false);
   }
 }

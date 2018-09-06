@@ -11,26 +11,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.swinburne.irtsa.irtsa.R;
+import com.swinburne.irtsa.irtsa.ToolbarSetter;
 
 /**
  * Fragment with a button that begins a scan.
  */
-public class StartScanFragment extends Fragment {
+public class StartScanFragment extends Fragment implements ToolbarSetter {
   public StartScanFragment() {
     setHasOptionsMenu(true);
   }
 
-  /**
-   * Called when the toolbar (menu) is created.
-   *
-   * @param menu Menu View to contain the inflated menu.
-   * @param inflater Inflates the menu resource into the Menu View
-   */
-  @Override
-  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    inflater.inflate(R.menu.toolbar_scan, menu);
-    super.onCreateOptionsMenu(menu, inflater);
-  }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,5 +60,14 @@ public class StartScanFragment extends Fragment {
     // Store the Fragment in the Fragment back-stack
     transaction.addToBackStack("StartScanFragment");
     transaction.replace(R.id.scanContainer, viewScanFragment, "ViewScanFragment").commit();
+  }
+
+  @Override
+  public void setToolbar(Menu menu) {
+    menu.findItem(R.id.settings).setVisible(true);
+    menu.findItem(R.id.save).setVisible(false);
+    menu.findItem(R.id.select).setVisible(false);
+    menu.findItem(R.id.share).setVisible(false);
+    menu.findItem(R.id.delete).setVisible(false);
   }
 }
