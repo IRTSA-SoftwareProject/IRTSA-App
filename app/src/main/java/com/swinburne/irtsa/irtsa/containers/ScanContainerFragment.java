@@ -33,7 +33,7 @@ public class ScanContainerFragment extends Fragment {
   public void onStart() {
     super.onStart();
     StartScanFragment startScanFragment = new StartScanFragment();
-    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
     transaction.replace(R.id.scanContainer, startScanFragment, "StartScanFragment").commit();
   }
 }

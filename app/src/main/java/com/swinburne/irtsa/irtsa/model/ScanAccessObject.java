@@ -19,7 +19,7 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
 
   public ScanAccessObject(Context context) {
     // Set the file path of the DB and creates if it does not exist.
-    super(context, context.getExternalFilesDir(null) + "/ScanDB.db", null, 1);
+    super(context, context.getExternalFilesDir(null) + "ScanDB.db", null, 1);
   }
 
   @Override

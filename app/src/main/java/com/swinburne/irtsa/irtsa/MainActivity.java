@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity {
   private ViewPager pager;
-  private PagerAdapter pagerAdapter;
+  private ViewPagerAdapter pagerAdapter;
   private TabLayout tabLayout;
 
   /**
@@ -36,6 +36,35 @@ public class MainActivity extends AppCompatActivity {
     pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
     pager.setAdapter(pagerAdapter);
     tabLayout.setupWithViewPager(pager);
+
+    // Listen for a tap on the tab bar or swipe on pager.
+    pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+      @Override
+      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+      }
+
+      @Override
+      public void onPageSelected(int position) {
+        // If the gallery fragment is navigated to, refresh the gallery.
+        if (position == 1) {
+          List<Fragment> childFragments = pagerAdapter.getNestedFragments(1);
+          for (Fragment fragment : childFragments) {
+            if (fragment.getTag() == "GalleryFragment") {
+              ((GalleryFragment)fragment).refreshGallery();
+            }
+          }
+        }
+      }
+
+      @Override
+      public void onPageScrollStateChanged(int state) {
+
+      }
+    });
+
+    tabLayout.getTabAt(0).setIcon(R.drawable.ic_scan);
+    tabLayout.getTabAt(1).setIcon(R.drawable.ic_gallery);
   }
 
   /**
@@ -45,21 +74,13 @@ public class MainActivity extends AppCompatActivity {
    */
   @Override
   public void onBackPressed() {
-    FragmentManager fm = getSupportFragmentManager();
+    List<Fragment> currentChildFragments = pagerAdapter.getNestedFragments(pager.getCurrentItem());
 
-    boolean backStackPopped = false;
-
-    if (pager.getCurrentItem() == 0) {
-      for (Fragment fragment : fm.getFragments()) {
-        if (fragment.getTag() == "ViewScanFragment") {
-          fm.popBackStackImmediate();
-          backStackPopped = true;
-        }
-      }
-    }
-
-    if (!backStackPopped) {
+    if (currentChildFragments.size() == 1) {
       finish();
+    } else {
+      pagerAdapter.getItem(pager.getCurrentItem())
+              .getChildFragmentManager().popBackStackImmediate();
     }
   }
 }

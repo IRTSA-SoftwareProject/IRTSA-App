@@ -33,7 +33,7 @@ public class GalleryContainerFragment extends Fragment {
   public void onStart() {
     super.onStart();
     GalleryFragment galleryFragment = new GalleryFragment();
-    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
     transaction.replace(R.id.galleryContainer, galleryFragment, "GalleryFragment").commit();
   }
