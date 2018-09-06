@@ -7,6 +7,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import com.swinburne.irtsa.irtsa.gallery.GalleryFragment;
 
@@ -20,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
   private ViewPager pager;
   private ViewPagerAdapter pagerAdapter;
   private TabLayout tabLayout;
+  private Menu menu;
 
   /**
    * When the activity is created initialise the tabs and view pager.
@@ -46,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
       @Override
       public void onPageSelected(int position) {
+        Fragment selectedFragment = pagerAdapter.getCurrentlyVisibleFragment(position);
+          ((ToolbarSetter)selectedFragment).setToolbar(menu);
+
         // If the gallery fragment is navigated to, refresh the gallery.
         if (position == 1) {
           List<Fragment> childFragments = pagerAdapter.getNestedFragments(1);
@@ -65,6 +72,26 @@ public class MainActivity extends AppCompatActivity {
 
     tabLayout.getTabAt(0).setIcon(R.drawable.ic_scan);
     tabLayout.getTabAt(1).setIcon(R.drawable.ic_gallery);
+  }
+
+  /**
+   * Called when the toolbar (menu) is created and set visible icons
+   * for the default screen that the app launches on.
+   *
+   * @param menu Menu View to contain the inflated menu.
+   * @return true that the menu is created
+   */
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.toolbar, menu);
+    menu.findItem(R.id.settings).setVisible(true);
+    menu.findItem(R.id.save).setVisible(false);
+    menu.findItem(R.id.select).setVisible(false);
+    menu.findItem(R.id.share).setVisible(false);
+    menu.findItem(R.id.delete).setVisible(false);
+    this.menu = menu;
+    return true;
   }
 
   /**
