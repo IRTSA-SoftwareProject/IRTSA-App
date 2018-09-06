@@ -66,7 +66,7 @@
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="2b2823" />
-                                      <entry key="foregroundImage" value="C:\Users\james\Google Drive\BA-CS\Sem6\SWE40002-Software Engineering Project B\IRTSA-SoftwareProject\UI Drafts\IRTSA_App_Icon1.png" />
+                                      <entry key="foregroundImage" value="C:\Users\james\Documents\GitHub\IRTSA-App\app\src\main\res\drawable\icon\IRTSA_App_Icon.png" />
                                       <entry key="legacyIconShape" value="CIRCLE" />
                                     </map>
                                   </option>
