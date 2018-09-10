@@ -46,7 +46,7 @@ public class ViewScanFragment extends Fragment implements ToolbarSetter {
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
-    //Call the openSaveDialog when the save icon is selected
+    // Call the openSaveDialog when the save icon is selected
     if (id == R.id.save) {
       openSaveDialog();
     }
@@ -81,7 +81,7 @@ public class ViewScanFragment extends Fragment implements ToolbarSetter {
   }
 
   /**
-   * Change the icons that are viewable on the top menu toolbar
+   * Change the icons that are viewable on the top menu toolbar.
    *
    * @param menu the menu at the top of the application
    */

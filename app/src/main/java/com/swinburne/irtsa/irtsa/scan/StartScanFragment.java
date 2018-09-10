@@ -63,7 +63,7 @@ public class StartScanFragment extends Fragment implements ToolbarSetter {
   }
 
   /**
-   * Change the icons that are viewable on the top menu toolbar
+   * Change the icons that are viewable on the top menu toolbar.
    *
    * @param menu the menu at the top of the application
    */

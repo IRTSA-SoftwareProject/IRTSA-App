@@ -7,7 +7,7 @@
         android:id="@+id/settings"
         android:icon="@android:drawable/ic_menu_manage"
         android:title="Settings"
-        app:showAsAction="always" />
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/save"
