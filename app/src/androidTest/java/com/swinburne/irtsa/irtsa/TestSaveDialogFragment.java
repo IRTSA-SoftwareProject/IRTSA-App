@@ -111,6 +111,8 @@ public class TestSaveDialogFragment {
     onView(withId(R.id.scanImage)).check(doesNotExist());
     onView(withText("CANCEL")).check(matches(isDisplayed()));
 
+    // Press back twice to close the keyboard.
+    pressBack();
     pressBack();
 
     onView(withText("CANCEL")).check(doesNotExist());
