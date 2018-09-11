@@ -1,5 +1,6 @@
 package com.swinburne.irtsa.irtsa.gallery;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -35,7 +36,6 @@ public class GalleryFragment extends Fragment implements ToolbarSetter {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-
     View v = inflater.inflate(R.layout.fragment_gallery, container, false);
 
     initialiseUi(v);
@@ -58,7 +58,13 @@ public class GalleryFragment extends Fragment implements ToolbarSetter {
         System.out.println("Scan Name: " + selectedScan.name);
         System.out.println("Scan Description: " + selectedScan.description);
 
-        // Navigate to the GalleryDetail fragment here and package the 
+        // Scan objects now implement Parcelable, making them easy
+        // to pass to fragments as shown below.
+
+        //  Bundle bundle = new Bundle();
+        //  bundle.putParcelable("Scan", selectedScan);
+        //  Fragment Fragment = new Fragment();
+        //  fragment.setArguments(bundle);
       }
     };
 
@@ -67,7 +73,7 @@ public class GalleryFragment extends Fragment implements ToolbarSetter {
   }
 
   /**
-   * Change the icons that are viewable on the top menu toolbar
+   * Change the icons that are viewable on the top menu toolbar.
    *
    * @param menu the menu at the top of the application
    */

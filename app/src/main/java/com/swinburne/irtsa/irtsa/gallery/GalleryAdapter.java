@@ -108,9 +108,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   /**
    * Exposes gallery item to its observers.
    *
-   * @return
+   * @return An Observable that emits Scan objects.
    */
-  public Observable<Scan> getGalleryClick(){
+  public Observable<Scan> getGalleryClick() {
     return onClickGalleryItem;
   }
 }
