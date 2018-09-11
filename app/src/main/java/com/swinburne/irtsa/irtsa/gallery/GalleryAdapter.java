@@ -12,6 +12,8 @@ import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.model.Scan;
 import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 import com.swinburne.irtsa.irtsa.model.ScanInterface;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 import java.util.List;
 
@@ -25,6 +27,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   private TextView thumbTitle;
   private ScanInterface scanAccessObject;
 
+  // Used to emit Scan objects to currently subscribed Observers when a gallery item is selected.
+  private final PublishSubject<Scan> onClickGalleryItem = PublishSubject.create();
+
   /**
    * Retrieve all scans from the database to initialise scans member variable.
    *
@@ -35,6 +40,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     scans = scanAccessObject.getAllScans();
   }
 
+  /**
+   * Update the list of scans with any recently added scans.
+   */
   public void refreshScans() {
     scans = scanAccessObject.getAllScans();
     notifyDataSetChanged();
@@ -76,16 +84,33 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   /**
    * Sets the thumbnail and text of a Gallery Item.
    * The position of the ViewHolder is used to index the scans List and retrieve Scan information.
-   * When this method is called, thumbImage and thumbTitle are already set to reference the
-   * Text and Image View's contained in the ViewHolder at the position passed in as a parameter.
    *
    * @param holder The ViewHolder being created.
    * @param position The position of the ViewHolder in relation to the others.
    */
   @Override
-  public void onBindViewHolder(ViewHolder holder, int position) {
+  public void onBindViewHolder(ViewHolder holder, final int position) {
     // Add image and text into each view.
     thumbImage.setImageBitmap(scans.get(position).image);
     thumbTitle.setText(scans.get(position).name);
+
+    // Listen for a click on the gallery item.
+    holder.itemView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        // Notify subscribers that a gallery item was selected.
+        onClickGalleryItem.onNext(scans.get(position));
+      }
+    });
+
+  }
+
+  /**
+   * Exposes gallery item to its observers.
+   *
+   * @return
+   */
+  public Observable<Scan> getGalleryClick(){
+    return onClickGalleryItem;
   }
 }

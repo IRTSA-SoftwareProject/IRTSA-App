@@ -10,8 +10,11 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Toast;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.ToolbarSetter;
+import com.swinburne.irtsa.irtsa.model.Scan;
+import io.reactivex.functions.Consumer;
 
 /**
  * Fragment that displays the saved scan gallery.
@@ -46,6 +49,21 @@ public class GalleryFragment extends Fragment implements ToolbarSetter {
     recyclerView = v.findViewById(R.id.recyclerView);
     recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
     recyclerView.setAdapter(adapter);
+
+    // Consumes the event emitted from the adapter when a gallery item is selected.
+    Consumer<Scan> galleryItemSelectedConsumer = new Consumer<Scan>() {
+      @Override
+      public void accept(Scan selectedScan) {
+        System.out.println("Scan " + selectedScan.id + " selected.");
+        System.out.println("Scan Name: " + selectedScan.name);
+        System.out.println("Scan Description: " + selectedScan.description);
+
+        // Navigate to the GalleryDetail fragment here and package the 
+      }
+    };
+
+    // Register the consumer as a gallery item subscriber
+    adapter.getGalleryClick().subscribe(galleryItemSelectedConsumer);
   }
 
   /**
