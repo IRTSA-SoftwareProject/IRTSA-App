@@ -108,7 +108,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     for (int i = 0; i < containerChildFm.getBackStackEntryCount(); i++) {
       String name = containerChildFm.getBackStackEntryAt(i).getName();
       nestedFragments.add(containerChildFm.findFragmentByTag(name));
-      System.out.println("test");
     }
 
     return nestedFragments;

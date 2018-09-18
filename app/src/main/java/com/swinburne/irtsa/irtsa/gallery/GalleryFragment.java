@@ -1,20 +1,19 @@
 package com.swinburne.irtsa.irtsa.gallery;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.Toast;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.ToolbarSetter;
 import com.swinburne.irtsa.irtsa.model.Scan;
+
 import io.reactivex.functions.Consumer;
 
 /**
@@ -24,13 +23,12 @@ public class GalleryFragment extends Fragment implements ToolbarSetter {
   private RecyclerView recyclerView;
   private GalleryAdapter adapter;
 
-  public GalleryFragment() {
-    // Required empty public constructor.
-  }
+  public GalleryFragment() { setHasOptionsMenu(true); }
 
   public void refreshGallery() {
     adapter.refreshScans();
   }
+
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,20 +52,20 @@ public class GalleryFragment extends Fragment implements ToolbarSetter {
     Consumer<Scan> galleryItemSelectedConsumer = new Consumer<Scan>() {
       @Override
       public void accept(Scan selectedScan) {
-        System.out.println("Scan " + selectedScan.id + " selected.");
-        System.out.println("Scan Name: " + selectedScan.name);
-        System.out.println("Scan Description: " + selectedScan.description);
-
         // Scan objects now implement Parcelable, making them easy
         // to pass to fragments as shown below.
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("Scan", selectedScan);
 
-        //  Bundle bundle = new Bundle();
-        //  bundle.putParcelable("Scan", selectedScan);
-        //  Fragment Fragment = new Fragment();
-        //  fragment.setArguments(bundle);
+        GalleryDetailFragment galleryDetailFragment = new GalleryDetailFragment();
+        galleryDetailFragment.setArguments(bundle);
+        FragmentTransaction transaction = getParentFragment()
+                .getChildFragmentManager().beginTransaction();
+        // Store the Fragment in the Fragment back-stack
+        transaction.addToBackStack("GalleryFragment");
+        transaction.replace(R.id.galleryContainer, galleryDetailFragment, "GalleryDetailFragment").commit();
       }
     };
-
     // Register the consumer as a gallery item subscriber
     adapter.getGalleryClick().subscribe(galleryItemSelectedConsumer);
   }
@@ -81,7 +79,7 @@ public class GalleryFragment extends Fragment implements ToolbarSetter {
   public void setToolbar(Menu menu) {
     menu.findItem(R.id.settings).setVisible(false);
     menu.findItem(R.id.save).setVisible(false);
-    menu.findItem(R.id.select).setVisible(true);
+    menu.findItem(R.id.select).setVisible(false);
     menu.findItem(R.id.share).setVisible(true);
     menu.findItem(R.id.delete).setVisible(true);
   }

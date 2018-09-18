@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.ToolbarSetter;
+import com.swinburne.irtsa.irtsa.ViewPagerAdapter;
 
 /**
  * Fragment that displays the details of a completed scan.
@@ -28,13 +29,15 @@ public class ViewScanFragment extends Fragment implements ToolbarSetter {
    * top menu toolbar.
    *
    * @param menu Menu View to contain the inflated menu.
-   * @param inflater Inflates the menu resource into the Menu View
+//   * @param inflater Inflates the menu resource into the Menu View
    */
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    menu.findItem(R.id.save).setVisible(true);
-    menu.findItem(R.id.settings).setVisible(false);
-    super.onCreateOptionsMenu(menu, inflater);
+      menu.findItem(R.id.save).setVisible(true);
+      menu.findItem(R.id.settings).setVisible(false);
+      menu.findItem(R.id.share).setVisible(false);
+      menu.findItem(R.id.delete).setVisible(false);
+      menu.findItem(R.id.select).setVisible(false);
   }
 
   /**

@@ -33,8 +33,7 @@ public class StartScanFragment extends Fragment implements ToolbarSetter {
     return rootView;
   }
 
-  /**
-   * Initialise the Button and set an OnClickListener.
+  /**   * Initialise the Button and set an OnClickListener.
    *
    * @param rootView The StartScanFragment's top level View
    */
