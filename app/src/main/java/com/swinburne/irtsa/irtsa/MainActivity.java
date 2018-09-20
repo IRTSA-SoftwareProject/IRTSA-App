@@ -11,9 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import com.swinburne.irtsa.irtsa.gallery.GalleryFragment;
-
-import java.util.List;
+import com.swinburne.irtsa.irtsa.server.Server;
 
 /**
  * The entry point of the application. This activity is always present when
@@ -72,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
 
     tabLayout.getTabAt(0).setIcon(R.drawable.ic_scan);
     tabLayout.getTabAt(1).setIcon(R.drawable.ic_gallery);
+
+    // Start attempting to connect to the server
+    Server.connect();
   }
 
   /**
