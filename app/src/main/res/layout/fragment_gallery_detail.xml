@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="8dp"
     tools:context=".gallery.GalleryDetailFragment">
 
     <ImageView
         android:id="@+id/galleryDetailImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="@+id/galleryDetailName" />
+        app:layout_constraintBottom_toTopOf="@+id/galleryDetailName"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/galleryDetailName"
@@ -18,9 +21,9 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/galleryDetailDescription"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/galleryDetailDescription" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/galleryDetailDescription"
