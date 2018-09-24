@@ -5,7 +5,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.swinburne.irtsa.irtsa"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -21,7 +21,11 @@ android {
     configurations.all {
         resolutionStrategy.force 'com.android.support:support-annotations:23.1.0'
     }
-
+    buildToolsVersion '27.0.3'
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -35,5 +39,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.1'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
-    implementation "io.reactivex.rxjava2:rxjava:2.2.2"
+    implementation 'com.squareup.okhttp3:okhttp:3.6.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
 }
