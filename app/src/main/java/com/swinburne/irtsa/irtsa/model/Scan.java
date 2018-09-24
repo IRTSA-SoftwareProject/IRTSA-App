@@ -29,6 +29,7 @@ public class Scan implements Parcelable {
     this.setImage(in.createByteArray());
     this.description = in.readString();
     this.name = in.readString();
+    this.createdAt = new Date(in.readLong());
   }
 
   private byte[] getImage() {
@@ -66,6 +67,7 @@ public class Scan implements Parcelable {
     parcel.writeByteArray(this.getImage());
     parcel.writeString(this.description);
     parcel.writeString(this.name);
+    parcel.writeLong(this.createdAt.getTime());
   }
 
 }
