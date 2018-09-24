@@ -6,6 +6,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Scan model object to represent a saved scan.
@@ -17,6 +20,7 @@ public class Scan implements Parcelable {
   public Bitmap image;
   public String description;
   public String name;
+  public Date createdAt;
 
   public Scan(){}
 
@@ -31,6 +35,10 @@ public class Scan implements Parcelable {
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
     image.compress(Bitmap.CompressFormat.PNG, 100, stream);
     return stream.toByteArray();
+  }
+
+  static DateFormat getDateFormat() {
+    return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   }
 
   private void setImage(byte[] image) {

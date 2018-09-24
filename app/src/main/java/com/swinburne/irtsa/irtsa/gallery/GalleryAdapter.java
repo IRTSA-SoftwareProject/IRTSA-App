@@ -15,6 +15,8 @@ import com.swinburne.irtsa.irtsa.model.ScanInterface;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -38,14 +40,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   public GalleryAdapter(Context context) {
     scanAccessObject = new ScanAccessObject(context);
     scans = scanAccessObject.getAllScans();
-  }
-
-  /**
-   * Update the list of scans with any recently added scans.
-   */
-  public void refreshScans() {
-    scans = scanAccessObject.getAllScans();
-    notifyDataSetChanged();
+    Collections.sort(scans, new SortByCreatedAt());
   }
 
   /**
@@ -123,5 +118,18 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
    */
   public Observable<Scan> getGalleryClick() {
     return onClickGalleryItem;
+  }
+
+  /**
+   * Comparator to sort scans by their created at date.
+   */
+  private class SortByCreatedAt implements Comparator<Scan> {
+    @Override
+    public int compare(Scan scan, Scan t1) {
+      if (scan.createdAt == null || t1.createdAt == null) {
+        return 0;
+      }
+      return scan.createdAt.compareTo(t1.createdAt);
+    }
   }
 }

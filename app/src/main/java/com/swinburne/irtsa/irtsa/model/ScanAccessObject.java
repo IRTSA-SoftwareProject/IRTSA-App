@@ -7,9 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,6 +58,16 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
       scan.name = resultCursor.getString(resultCursor.getColumnIndex(COLUMN_NAME));
       scan.description = resultCursor.getString(resultCursor.getColumnIndex(COLUMN_DESCRIPTION));
 
+      try {
+        scan.createdAt = Scan.getDateFormat().parse(
+                resultCursor.getString(resultCursor.getColumnIndex(COLUMN_CREATED_AT)));
+      } catch (ParseException e) {
+        Log.e("ScanAccessObject",
+                "(" + scan.id + ", " + scan.name + ") Unable to parse created at date: "
+                        + e.getMessage());
+      }
+
+
       byte[] image = resultCursor.getBlob(resultCursor.getColumnIndex(COLUMN_IMAGE));
       scan.image = BitmapFactory.decodeByteArray(image, 0, image.length);
 
@@ -75,6 +89,7 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
     data.put(COLUMN_NAME, scan.name);
     data.put(COLUMN_DESCRIPTION, scan.description);
     data.put(COLUMN_IMAGE, imageBlob);
+    data.put(COLUMN_CREATED_AT, Scan.getDateFormat().format(new Date()));
 
     SQLiteDatabase db = this.getWritableDatabase();
     long rowInserted = db.insert(TABLE_SCAN, null, data);

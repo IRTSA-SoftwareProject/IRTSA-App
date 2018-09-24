@@ -13,14 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.swinburne.irtsa.irtsa.R;
-import com.swinburne.irtsa.irtsa.ToolbarSetter;
 import com.swinburne.irtsa.irtsa.model.Scan;
 import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.reactivex.functions.Consumer;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Fragment that displays the saved scan gallery.
@@ -100,7 +100,13 @@ public class GalleryFragment extends Fragment {
     @Override
     protected Boolean doInBackground(Object[] objects) {
       ScanAccessObject scanAccessObject = new ScanAccessObject(getContext());
-      scans =  scanAccessObject.getAllScans();
+      scans = scanAccessObject.getAllScans();
+      Collections.sort(scans, (scan, scanToCompare) -> {
+        if (scan.createdAt == null || scanToCompare.createdAt == null) {
+          return 0;
+        }
+        return scan.createdAt.compareTo(scanToCompare.createdAt);
+      });
       return true;
     }
 
