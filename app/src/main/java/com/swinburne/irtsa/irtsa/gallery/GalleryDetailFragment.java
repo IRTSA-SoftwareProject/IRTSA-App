@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.model.Scan;
 
+import java.util.List;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -52,6 +54,5 @@ public class GalleryDetailFragment extends Fragment {
     name.setText("Name: " + scan.name);
     description = v.findViewById(R.id.galleryDetailDescription);
     description.setText("Description: " + scan.description);
-
   }
 }
