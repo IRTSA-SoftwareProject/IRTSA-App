@@ -5,7 +5,11 @@ import android.util.Log;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
-import okhttp3.*;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 
 class Connection extends WebSocketListener {
   public enum Status {
@@ -26,7 +30,8 @@ class Connection extends WebSocketListener {
   private WebSocket socket;
 
   private PublishSubject<String> messagesSubject = PublishSubject.create();
-  private BehaviorSubject<Status> statusSubject = BehaviorSubject.createDefault(Status.NOT_CONNECTED);
+  private BehaviorSubject<Status> statusSubject =
+          BehaviorSubject.createDefault(Status.NOT_CONNECTED);
 
   public Observable<String> messages = messagesSubject;
   public Observable<Status> status = statusSubject;
@@ -54,7 +59,9 @@ class Connection extends WebSocketListener {
     if (getStatus() == Status.CONNECTED && socket != null) {
       socket.send(message);
     } else {
-      Log.i("CONNECTION", String.format("Skipped sending message because connection was not open (%s)", message));
+      Log.i("CONNECTION",
+              String.format("Skipped sending message because connection was not open (%s)",
+                      message));
     }
   }
 
