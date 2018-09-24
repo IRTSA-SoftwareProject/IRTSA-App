@@ -49,6 +49,17 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   }
 
   /**
+   * Update the scan data and notify the adapter that the data has changed.
+   * This triggers the gallery to redraw.
+   *
+   * @param scans New scan data to set.
+   */
+  public void setScanData(List<Scan> scans) {
+    this.scans = scans;
+    notifyDataSetChanged();
+  }
+
+  /**
    * Simple ViewHolder object that initialises thumbImage and thumbTitle to references.
    * of the ViewHolder's ImageView and TextView
    */
