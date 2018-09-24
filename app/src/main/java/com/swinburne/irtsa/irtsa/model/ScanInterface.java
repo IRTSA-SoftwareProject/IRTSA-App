@@ -11,13 +11,15 @@ public interface ScanInterface {
   String COLUMN_DESCRIPTION = "Description";
   String COLUMN_IMAGE = "Image";
   String COLUMN_ID = "Id"; // Unique Identifier
+  String COLUMN_CREATED_AT = "Created_At";
 
   String CREATE_SCAN_TABLE = "CREATE TABLE " + TABLE_SCAN
       + "("
       + "Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
       + "Name VARCHAR(255) NOT NULL,"
       + "Description VARCHAR(255) NOT NULL,"
-      + "Image varbinary(1000) NOT NULL"
+      + "Image varbinary(1000) NOT NULL,"
+      + "Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL"
       + ")";
 
   /**
