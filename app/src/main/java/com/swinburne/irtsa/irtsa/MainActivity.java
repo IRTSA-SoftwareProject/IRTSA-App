@@ -3,15 +3,13 @@ package com.swinburne.irtsa.irtsa;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 
 import com.swinburne.irtsa.irtsa.gallery.GalleryFragment;
+import com.swinburne.irtsa.irtsa.server.Server;
 
 import java.util.List;
 
@@ -70,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
     tabLayout.getTabAt(0).setIcon(R.drawable.ic_scan);
     tabLayout.getTabAt(1).setIcon(R.drawable.ic_gallery);
+
+    // Start attempting to connect to the server
+    Server.connect();
   }
 
   /**
