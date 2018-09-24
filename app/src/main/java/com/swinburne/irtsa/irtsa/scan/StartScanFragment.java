@@ -16,7 +16,7 @@ import com.swinburne.irtsa.irtsa.ToolbarSetter;
 /**
  * Fragment with a button that begins a scan.
  */
-public class StartScanFragment extends Fragment implements ToolbarSetter {
+public class StartScanFragment extends Fragment {
   public StartScanFragment() {
     setHasOptionsMenu(true);
   }
@@ -33,8 +33,7 @@ public class StartScanFragment extends Fragment implements ToolbarSetter {
     return rootView;
   }
 
-  /**
-   * Initialise the Button and set an OnClickListener.
+  /**   * Initialise the Button and set an OnClickListener.
    *
    * @param rootView The StartScanFragment's top level View
    */
@@ -62,17 +61,10 @@ public class StartScanFragment extends Fragment implements ToolbarSetter {
     transaction.replace(R.id.scanContainer, viewScanFragment, "ViewScanFragment").commit();
   }
 
-  /**
-   * Change the icons that are viewable on the top menu toolbar.
-   *
-   * @param menu the menu at the top of the application
-   */
   @Override
-  public void setToolbar(Menu menu) {
-    menu.findItem(R.id.settings).setVisible(true);
-    menu.findItem(R.id.save).setVisible(false);
-    menu.findItem(R.id.select).setVisible(false);
-    menu.findItem(R.id.share).setVisible(false);
-    menu.findItem(R.id.delete).setVisible(false);
+  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    super.onCreateOptionsMenu(menu, inflater);
+
+    inflater.inflate(R.menu.start_scan_toolbar, menu);
   }
 }

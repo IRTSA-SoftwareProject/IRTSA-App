@@ -12,11 +12,12 @@ import android.widget.ImageView;
 
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.ToolbarSetter;
+import com.swinburne.irtsa.irtsa.ViewPagerAdapter;
 
 /**
  * Fragment that displays the details of a completed scan.
  */
-public class ViewScanFragment extends Fragment implements ToolbarSetter {
+public class ViewScanFragment extends Fragment {
   private ImageView scanImage;
 
   public ViewScanFragment() {
@@ -32,9 +33,8 @@ public class ViewScanFragment extends Fragment implements ToolbarSetter {
    */
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    menu.findItem(R.id.save).setVisible(true);
-    menu.findItem(R.id.settings).setVisible(false);
     super.onCreateOptionsMenu(menu, inflater);
+    inflater.inflate(R.menu.view_scan_toolbar, menu);
   }
 
   /**
@@ -78,19 +78,5 @@ public class ViewScanFragment extends Fragment implements ToolbarSetter {
   private void initialiseUi(View v) {
     scanImage = v.findViewById(R.id.scanImage);
     scanImage.setImageResource(R.drawable.phase);
-  }
-
-  /**
-   * Change the icons that are viewable on the top menu toolbar.
-   *
-   * @param menu the menu at the top of the application
-   */
-  @Override
-  public void setToolbar(Menu menu) {
-    menu.findItem(R.id.settings).setVisible(false);
-    menu.findItem(R.id.save).setVisible(true);
-    menu.findItem(R.id.select).setVisible(false);
-    menu.findItem(R.id.share).setVisible(false);
-    menu.findItem(R.id.delete).setVisible(false);
   }
 }
