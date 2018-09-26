@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#b53314</color>
-    <color name="colorPrimaryDark">#cc3917</color>
-    <color name="colorAccent">#BCBAC5</color>
-    <color name="colorTextPrimary">#BCBAC5</color>
+    <color name="colorPrimary">#cc3917</color>
+    <color name="colorPrimaryDark">#b53314</color>
+    <color name="colorAccent">#ff4081</color>
+    <!--<color name="colorAccent">#BCBAC5</color>-->
+    <color name="colorTextPrimary">#2B2823</color>
+   <!-- <color name="colorTextPrimary">#BCBAC5</color>-->
     <color name="colorTextPrimaryInverse">#f6f9ff</color>
-    <color name="colorTextSecondary">#a9a7b1</color>
+   <!-- <color name="colorTextPrimaryInverse">#f6f9ff</color>-->
+    <color name="colorTextSecondary">#2B2823</color>
+   <!-- <color name="colorTextSecondary">#a9a7b1</color>-->
     <color name="colorTextSecondaryInverse">#dee3e6</color>
-    <color name="colorBackground">#2B2823</color>
+    <!--<color name="colorTextSecondaryInverse">#dee3e6</color>-->
+    <color name="colorBackground">#f6f9ff</color>
+    <!--<color name="colorBackground">#2B2823</color>-->
 
+<!--
     <color name="colorLightPrimary">#cc3917</color>
     <color name="colorLightPrimaryDark">#b53314</color>
     <color name="colorLightAccent">#BCBAC5</color>
@@ -17,4 +24,5 @@
     <color name="colorLightTextSecondary">#a9a7b1</color>
     <color name="colorLightTextSecondaryInverse">#dee3e6</color>
     <color name="colorLightBackground">#2B2823</color>
+   -->
 </resources>

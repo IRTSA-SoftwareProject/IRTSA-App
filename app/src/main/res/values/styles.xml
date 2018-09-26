@@ -6,8 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/colorPrimary</item>
-        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
         <item name="android:windowBackground">@color/colorBackground</item>
         <item name="android:textColorPrimaryInverse">@color/colorTextPrimaryInverse</item>
         <item name="android:textColorPrimary">@color/colorTextPrimary</item>
@@ -15,6 +15,7 @@
         <item name="android:textColorSecondaryInverse">@color/colorTextSecondaryInverse</item>
         <item name="android:colorButtonNormal">@color/colorPrimary</item>
     </style>
+    <!--
     <style name="AppThemeLight" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorLightPrimary</item>
         <item name="colorPrimaryDark">@color/colorLightPrimaryDark</item>
@@ -28,7 +29,7 @@
         <item name="android:textColorSecondaryInverse">@color/colorLightTextSecondaryInverse</item>
         <item name="android:colorButtonNormal">@color/colorLightPrimaryDark</item>
     </style>
-
+-->
 
 
 </resources>
