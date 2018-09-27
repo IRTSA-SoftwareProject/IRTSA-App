@@ -12,7 +12,11 @@ import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.model.Scan;
 import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 import com.swinburne.irtsa.irtsa.model.ScanInterface;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -25,6 +29,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   private TextView thumbTitle;
   private ScanInterface scanAccessObject;
 
+  // Used to emit Scan objects to currently subscribed Observers when a gallery item is selected.
+  private final PublishSubject<Scan> onClickGalleryItem = PublishSubject.create();
+
   /**
    * Retrieve all scans from the database to initialise scans member variable.
    *
@@ -33,10 +40,17 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   public GalleryAdapter(Context context) {
     scanAccessObject = new ScanAccessObject(context);
     scans = scanAccessObject.getAllScans();
+    Collections.sort(scans, new SortByCreatedAt());
   }
 
-  public void refreshScans() {
-    scans = scanAccessObject.getAllScans();
+  /**
+   * Update the scan data and notify the adapter that the data has changed.
+   * This triggers the gallery to redraw.
+   *
+   * @param scans New scan data to set.
+   */
+  public void setScanData(List<Scan> scans) {
+    this.scans = scans;
     notifyDataSetChanged();
   }
 
@@ -76,16 +90,46 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   /**
    * Sets the thumbnail and text of a Gallery Item.
    * The position of the ViewHolder is used to index the scans List and retrieve Scan information.
-   * When this method is called, thumbImage and thumbTitle are already set to reference the
-   * Text and Image View's contained in the ViewHolder at the position passed in as a parameter.
    *
    * @param holder The ViewHolder being created.
    * @param position The position of the ViewHolder in relation to the others.
    */
   @Override
-  public void onBindViewHolder(ViewHolder holder, int position) {
+  public void onBindViewHolder(ViewHolder holder, final int position) {
     // Add image and text into each view.
     thumbImage.setImageBitmap(scans.get(position).image);
     thumbTitle.setText(scans.get(position).name);
+
+    // Listen for a click on the gallery item.
+    holder.itemView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        // Notify subscribers that a gallery item was selected.
+        onClickGalleryItem.onNext(scans.get(position));
+      }
+    });
+
+  }
+
+  /**
+   * Exposes gallery item to its observers.
+   *
+   * @return An Observable that emits Scan objects.
+   */
+  public Observable<Scan> getGalleryClick() {
+    return onClickGalleryItem;
+  }
+
+  /**
+   * Comparator to sort scans by their created at date.
+   */
+  private class SortByCreatedAt implements Comparator<Scan> {
+    @Override
+    public int compare(Scan scan, Scan t1) {
+      if (scan.createdAt == null || t1.createdAt == null) {
+        return 0;
+      }
+      return scan.createdAt.compareTo(t1.createdAt);
+    }
   }
 }

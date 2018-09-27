@@ -3,12 +3,13 @@ package com.swinburne.irtsa.irtsa;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import com.swinburne.irtsa.irtsa.gallery.GalleryFragment;
+import com.swinburne.irtsa.irtsa.server.Server;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
    */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    setTheme(R.style.AppTheme);
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     tabLayout = findViewById(R.id.tabLayout);
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
     pager.setAdapter(pagerAdapter);
     tabLayout.setupWithViewPager(pager);
+    UpdateToolbarListener toolbarListener = new UpdateToolbarListener();
+    pager.addOnPageChangeListener(toolbarListener);
 
     // Listen for a tap on the tab bar or swipe on pager.
     pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -65,6 +69,26 @@ public class MainActivity extends AppCompatActivity {
 
     tabLayout.getTabAt(0).setIcon(R.drawable.ic_scan);
     tabLayout.getTabAt(1).setIcon(R.drawable.ic_gallery);
+
+    // Start attempting to connect to the server
+    Server.connect();
+  }
+
+  /**
+   * Iterate over each of the nested fragments in the viewpager container fragments.
+   * Invalidate the options menu for each fragment, unless the fragment is the currently visible
+   * fragment.
+   *
+   * @param position position of the currently selected view pager tab.
+   */
+  private void invalidateFragmentMenus(int position) {
+    Fragment visibleFragment = pagerAdapter.getCurrentlyVisibleFragment(position);
+    for (int i = 0; i < pagerAdapter.getCount(); i++) {
+      for (Fragment fragment : pagerAdapter.getNestedFragments(i)) {
+        fragment.setHasOptionsMenu(fragment == visibleFragment);
+      }
+    }
+    invalidateOptionsMenu();
   }
 
   /**
@@ -81,6 +105,30 @@ public class MainActivity extends AppCompatActivity {
     } else {
       pagerAdapter.getItem(pager.getCurrentItem())
               .getChildFragmentManager().popBackStackImmediate();
+    }
+
+    // Update the toolbar.
+    invalidateFragmentMenus(pager.getCurrentItem());
+  }
+
+  /**
+   * View pager page change listener that invalidates all non visible fragment toolbar menus
+   * when the view pager is swiped.
+   */
+  private class UpdateToolbarListener implements ViewPager.OnPageChangeListener {
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+      invalidateFragmentMenus(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
   }
 }

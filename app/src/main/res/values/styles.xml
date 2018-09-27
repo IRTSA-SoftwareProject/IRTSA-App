@@ -14,6 +14,11 @@
         <item name="android:textColorSecondaryInverse">@color/coloroffwhite</item>
         <item name="android:colorButtonNormal">@color/colorlightred</item>
     </style>
+    
+    <style name="LaunchTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/launchscreen</item>
+    </style>
+
     <style name="AppThemeLight" parent="Theme.AppCompat.Light.DarkActionBar">
         <!--Default dark theme-->
         <item name="colorPrimary">@color/colordarkgrey</item>
@@ -28,6 +33,5 @@
         <item name="android:textColorSecondaryInverse">@color/colorwhite</item>
         <item name="android:colorButtonNormal">@color/colorgrey</item>
     </style>
-
 
 </resources>

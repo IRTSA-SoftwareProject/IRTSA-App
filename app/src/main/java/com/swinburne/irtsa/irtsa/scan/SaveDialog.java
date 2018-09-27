@@ -38,10 +38,6 @@ public class SaveDialog extends AppCompatDialogFragment {
     //Define where to get the layout from for the dialogs view
     View view = inflater.inflate(R.layout.dialog_save, null);
 
-    Bundle passedData = getArguments();
-    // final byte[] imageToSave = passedData.getByteArray("passedImage");
-
-
     name = view.findViewById(R.id.fName);
     description = view.findViewById(R.id.fDescription);
 
@@ -61,19 +57,11 @@ public class SaveDialog extends AppCompatDialogFragment {
             Scan testScan = new Scan();
             testScan.name = name.getText().toString();
             testScan.description = description.getText().toString();
-            //testScan.image
-            //   = BitmapFactory.decodeByteArray(R.drawable.phase,0, R.drawable.phase.length);
             testScan.image
                 = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.phase);
 
             ScanInterface scanAccessObject = new ScanAccessObject(getContext());
             scanAccessObject.insertScan(testScan);
-
-            List<Scan> allScans = scanAccessObject.getAllScans();
-            for (Scan scan : allScans) {
-              System.out.println(scan.name);
-            }
-            System.out.println();
           }
         });
     //Build the dialog in order for it to popup

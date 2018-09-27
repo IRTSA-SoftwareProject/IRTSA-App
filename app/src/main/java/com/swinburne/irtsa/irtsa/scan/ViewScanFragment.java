@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.swinburne.irtsa.irtsa.R;
+import com.swinburne.irtsa.irtsa.ToolbarSetter;
+import com.swinburne.irtsa.irtsa.ViewPagerAdapter;
 
 /**
  * Fragment that displays the details of a completed scan.
@@ -23,17 +25,16 @@ public class ViewScanFragment extends Fragment {
   }
 
   /**
-   * When the options menu (toolbar) is created, inflate the required Toolbar menu layout
-   * and set the save icon to visible.
+   * When the view scan fragment is opened the icons are changed in the
+   * top menu toolbar.
    *
    * @param menu Menu View to contain the inflated menu.
    * @param inflater Inflates the menu resource into the Menu View
    */
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    inflater.inflate(R.menu.toolbar_save, menu);
-    menu.findItem(R.id.save).setVisible(true);
     super.onCreateOptionsMenu(menu, inflater);
+    inflater.inflate(R.menu.view_scan_toolbar, menu);
   }
 
   /**
@@ -45,7 +46,7 @@ public class ViewScanFragment extends Fragment {
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
-    //Call the openSaveDialog when the save icon is selected
+    // Call the openSaveDialog when the save icon is selected
     if (id == R.id.save) {
       openSaveDialog();
     }
