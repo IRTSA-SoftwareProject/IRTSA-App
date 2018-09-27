@@ -34,7 +34,7 @@ public class GalleryDeleteDialog extends AppCompatDialogFragment {
     View view = inflater.inflate(R.layout.dialog_gallery_delete, null);
     //set the characteristics of the dialog view
     builder.setView(view)
-        .setTitle("Confirm Delete of Current Scan?")
+        .setTitle("Confirm Delete of Scan")
         //Create the cancel button
         .setNegativeButton("No", new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialogInterface, int i) {
