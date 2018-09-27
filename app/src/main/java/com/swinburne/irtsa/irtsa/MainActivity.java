@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
    */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    setTheme(R.style.AppTheme);
+    setTheme(R.style.AppThemeLight);
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     tabLayout = findViewById(R.id.tabLayout);

@@ -3,15 +3,13 @@
 
     android:opacity="opaque">
 
-    <item android:drawable="@color/colorPrimaryDark"/>
+    <item android:drawable="@color/colordarkgrey"/>
 
     <item>
-
         <bitmap
-
             android:gravity="center"
-
-            android:src="@mipmap/ic_launcher_foreground"/>
+            android:src="@mipmap/ic_launcher_foreground"
+            />
 
     </item>
 

@@ -15,7 +15,7 @@
         <item name="android:colorButtonNormal">@color/colorlightred</item>
     </style>
     
-    <style name="LaunchTheme" parent="AppTheme">
+    <style name="LaunchTheme" parent="AppThemeLight">
         <item name="android:windowBackground">@drawable/launchscreen</item>
     </style>
 
