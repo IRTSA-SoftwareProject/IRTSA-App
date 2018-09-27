@@ -3,7 +3,7 @@
 
     android:opacity="opaque">
 
-    <item android:drawable="@color/colordarkgrey"/>
+    <item android:drawable="@color/colorDarkGrey"/>
 
     <item>
         <bitmap
