@@ -1,37 +1,22 @@
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppThemeDark" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colordarkred</item>
-        <item name="colorPrimaryDark">@color/colordarkred</item>
-        <item name="colorAccent">@color/colorlightred</item>
-        <item name="android:statusBarColor">@color/colordarkred</item>
-        <item name="android:navigationBarColor">@color/colordarkred</item>
-        <item name="android:windowBackground">@color/colorgrey</item>
-        <item name="android:textColorPrimaryInverse">@color/coloroffwhite</item>
-        <item name="android:textColorPrimary">@color/colordarkgrey</item>
-        <item name="android:textColorSecondary">@color/colordarkgrey</item>
-        <item name="android:textColorSecondaryInverse">@color/coloroffwhite</item>
-        <item name="android:colorButtonNormal">@color/colorlightred</item>
-    </style>
     
-    <style name="LaunchTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/launchscreen</item>
+    <style name="LaunchTheme" parent="AppThemeLight">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 
     <style name="AppThemeLight" parent="Theme.AppCompat.Light.DarkActionBar">
         <!--Default dark theme-->
-        <item name="colorPrimary">@color/colordarkgrey</item>
-        <item name="colorPrimaryDark">@color/colorgrey</item>
-        <item name="colorAccent">@color/colorlightred</item>
-        <item name="android:statusBarColor">@color/colordarkgrey</item>
-        <item name="android:navigationBarColor">@color/colordarkgrey</item>
-        <item name="android:windowBackground">@color/coloroffwhite</item>
-        <item name="android:textColorPrimaryInverse">@color/colorwhite</item>
-        <item name="android:textColorPrimary">@color/colordarkgrey</item>
-        <item name="android:textColorSecondary">@color/colordarkgrey</item>
-        <item name="android:textColorSecondaryInverse">@color/colorwhite</item>
-        <item name="android:colorButtonNormal">@color/colorgrey</item>
+        <item name="colorPrimary">@color/colorDarkGrey</item>
+        <item name="colorPrimaryDark">@color/colorGrey</item>
+        <item name="colorAccent">@color/colorLightRed</item>
+        <item name="android:statusBarColor">@color/colorDarkGrey</item>
+        <item name="android:navigationBarColor">@color/colorDarkGrey</item>
+        <item name="android:windowBackground">@color/colorOffWhite</item>
+        <item name="android:textColorPrimaryInverse">@color/colorWhite</item>
+        <item name="android:textColorPrimary">@color/colorDarkGrey</item>
+        <item name="android:textColorSecondary">@color/colorDarkGrey</item>
+        <item name="android:textColorSecondaryInverse">@color/colorWhite</item>
+        <item name="android:colorButtonNormal">@color/colorGrey</item>
     </style>
 
 </resources>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorwhite">#f6f9ff</color>
-    <color name="coloroffwhite">#dee3e6</color>
-    <color name="colorgrey">#a9a7b1</color>
-    <color name="colorlightred">#cc3917</color>
-    <color name="colordarkred">#b53314</color>
-    <color name="colordarkgrey">#2B2823</color>
+    <color name="colorWhite">#f6f9ff</color>
+    <color name="colorOffWhite">#dee3e6</color>
+    <color name="colorGrey">#a9a7b1</color>
+    <color name="colorLightRed">#cc3917</color>
+    <color name="colorDarkRed">#b53314</color>
+    <color name="colorDarkGrey">#2B2823</color>
 
 </resources>
