@@ -12,13 +12,6 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 class Connection extends WebSocketListener {
-  public enum Status {
-    NOT_CONNECTED,
-    CONNECTING,
-    CONNECTED,
-    CLOSED,
-  }
-
   private static final int POLL_INTERVAL = 5000;
   private static final int NORMAL_CLOSURE_STATUS = 1000;
 
