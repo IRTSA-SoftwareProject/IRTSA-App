@@ -57,11 +57,14 @@ public class StartScanFragment extends Fragment {
    */
   private void beginScan() {
     // Send a message to start the scan
-    Server.send(new Message("scan", new Object()));
+    Server.send(new Message("scan", new Object() {
+      public String scanName = "scan_001.png";
+    }));
     Server.messages.ofType("scan_progress").subscribe(message -> {
       Log.i("MESSAGE", "Message received");
-      Log.i("MESSAGE", "" + message.type);
-      Log.i("MESSAGE_JSON", message.toJson());
+      Log.i("MESSAGE_TYPE", message.type);
+      Log.i("MESSAGE_BODY", message.body.toString());
+      Log.i("MESSAGE_PERCENT", message.getBodyHash().get("percent").toString());
     });
 
     ViewScanFragment viewScanFragment = new ViewScanFragment();
