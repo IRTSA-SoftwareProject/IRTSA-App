@@ -1,6 +1,5 @@
 package com.swinburne.irtsa.irtsa.server;
 
-import android.util.Log;
 import io.reactivex.Observable;
 
 public final class Server {
@@ -9,7 +8,7 @@ public final class Server {
   private Connection connection = new Connection("ws://192.168.43.121:8765");
 
   public static Observable<Connection.Status> status = instance.connection.status;
-  public static Observable<Message> messages = new MessageObservable(instance.connection.messages);
+  public static MessageObservable messages = new MessageObservable(instance.connection.messages);
 
   public static void connect() {
     instance.connection.pollForConnection();
