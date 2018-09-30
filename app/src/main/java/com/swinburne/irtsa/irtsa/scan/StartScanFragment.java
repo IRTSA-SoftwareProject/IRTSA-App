@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.swinburne.irtsa.irtsa.R;
-import com.swinburne.irtsa.irtsa.ToolbarSetter;
 import com.swinburne.irtsa.irtsa.server.Message;
 import com.swinburne.irtsa.irtsa.server.Server;
+import com.swinburne.irtsa.irtsa.server.Status;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Fragment with a button that begins a scan.
@@ -42,12 +44,11 @@ public class StartScanFragment extends Fragment {
    */
   private void initialiseUi(View rootView) {
     Button startScanButton = rootView.findViewById(R.id.startScanButton);
-    startScanButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        beginScan();
-      }
-    });
+    startScanButton.setOnClickListener(a -> beginScan());
+
+    Server.status.observeOn(AndroidSchedulers.mainThread()).subscribe(connectionStatus ->
+      startScanButton.setEnabled(connectionStatus.compareTo(Status.CONNECTED) == 0));
+
   }
 
   /**

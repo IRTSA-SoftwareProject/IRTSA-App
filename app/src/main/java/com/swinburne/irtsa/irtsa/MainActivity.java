@@ -10,8 +10,13 @@ import android.view.MenuInflater;
 
 import com.swinburne.irtsa.irtsa.gallery.GalleryFragment;
 import com.swinburne.irtsa.irtsa.server.Server;
+import com.swinburne.irtsa.irtsa.server.Status;
 
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+
+import static com.swinburne.irtsa.irtsa.server.Status.CONNECTED;
 
 /**
  * The entry point of the application. This activity is always present when
@@ -40,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
     tabLayout.setupWithViewPager(pager);
     UpdateToolbarListener toolbarListener = new UpdateToolbarListener();
     pager.addOnPageChangeListener(toolbarListener);
+
+    Server.status.observeOn(AndroidSchedulers.mainThread()).subscribe(connectionStatus -> {
+      setTitle(connectionStatus.toString());
+    });
 
     // Listen for a tap on the tab bar or swipe on pager.
     pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
