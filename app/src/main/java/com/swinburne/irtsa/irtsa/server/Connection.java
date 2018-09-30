@@ -12,13 +12,6 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 class Connection extends WebSocketListener {
-  public enum Status {
-    NOT_CONNECTED,
-    CONNECTING,
-    CONNECTED,
-    CLOSED,
-  }
-
   private static final int POLL_INTERVAL = 5000;
   private static final int NORMAL_CLOSURE_STATUS = 1000;
 
@@ -57,6 +50,7 @@ class Connection extends WebSocketListener {
 
   public void send(String message) {
     if (getStatus() == Status.CONNECTED && socket != null) {
+      Log.i("CONNECTION", "Sending message " + message);
       socket.send(message);
     } else {
       Log.i("CONNECTION",
@@ -74,6 +68,7 @@ class Connection extends WebSocketListener {
 
   @Override
   public void onClosing(WebSocket socket, int code, String reason) {
+    Log.i("CONNECTION", "Connection closed normally");
     socket.close(NORMAL_CLOSURE_STATUS, null);
     statusSubject.onNext(Status.CLOSED);
   }
@@ -82,13 +77,17 @@ class Connection extends WebSocketListener {
   public void onFailure(WebSocket socket, Throwable t, Response response) {
     if (getStatus() == Status.CONNECTED) {
       Log.e("CONNECTION", "Connection failed", t);
+      statusSubject.onNext(Status.NOT_CONNECTED);
+      this.socket = null;
+
+      // Attempt to reconnect
+      this.pollForConnection();
     }
-    statusSubject.onNext(Status.NOT_CONNECTED);
-    this.socket = null;
   }
 
   @Override
   public void onMessage(WebSocket webSocket, String text) {
+    Log.i("CONNECTION", "Received message: " + text);
     messagesSubject.onNext(text);
   }
 

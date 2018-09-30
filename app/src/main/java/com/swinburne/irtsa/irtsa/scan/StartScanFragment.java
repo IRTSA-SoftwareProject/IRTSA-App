@@ -3,6 +3,7 @@ package com.swinburne.irtsa.irtsa.scan;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,12 +12,38 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.swinburne.irtsa.irtsa.R;
-import com.swinburne.irtsa.irtsa.ToolbarSetter;
+import com.swinburne.irtsa.irtsa.server.Message;
+import com.swinburne.irtsa.irtsa.server.Server;
 
 /**
  * Fragment with a button that begins a scan.
  */
 public class StartScanFragment extends Fragment {
+  private class StartScanMessage extends Message {
+    class Body {
+      String fileName;
+
+      Body(String fileName) {
+        this.fileName = fileName;
+      }
+    }
+
+    Body body;
+
+    StartScanMessage(String fileName) {
+      type = "scan";
+      body = new Body(fileName);
+    }
+  }
+
+  private class ScanProgressMessage extends Message {
+    class Body {
+      int percent;
+    }
+
+    Body body;
+  }
+
   public StartScanFragment() {
     setHasOptionsMenu(true);
   }
@@ -53,6 +80,16 @@ public class StartScanFragment extends Fragment {
    * the user presses the back button.
    */
   private void beginScan() {
+    // Send a message to start the scan
+    Server.send(new StartScanMessage("scan_001.png"));
+    Server.messages.castToType("scan_progress", ScanProgressMessage.class)
+        .takeUntil(Server.messages.ofType("scan_complete"))
+        .subscribe(message -> {
+          Log.i("MESSAGE", "Message received");
+          Log.i("MESSAGE_TYPE", message.type);
+          Log.i("MESSAGE_PERCENT", Integer.toString(message.body.percent));
+        });
+
     ViewScanFragment viewScanFragment = new ViewScanFragment();
     FragmentTransaction transaction = getParentFragment()
             .getChildFragmentManager().beginTransaction();
