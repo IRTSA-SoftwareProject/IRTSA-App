@@ -12,6 +12,7 @@ import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.model.Scan;
 import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 import com.swinburne.irtsa.irtsa.model.ScanInterface;
+
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
