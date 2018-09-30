@@ -1,6 +1,5 @@
 package com.swinburne.irtsa.irtsa.gallery;
 
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentManager;
