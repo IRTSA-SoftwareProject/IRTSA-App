@@ -1,8 +1,11 @@
 package com.swinburne.irtsa.irtsa.server;
 
+import com.google.gson.Gson;
+
 import io.reactivex.Observable;
 
 public final class Server {
+  private static final Gson gson = new Gson();
   private static final Server instance = new Server();
 
   private Connection connection = new Connection("ws://192.168.163.1:8765");
@@ -14,8 +17,8 @@ public final class Server {
     instance.connection.pollForConnection();
   }
 
-  public static void send(Message message) {
-    instance.connection.send(message.toJson());
+  public static <T extends Message> void send(T message) {
+    instance.connection.send(gson.toJson(message));
   }
 
   public static Status getStatus() {
