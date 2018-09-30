@@ -57,23 +57,21 @@ public class StartScanFragment extends Fragment {
    * the user presses the back button.
    */
   private void beginScan() {
-    // Send a message to start the scan
-    Server.send(new Message("scan", new Object() {
-      public String scanName = "scan_001.png";
-    }));
-    Server.messages.ofType("scan_progress").subscribe(message -> {
-      Log.i("MESSAGE", "Message received");
-      Log.i("MESSAGE_TYPE", message.type);
-      Log.i("MESSAGE_BODY", message.body.toString());
-      Log.i("MESSAGE_PERCENT", message.getBodyHash().get("percent").toString());
-    });
 
-    ViewScanFragment viewScanFragment = new ViewScanFragment();
+//    Server.messages.ofType("scan_progress").subscribe(message -> {
+//      Log.i("MESSAGE", "Message received");
+//      Log.i("MESSAGE_TYPE", message.type);
+//      Log.i("MESSAGE_BODY", message.body.toString());
+//      Log.i("MESSAGE_PERCENT", message.getBodyHash().get("percent").toString());
+//    });
+
+    ScanProgressFragment scanProgressFragment = new ScanProgressFragment();
     FragmentTransaction transaction = getParentFragment()
             .getChildFragmentManager().beginTransaction();
-    // Store the Fragment in the Fragment back-stack
     transaction.addToBackStack("StartScanFragment");
-    transaction.replace(R.id.scanContainer, viewScanFragment, "ViewScanFragment").commit();
+    transaction.replace(R.id.scanContainer, scanProgressFragment, "ScanProgressFragment").commit();
+
+
   }
 
   @Override
