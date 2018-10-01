@@ -3,7 +3,6 @@ package com.swinburne.irtsa.irtsa.scan;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -15,8 +14,6 @@ import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.model.Scan;
 import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 import com.swinburne.irtsa.irtsa.model.ScanInterface;
-
-import java.util.List;
 
 /**
  * Modal Dialog Fragment that displays when a user taps the save icon on the toolbar.

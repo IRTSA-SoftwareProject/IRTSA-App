@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.swinburne.irtsa.irtsa.R;
-import com.swinburne.irtsa.irtsa.ToolbarSetter;
-import com.swinburne.irtsa.irtsa.ViewPagerAdapter;
 
 /**
  * Fragment that displays the details of a completed scan.
