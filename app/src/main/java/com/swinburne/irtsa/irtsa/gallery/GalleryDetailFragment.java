@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.model.Scan;
 
+import io.reactivex.functions.Consumer;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -83,9 +85,18 @@ public class GalleryDetailFragment extends Fragment {
   }
   private void openEditDialog() {
     GalleryEditDialog editDialog = new GalleryEditDialog();
+    editDialog.getSavedScanInformation().subscribe(scanDetailsSavedConsumer);
     Bundle scanId = new Bundle();
     scanId.putInt("scanId", scan.id);
     editDialog.setArguments(scanId);
     editDialog.show(getFragmentManager(), "Edit Dialog");
   }
+
+  Consumer<Bundle> scanDetailsSavedConsumer = (savedScanDetails) -> {
+    if (savedScanDetails.containsKey("newName"))
+      name.setText("Description: " + savedScanDetails.getString("newName"));
+
+    if (savedScanDetails.containsKey("newDescription"))
+      description.setText("Name: " + savedScanDetails.getString("newDescription"));
+  };
 }

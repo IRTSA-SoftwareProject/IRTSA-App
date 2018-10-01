@@ -14,6 +14,9 @@ import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 import com.swinburne.irtsa.irtsa.model.ScanInterface;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
+
 /**
  * Model Dialog Fragment that displays when a user taps the edit icon on the toolbar.
  */
@@ -22,6 +25,8 @@ public class GalleryEditDialog extends AppCompatDialogFragment {
   private EditText description;
   private String scanName;
   private String scanDescription;
+
+  private final PublishSubject<Bundle> onClickSave = PublishSubject.create();
 
   /**
    * Initialises the EditText's on the dialog and registers an onClickListener on the Save button.
@@ -56,10 +61,19 @@ public class GalleryEditDialog extends AppCompatDialogFragment {
             scanDescription = description.getText().toString();
             ScanInterface scanAccessObject = new ScanAccessObject(getContext());
             scanAccessObject.editScan(scanId, scanName, scanDescription);
-            getActivity().onBackPressed();
+
+            Bundle newScanData = new Bundle();
+            if (scanName.length() > 0) newScanData.putString("newName", scanName);
+            if (scanDescription.length() > 0)
+              newScanData.putString("newDescription", scanDescription);
+            onClickSave.onNext(newScanData);
           }
         });
     //Build the dialog in order for it to popup
     return builder.create();
+  }
+
+  public Observable<Bundle> getSavedScanInformation() {
+    return onClickSave;
   }
 }
