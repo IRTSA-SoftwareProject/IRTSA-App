@@ -43,14 +43,16 @@ public class GalleryDetailFragment extends Fragment {
    */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    int id = item.getItemId();
     // Call the openDeleteDialog when the delete icon is selected
-    if (id == R.id.delete) {
-      openDeleteDialog();
+    switch (item.getItemId()) {
+      case R.id.delete:
+        openDeleteDialog();
+        break;
+      case R.id.edit:
+        openEditDialog();
+        break;
     }
-    if (id == R.id.edit) {
-      openEditDialog();
-    }
+
     return super.onOptionsItemSelected(item);
   }
 
