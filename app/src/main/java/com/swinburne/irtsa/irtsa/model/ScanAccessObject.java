@@ -47,9 +47,12 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
     SQLiteDatabase db = this.getWritableDatabase();
 
     ContentValues data = new ContentValues();
-    data.put(COLUMN_NAME, name);
-    data.put(COLUMN_DESCRIPTION, description);
-    return db.update(TABLE_SCAN, data, COLUMN_ID + "=" + id, null ) > 0;
+    if (name.length() > 0) data.put(COLUMN_NAME, name);
+    if (description.length() > 0) data.put(COLUMN_DESCRIPTION, description);
+
+    if (data.size() > 0){
+      return db.update(TABLE_SCAN, data, COLUMN_ID + "=" + id, null ) > 0;
+    }  else return false;
   }
 
 
