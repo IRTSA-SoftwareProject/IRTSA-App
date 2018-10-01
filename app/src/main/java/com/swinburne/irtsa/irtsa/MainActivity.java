@@ -11,6 +11,8 @@ import com.swinburne.irtsa.irtsa.server.Server;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+
 /**
  * The entry point of the application. This activity is always present when
  * the app is running. It contains components that hold the different fragments.
@@ -38,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     tabLayout.setupWithViewPager(pager);
     UpdateToolbarListener toolbarListener = new UpdateToolbarListener();
     pager.addOnPageChangeListener(toolbarListener);
+
+    Server.status.observeOn(AndroidSchedulers.mainThread()).subscribe(connectionStatus -> {
+      setTitle(connectionStatus.toString());
+    });
 
     // Listen for a tap on the tab bar or swipe on pager.
     pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
