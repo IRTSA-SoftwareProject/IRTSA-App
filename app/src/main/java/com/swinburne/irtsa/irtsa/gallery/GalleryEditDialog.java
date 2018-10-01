@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.swinburne.irtsa.irtsa.R;
-import com.swinburne.irtsa.irtsa.model.Scan;
 import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 import com.swinburne.irtsa.irtsa.model.ScanInterface;
 
