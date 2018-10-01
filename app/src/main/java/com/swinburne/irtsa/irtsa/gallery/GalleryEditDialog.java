@@ -15,7 +15,7 @@ import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 import com.swinburne.irtsa.irtsa.model.ScanInterface;
 
 /**
- * Modal Dialog Fragment that displays when a user taps the save icon on the toolbar.
+ * Model Dialog Fragment that displays when a user taps the edit icon on the toolbar.
  */
 public class GalleryEditDialog extends AppCompatDialogFragment {
   private EditText name;
