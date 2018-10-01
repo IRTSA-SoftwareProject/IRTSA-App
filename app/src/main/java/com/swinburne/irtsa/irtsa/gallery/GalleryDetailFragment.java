@@ -46,6 +46,9 @@ public class GalleryDetailFragment extends Fragment {
     if (id == R.id.delete) {
       openDeleteDialog();
     }
+    if (id == R.id.edit) {
+      openEditDialog();
+    }
     return super.onOptionsItemSelected(item);
   }
 
@@ -77,5 +80,12 @@ public class GalleryDetailFragment extends Fragment {
     scanId.putInt("scanId", scan.id);
     deleteDialog.setArguments(scanId);
     deleteDialog.show(getFragmentManager(), "Delete Dialog");
+  }
+  private void openEditDialog() {
+    GalleryEditDialog editDialog = new GalleryEditDialog();
+    Bundle scanId = new Bundle();
+    scanId.putInt("scanId", scan.id);
+    editDialog.setArguments(scanId);
+    editDialog.show(getFragmentManager(), "Edit Dialog");
   }
 }
