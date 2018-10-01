@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.model.Scan;
 
+import io.reactivex.functions.Consumer;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -41,11 +43,16 @@ public class GalleryDetailFragment extends Fragment {
    */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    int id = item.getItemId();
     // Call the openDeleteDialog when the delete icon is selected
-    if (id == R.id.delete) {
-      openDeleteDialog();
+    switch (item.getItemId()) {
+      case R.id.delete:
+        openDeleteDialog();
+        break;
+      case R.id.edit:
+        openEditDialog();
+        break;
     }
+
     return super.onOptionsItemSelected(item);
   }
 
@@ -78,4 +85,20 @@ public class GalleryDetailFragment extends Fragment {
     deleteDialog.setArguments(scanId);
     deleteDialog.show(getFragmentManager(), "Delete Dialog");
   }
+  private void openEditDialog() {
+    GalleryEditDialog editDialog = new GalleryEditDialog();
+    editDialog.getSavedScanInformation().subscribe(scanDetailsSavedConsumer);
+    Bundle scanId = new Bundle();
+    scanId.putInt("scanId", scan.id);
+    editDialog.setArguments(scanId);
+    editDialog.show(getFragmentManager(), "Edit Dialog");
+  }
+
+  Consumer<Bundle> scanDetailsSavedConsumer = (savedScanDetails) -> {
+    if (savedScanDetails.containsKey("newName"))
+      name.setText("Description: " + savedScanDetails.getString("newName"));
+
+    if (savedScanDetails.containsKey("newDescription"))
+      description.setText("Name: " + savedScanDetails.getString("newDescription"));
+  };
 }

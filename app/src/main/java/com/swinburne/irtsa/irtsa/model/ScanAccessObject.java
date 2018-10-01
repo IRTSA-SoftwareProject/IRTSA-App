@@ -43,6 +43,20 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
   }
 
   @Override
+  public Boolean editScan(Integer id, String name, String description) {
+    SQLiteDatabase db = this.getWritableDatabase();
+
+    ContentValues data = new ContentValues();
+    if (name.length() > 0) data.put(COLUMN_NAME, name);
+    if (description.length() > 0) data.put(COLUMN_DESCRIPTION, description);
+
+    if (data.size() > 0){
+      return db.update(TABLE_SCAN, data, COLUMN_ID + "=" + id, null ) > 0;
+    }  else return false;
+  }
+
+
+  @Override
   public List<Scan> getAllScans() {
     SQLiteDatabase db = this.getReadableDatabase();
     List<Scan> result = new ArrayList<Scan>();
