@@ -1,5 +1,7 @@
 package com.swinburne.irtsa.irtsa.scan;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import com.swinburne.irtsa.irtsa.R;
  */
 public class ViewScanFragment extends Fragment {
   private ImageView scanImage;
+  private Bitmap scanBitmap;
 
   public ViewScanFragment() {
     setHasOptionsMenu(true);
@@ -58,9 +61,14 @@ public class ViewScanFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     // Inflate the layout for this fragment
+    Bundle bundle = this.getArguments();
+    if (bundle != null) {
+      byte[] scanByteArray = bundle.getByteArray("scanByteArray");
+      scanBitmap = BitmapFactory.decodeByteArray(scanByteArray, 0, scanByteArray.length);
+    }
     View v = inflater.inflate(R.layout.fragment_view_scan, container, false);
 
-    initialiseUi(v);
+    initialiseUi(v, scanBitmap);
 
     return v;
   }
@@ -73,8 +81,8 @@ public class ViewScanFragment extends Fragment {
     saveDialog.show(getFragmentManager(), "Save Dialog");
   }
 
-  private void initialiseUi(View v) {
+  private void initialiseUi(View v, Bitmap scanBitmap) {
     scanImage = v.findViewById(R.id.scanImage);
-    scanImage.setImageResource(R.drawable.phase);
+    scanImage.setImageBitmap(scanBitmap);
   }
 }

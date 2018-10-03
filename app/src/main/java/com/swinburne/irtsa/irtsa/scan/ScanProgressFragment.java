@@ -1,8 +1,11 @@
 package com.swinburne.irtsa.irtsa.scan;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,15 +71,15 @@ public class ScanProgressFragment extends Fragment {
             });
 
     Server.messages.castToType("scan_complete", ScanCompleteMessage.class).observeOn(AndroidSchedulers.mainThread()).subscribe(message -> {
-      //String imageEncodedToBase64 = message.body.base64EncodedString;
-      // Image needs to be loaded into a Bitmap from the base64 encoded string here
-      // The image should then be added to a Bundle and passed to ViewScanFragment
+      String imageEncodedToBase64 = message.body.base64EncodedString;
+      byte[] decodedImage = Base64.decode(imageEncodedToBase64, Base64.DEFAULT);
+      Bundle bundle = new Bundle();
+      bundle.putByteArray("scanByteArray", decodedImage);
 
       ViewScanFragment viewScanFragment = new ViewScanFragment();
+      viewScanFragment.setArguments(bundle);
       FragmentTransaction transaction = getParentFragment()
               .getChildFragmentManager().beginTransaction();
-      // Store the Fragment in the Fragment back-stack
-      transaction.addToBackStack("ScanProgressFragment");
       transaction.replace(R.id.scanContainer, viewScanFragment, "ViewScanFragment").commit();
     });
 
