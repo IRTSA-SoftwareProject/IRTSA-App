@@ -44,4 +44,6 @@ public interface ScanInterface {
    * @return Represents whether the delete operation was successful.
    */
   Boolean deleteScan(Integer scanId);
+
+  Boolean editScan(Integer scanId, String scanName, String scanDescription);
 }

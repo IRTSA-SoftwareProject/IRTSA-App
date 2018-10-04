@@ -1,4 +1,4 @@
-package com.swinburne.irtsa.irtsa.scan;
+package com.swinburne.irtsa.irtsa.gallery;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,16 +11,22 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.swinburne.irtsa.irtsa.R;
-import com.swinburne.irtsa.irtsa.model.Scan;
 import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 import com.swinburne.irtsa.irtsa.model.ScanInterface;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
+
 /**
- * Modal Dialog Fragment that displays when a user taps the save icon on the toolbar.
+ * Model Dialog Fragment that displays when a user taps the edit icon on the toolbar.
  */
-public class SaveDialog extends AppCompatDialogFragment {
+public class GalleryEditDialog extends AppCompatDialogFragment {
   private EditText name;
   private EditText description;
+  private String scanName;
+  private String scanDescription;
+
+  private final PublishSubject<Bundle> onClickSave = PublishSubject.create();
 
   /**
    * Initialises the EditText's on the dialog and registers an onClickListener on the Save button.
@@ -32,36 +38,42 @@ public class SaveDialog extends AppCompatDialogFragment {
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     LayoutInflater inflater = getActivity().getLayoutInflater();
+    Integer scanId = getArguments().getInt("scanId");
     //Define where to get the layout from for the dialogs view
-    View view = inflater.inflate(R.layout.dialog_save, null);
+    View view = inflater.inflate(R.layout.dialog_gallery_edit, null);
 
-    name = view.findViewById(R.id.fName);
-    description = view.findViewById(R.id.fDescription);
+    name = view.findViewById(R.id.editName);
+    description = view.findViewById(R.id.editDescription);
 
     //set the characteristics of the dialog view
     builder.setView(view)
-        .setTitle(R.string.save_dialog_title)
+        .setTitle("Rename Scan")
         //Create the cancel button
-        .setNegativeButton(R.string.save_dialog_button_cancel, new DialogInterface.OnClickListener() {
+        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialogInterface, int i) {
 
           }
         })
         //Create the save button
-        .setPositiveButton(R.string.save_dialog_button_save, new DialogInterface.OnClickListener() {
+        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialogInterface, int i) {
-
-            Scan testScan = new Scan();
-            testScan.name = name.getText().toString();
-            testScan.description = description.getText().toString();
-            testScan.image
-                = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.phase);
-
+            scanName = name.getText().toString();
+            scanDescription = description.getText().toString();
             ScanInterface scanAccessObject = new ScanAccessObject(getContext());
-            scanAccessObject.insertScan(testScan);
+            scanAccessObject.editScan(scanId, scanName, scanDescription);
+
+            Bundle newScanData = new Bundle();
+            if (scanName.length() > 0) newScanData.putString("newName", scanName);
+            if (scanDescription.length() > 0)
+              newScanData.putString("newDescription", scanDescription);
+            onClickSave.onNext(newScanData);
           }
         });
     //Build the dialog in order for it to popup
     return builder.create();
+  }
+
+  public Observable<Bundle> getSavedScanInformation() {
+    return onClickSave;
   }
 }

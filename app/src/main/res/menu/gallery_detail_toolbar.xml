@@ -8,6 +8,11 @@
         android:title="@string/gallery_details_toolbar_delete_title"
         app:showAsAction="always" />
     <item
+        android:id="@+id/edit"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Edit"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/share"
         android:icon="@android:drawable/ic_menu_share"
         android:title="@string/gallery_detail_toolbar_share_title"
