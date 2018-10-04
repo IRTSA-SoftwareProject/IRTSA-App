@@ -43,15 +43,15 @@ public class SaveDialog extends AppCompatDialogFragment {
 
     //set the characteristics of the dialog view
     builder.setView(view)
-        .setTitle("Save Scan")
+        .setTitle(R.string.save_dialog_title)
         //Create the cancel button
-        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        .setNegativeButton(R.string.save_dialog_button_cancel, new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialogInterface, int i) {
 
           }
         })
         //Create the save button
-        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        .setPositiveButton(R.string.save_dialog_button_save, new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialogInterface, int i) {
 
             Scan testScan = new Scan();
