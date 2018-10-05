@@ -16,6 +16,10 @@ import com.swinburne.irtsa.irtsa.model.Scan;
 
 import io.reactivex.functions.Consumer;
 
+import java.util.List;
+
+import org.w3c.dom.Text;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -24,6 +28,7 @@ public class GalleryDetailFragment extends Fragment {
   private ImageView image;
   private TextView name;
   private TextView description;
+  private TextView date;
 
   public GalleryDetailFragment() {
     setHasOptionsMenu(true);
@@ -73,9 +78,11 @@ public class GalleryDetailFragment extends Fragment {
     image = v.findViewById(R.id.galleryDetailImage);
     image.setImageBitmap(scan.image);
     name = v.findViewById(R.id.galleryDetailName);
-    name.setText("Name: " + scan.name);
+    name.setText(getString(R.string.gallery_detail_label_name) + scan.name);
     description = v.findViewById(R.id.galleryDetailDescription);
-    description.setText("Description: " + scan.description);
+    description.setText(getString(R.string.gallery_detail_label_description) + scan.description);
+    date = v.findViewById(R.id.galleryDetailDate);
+    date.setText(getString(R.string.gallery_detail_label_date) + scan.createdAt);
   }
 
   private void openDeleteDialog() {
