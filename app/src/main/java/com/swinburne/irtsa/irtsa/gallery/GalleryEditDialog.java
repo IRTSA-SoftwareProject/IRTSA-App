@@ -63,9 +63,14 @@ public class GalleryEditDialog extends AppCompatDialogFragment {
             scanAccessObject.editScan(scanId, scanName, scanDescription);
 
             Bundle newScanData = new Bundle();
-            if (scanName.length() > 0) newScanData.putString("newName", scanName);
-            if (scanDescription.length() > 0)
+            if (scanName.length() > 0) {
+              newScanData.putString("newName", scanName);
+            }
+
+            if (scanDescription.length() > 0) {
               newScanData.putString("newDescription", scanDescription);
+            }
+
             onClickSave.onNext(newScanData);
           }
         });
