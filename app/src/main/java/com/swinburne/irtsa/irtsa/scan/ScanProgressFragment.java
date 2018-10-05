@@ -1,7 +1,5 @@
 package com.swinburne.irtsa.irtsa.scan;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -68,6 +66,8 @@ public class ScanProgressFragment extends Fragment {
               Log.i("MESSAGE", "Message received");
               Log.i("MESSAGE_TYPE", message.type);
               Log.i("MESSAGE_PERCENT", Integer.toString(message.body.percent));
+              scanProgressBar.setProgress(message.body.percent);
+//              scanProgressText.setText("Scan Progress is: " + message.body.percent);
             });
 
     Server.messages.castToType("scan_complete", ScanCompleteMessage.class).observeOn(AndroidSchedulers.mainThread()).subscribe(message -> {
@@ -79,6 +79,7 @@ public class ScanProgressFragment extends Fragment {
       ViewScanFragment viewScanFragment = new ViewScanFragment();
       viewScanFragment.setArguments(bundle);
       FragmentTransaction transaction = getParentFragment()
+
               .getChildFragmentManager().beginTransaction();
       transaction.replace(R.id.scanContainer, viewScanFragment, "ViewScanFragment").commit();
     });
