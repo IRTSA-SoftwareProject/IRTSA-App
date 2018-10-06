@@ -40,28 +40,22 @@ public class SaveDialog extends AppCompatDialogFragment {
 
     //set the characteristics of the dialog view
     builder.setView(view)
-        .setTitle(R.string.save_dialog_title)
-        //Create the cancel button
-        .setNegativeButton(R.string.save_dialog_button_cancel, new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialogInterface, int i) {
+            .setTitle(R.string.save_dialog_title)
+            //Create the cancel button
+            .setNegativeButton(R.string.save_dialog_button_cancel, (dialogInterface, i) -> {
+            })
+            //Create the save button
+            .setPositiveButton(R.string.save_dialog_button_save, (dialogInterface, i) -> {
+              Scan testScan = new Scan();
+              testScan.name = name.getText().toString();
+              testScan.description = description.getText().toString();
+              testScan.image
+                      = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.phase);
 
-          }
-        })
-        //Create the save button
-        .setPositiveButton(R.string.save_dialog_button_save, new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialogInterface, int i) {
-
-            Scan testScan = new Scan();
-            testScan.name = name.getText().toString();
-            testScan.description = description.getText().toString();
-            testScan.image
-                = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.phase);
-
-            ScanInterface scanAccessObject = new ScanAccessObject(getContext());
-            scanAccessObject.insertScan(testScan);
-          }
-        });
-    //Build the dialog in order for it to popup
+              ScanInterface scanAccessObject = new ScanAccessObject(getContext());
+              scanAccessObject.insertScan(testScan);
+            });
+  //Build the dialog in order for it to popup
     return builder.create();
-  }
+}
 }

@@ -17,4 +17,9 @@
         android:icon="@android:drawable/ic_menu_share"
         android:title="@string/gallery_detail_toolbar_share_title"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/save"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="@string/gallery_detail_toolbar_share_title"
+        app:showAsAction="always" />
 </menu>

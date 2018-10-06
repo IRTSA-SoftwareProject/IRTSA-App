@@ -59,8 +59,6 @@ public class StartScanFragment extends Fragment {
    */
   private void beginScan() {
     // Send a message to start the scan
-
-
     ScanProgressFragment scanProgressFragment = new ScanProgressFragment();
     FragmentTransaction transaction = getParentFragment()
             .getChildFragmentManager().beginTransaction();

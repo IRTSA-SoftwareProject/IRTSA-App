@@ -62,6 +62,9 @@ public class GalleryDetailFragment extends Fragment {
       case R.id.share:
         shareImage();
         break;
+      case R.id.save:
+        openSaveToGalleryDialog();
+        break;
       default:
         System.out.println("Unregistered toolbar button selected");
     }
@@ -113,6 +116,14 @@ public class GalleryDetailFragment extends Fragment {
     scanId.putInt("scanId", scan.id);
     editDialog.setArguments(scanId);
     editDialog.show(getFragmentManager(), "Edit Dialog");
+  }
+
+  private void openSaveToGalleryDialog() {
+    GallerySaveDialog saveDialog = new GallerySaveDialog();
+    Bundle scanBundle = new Bundle();
+    scanBundle.putParcelable("scan", scan);
+    saveDialog.setArguments(scanBundle);
+    saveDialog.show(getFragmentManager(), "Edit Dialog");
   }
 
   /**

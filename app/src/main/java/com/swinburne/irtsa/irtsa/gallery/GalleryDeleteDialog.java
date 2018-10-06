@@ -17,9 +17,6 @@ import com.swinburne.irtsa.irtsa.model.ScanInterface;
  * A simple {@link Fragment} subclass.
  */
 public class GalleryDeleteDialog extends AppCompatDialogFragment {
-
-
-
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
