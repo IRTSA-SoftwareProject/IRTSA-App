@@ -37,12 +37,11 @@ public class GalleryFragment extends Fragment {
                            Bundle savedInstanceState) {
     // Inflate the layout for this fragment
     View v = inflater.inflate(R.layout.fragment_gallery, container, false);
-    // Required so the gallery toolbar doesn't display when the app is first launched.
-    //setHasOptionsMenu(true);
 
-  //  int test = ((MainActivity)getActivity()).getSelectedViewPagerTab();
     if (savedInstanceState != null) {
       setHasOptionsMenu(((MainActivity)getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
+    } else {
+      setHasOptionsMenu(true);
     }
 
     initialiseUi(v);
@@ -78,12 +77,6 @@ public class GalleryFragment extends Fragment {
     };
     // Register the consumer as a gallery item subscriber
     adapter.getGalleryClick().subscribe(galleryItemSelectedConsumer);
-  }
-
-  @Override
-  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    super.onCreateOptionsMenu(menu, inflater);
-    inflater.inflate(R.menu.gallery_toolbar, menu);
   }
 
   public void refreshGallery() {

@@ -3,10 +3,13 @@ package com.swinburne.irtsa.irtsa;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.swinburne.irtsa.irtsa.gallery.GalleryFragment;
+import com.swinburne.irtsa.irtsa.scan.ViewScanFragment;
 import com.swinburne.irtsa.irtsa.server.Server;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -115,8 +118,18 @@ public class MainActivity extends AppCompatActivity {
     if (currentChildFragments.size() == 1) {
       finish();
     } else {
+      Fragment visibleFragment = pagerAdapter.getCurrentlyVisibleFragment(pager.getCurrentItem());
+
+      // The ScanProgressFragment is not added to the backstack, therefore popping the backstack
+      // when on the ViewScanFragment requires that we manually remove the ViewScanFragment from
+      // the container's child fragment manager.
+      if (visibleFragment.getClass() == ViewScanFragment.class) {
+        FragmentTransaction transaction = pagerAdapter.getFragmentMap().get(pager.getCurrentItem())
+                .getChildFragmentManager().beginTransaction();
+        transaction.remove(visibleFragment).commit();
+      }
       pagerAdapter.getFragmentMap().get(pager.getCurrentItem())
-              .getChildFragmentManager().popBackStackImmediate();
+              .getChildFragmentManager().popBackStack();
     }
 
     // Update the toolbar.
