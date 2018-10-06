@@ -1,7 +1,11 @@
 package com.swinburne.irtsa.irtsa.gallery;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +21,8 @@ import com.swinburne.irtsa.irtsa.model.Scan;
 
 import io.reactivex.functions.Consumer;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import org.w3c.dom.Text;
@@ -53,6 +59,11 @@ public class GalleryDetailFragment extends Fragment {
       case R.id.edit:
         openEditDialog();
         break;
+      case R.id.share:
+        shareImage();
+        break;
+      default:
+        System.out.println("Unregistered toolbar button selected");
     }
 
     return super.onOptionsItemSelected(item);
@@ -94,6 +105,7 @@ public class GalleryDetailFragment extends Fragment {
     deleteDialog.setArguments(scanId);
     deleteDialog.show(getFragmentManager(), "Delete Dialog");
   }
+
   private void openEditDialog() {
     GalleryEditDialog editDialog = new GalleryEditDialog();
     editDialog.getSavedScanInformation().subscribe(scanDetailsSavedConsumer);
@@ -103,11 +115,49 @@ public class GalleryDetailFragment extends Fragment {
     editDialog.show(getFragmentManager(), "Edit Dialog");
   }
 
-  Consumer<Bundle> scanDetailsSavedConsumer = (savedScanDetails) -> {
-    if (savedScanDetails.containsKey("newName"))
-      name.setText("Description: " + savedScanDetails.getString("newName"));
+  /**
+   * To share an image, it must first be saved on the device.
+   * Save the bitmap to the internal cache dir and provide the file URI to the sharing intent.
+   * The image in the cache is overwritten each time an image is shared.
+   * Contents of the cache are lost on uninstall and are inaccessible to other apps without a URI.
+   */
+  private void shareImage() {
+    try {
+      // Save the file to the cache
+      File cachePath = new File(getContext().getCacheDir(), "images");
+      cachePath.mkdirs();
+      FileOutputStream stream = new FileOutputStream(cachePath + "/imageToShare.png");
+      scan.image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+      stream.close();
 
-    if (savedScanDetails.containsKey("newDescription"))
+      // Get the saved files URI
+      File imagePath = new File(getContext().getCacheDir(), "images");
+      File newFile = new File(imagePath, "/imageToShare.png");
+      Uri contentUri = FileProvider.getUriForFile(getContext(),
+              "com.swinburne.irtsa.irtsa.fileprovider", newFile);
+
+      // Share the file via an intent
+      if (contentUri != null) {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        shareIntent.setDataAndType(contentUri,
+                getActivity().getContentResolver().getType(contentUri));
+        shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+        startActivity(Intent.createChooser(shareIntent, "Share Thermogram"));
+      }
+    } catch (Exception e) {
+      System.out.println("Unable to share thermogram: " + e.toString());
+    }
+  }
+
+  Consumer<Bundle> scanDetailsSavedConsumer = (savedScanDetails) -> {
+    if (savedScanDetails.containsKey("newName")) {
+      name.setText("Description: " + savedScanDetails.getString("newName"));
+    }
+
+    if (savedScanDetails.containsKey("newDescription")) {
       description.setText("Name: " + savedScanDetails.getString("newDescription"));
+    }
   };
 }

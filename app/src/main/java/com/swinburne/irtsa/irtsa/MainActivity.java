@@ -9,9 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.swinburne.irtsa.irtsa.gallery.GalleryFragment;
 import com.swinburne.irtsa.irtsa.server.Server;
 
-import java.util.List;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
+
+import java.util.List;
 
 /**
  * The entry point of the application. This activity is always present when
