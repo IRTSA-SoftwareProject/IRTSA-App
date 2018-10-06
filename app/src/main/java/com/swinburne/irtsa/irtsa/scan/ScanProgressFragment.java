@@ -58,16 +58,17 @@ public class ScanProgressFragment extends Fragment {
     View v = inflater.inflate(R.layout.fragment_scan_progress, container, false);
     scanProgressBar = v.findViewById(R.id.scanProgressBar);
     scanProgressText = v.findViewById(R.id.scanProgressText);
+    scanProgressText.setText("Scan Progress is: 0%");
 
     Server.send(new StartScanMessage());
     Server.messages.castToType("scan_progress", ScanProgressMessage.class)
-            .takeUntil(Server.messages.ofType("scan_complete"))
+            .takeUntil(Server.messages.ofType("scan_complete")).observeOn(AndroidSchedulers.mainThread())
             .subscribe(message -> {
               Log.i("MESSAGE", "Message received");
               Log.i("MESSAGE_TYPE", message.type);
               Log.i("MESSAGE_PERCENT", Integer.toString(message.body.percent));
               scanProgressBar.setProgress(message.body.percent);
-//              scanProgressText.setText("Scan Progress is: " + message.body.percent);
+              scanProgressText.setText("Scan Progress is: " + message.body.percent + "%");
             });
 
     Server.messages.castToType("scan_complete", ScanCompleteMessage.class).observeOn(AndroidSchedulers.mainThread()).subscribe(message -> {

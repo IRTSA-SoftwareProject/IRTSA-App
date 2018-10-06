@@ -65,7 +65,6 @@ public class ViewScanFragment extends Fragment {
     }
     View v = inflater.inflate(R.layout.fragment_view_scan, container, false);
 
-
     if (savedInstanceState != null) {
       setHasOptionsMenu(((MainActivity)getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
     } else {
