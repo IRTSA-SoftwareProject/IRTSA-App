@@ -12,7 +12,7 @@
         android:id="@+id/fName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter File Name"
+        android:hint="@string/save_dialog_enter_file_name_hint"
         android:inputType="text"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp" />
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Enter File Description"
+        android:hint="@string/save_dialog_enter_file_description_hint"
         android:inputType="text"
         app:layout_constraintTop_toBottomOf="@+id/fName"
         tools:layout_editor_absoluteX="16dp" />

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.swinburne.irtsa.irtsa.MainActivity;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.server.Message;
 import com.swinburne.irtsa.irtsa.server.Server;
@@ -23,11 +24,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  */
 public class StartScanFragment extends Fragment {
 
-  public StartScanFragment() {
-    setHasOptionsMenu(true);
-  }
-
-
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
@@ -35,6 +31,12 @@ public class StartScanFragment extends Fragment {
     View rootView = inflater.inflate(R.layout.fragment_start_scan, container, false);
 
     initialiseUi(rootView);
+
+    if (savedInstanceState != null) {
+      setHasOptionsMenu(((MainActivity)getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
+    } else {
+      setHasOptionsMenu(true);
+    }
 
     return rootView;
   }
@@ -45,7 +47,7 @@ public class StartScanFragment extends Fragment {
    */
   private void initialiseUi(View rootView) {
     Button startScanButton = rootView.findViewById(R.id.startScanButton);
-    startScanButton.setOnClickListener(a -> beginScan());
+    startScanButton.setOnClickListener(view -> beginScan());
     Server.status.observeOn(AndroidSchedulers.mainThread()).subscribe(connectionStatus ->
         startScanButton.setEnabled(connectionStatus.compareTo(Status.CONNECTED) == 0));
   }
@@ -70,7 +72,6 @@ public class StartScanFragment extends Fragment {
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     super.onCreateOptionsMenu(menu, inflater);
-
     inflater.inflate(R.menu.start_scan_toolbar, menu);
   }
 }

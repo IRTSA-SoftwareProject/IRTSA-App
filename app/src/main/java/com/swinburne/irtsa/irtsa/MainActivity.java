@@ -9,9 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.swinburne.irtsa.irtsa.gallery.GalleryFragment;
 import com.swinburne.irtsa.irtsa.server.Server;
 
-import java.util.List;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
+
+import java.util.List;
 
 /**
  * The entry point of the application. This activity is always present when
@@ -21,6 +21,11 @@ public class MainActivity extends AppCompatActivity {
   private ViewPager pager;
   private ViewPagerAdapter pagerAdapter;
   private TabLayout tabLayout;
+  private String previouslyFocusedFragment;
+
+  public String getPreviouslyFocusedFragment() {
+    return previouslyFocusedFragment;
+  }
 
   /**
    * When the activity is created initialise the tabs and view pager.
@@ -31,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     setTheme(R.style.AppThemeLight);
     super.onCreate(savedInstanceState);
+    if (savedInstanceState != null) {
+      previouslyFocusedFragment = savedInstanceState.getString("previouslyFocusedFragment");
+    }
     setContentView(R.layout.activity_main);
     tabLayout = findViewById(R.id.tabLayout);
     pager = findViewById(R.id.viewPager);
@@ -85,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
    *
    * @param position position of the currently selected view pager tab.
    */
-  private void invalidateFragmentMenus(int position) {
+  public void invalidateFragmentMenus(int position) {
     Fragment visibleFragment = pagerAdapter.getCurrentlyVisibleFragment(position);
     for (int i = 0; i < pagerAdapter.getCount(); i++) {
       for (Fragment fragment : pagerAdapter.getNestedFragments(i)) {
@@ -107,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     if (currentChildFragments.size() == 1) {
       finish();
     } else {
-      pagerAdapter.getItem(pager.getCurrentItem())
+      pagerAdapter.getFragmentMap().get(pager.getCurrentItem())
               .getChildFragmentManager().popBackStackImmediate();
     }
 
@@ -134,5 +142,18 @@ public class MainActivity extends AppCompatActivity {
     public void onPageScrollStateChanged(int state) {
 
     }
+  }
+
+  /**
+   * Save the name of the currently visible fragment so it can be compared if the app must be
+   * recreated.
+   *
+   * @param outState The bundle that will store data when the activity is destroyed.
+   */
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString("previouslyFocusedFragment",
+            pagerAdapter.getCurrentlyVisibleFragment(pager.getCurrentItem()).getClass().getCanonicalName());
   }
 }

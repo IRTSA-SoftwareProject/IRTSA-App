@@ -5,6 +5,6 @@
     <item
         android:id="@+id/settings"
         android:icon="@android:drawable/ic_menu_manage"
-        android:title="Settings"
+        android:title="@string/start_scan_toolbar_title"
         app:showAsAction="always" />
 </menu>
