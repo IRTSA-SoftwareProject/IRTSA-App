@@ -15,35 +15,14 @@ import com.swinburne.irtsa.irtsa.MainActivity;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.server.Message;
 import com.swinburne.irtsa.irtsa.server.Server;
+import com.swinburne.irtsa.irtsa.server.Status;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Fragment with a button that begins a scan.
  */
 public class StartScanFragment extends Fragment {
-  private class StartScanMessage extends Message {
-    class Body {
-      String fileName;
-
-      Body(String fileName) {
-        this.fileName = fileName;
-      }
-    }
-
-    Body body;
-
-    StartScanMessage(String fileName) {
-      type = "scan";
-      body = new Body(fileName);
-    }
-  }
-
-  private class ScanProgressMessage extends Message {
-    class Body {
-      int percent;
-    }
-
-    Body body;
-  }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +48,8 @@ public class StartScanFragment extends Fragment {
   private void initialiseUi(View rootView) {
     Button startScanButton = rootView.findViewById(R.id.startScanButton);
     startScanButton.setOnClickListener(view -> beginScan());
+    Server.status.observeOn(AndroidSchedulers.mainThread()).subscribe(connectionStatus ->
+        startScanButton.setEnabled(connectionStatus.compareTo(Status.CONNECTED) == 0));
   }
 
   /**
@@ -78,21 +59,14 @@ public class StartScanFragment extends Fragment {
    */
   private void beginScan() {
     // Send a message to start the scan
-    Server.send(new StartScanMessage("scan_001.png"));
-    Server.messages.castToType("scan_progress", ScanProgressMessage.class)
-        .takeUntil(Server.messages.ofType("scan_complete"))
-        .subscribe(message -> {
-          Log.i("MESSAGE", "Message received");
-          Log.i("MESSAGE_TYPE", message.type);
-          Log.i("MESSAGE_PERCENT", Integer.toString(message.body.percent));
-        });
 
-    ViewScanFragment viewScanFragment = new ViewScanFragment();
+
+    ScanProgressFragment scanProgressFragment = new ScanProgressFragment();
     FragmentTransaction transaction = getParentFragment()
             .getChildFragmentManager().beginTransaction();
     // Store the Fragment in the Fragment back-stack
     transaction.addToBackStack("StartScanFragment");
-    transaction.replace(R.id.scanContainer, viewScanFragment, "ViewScanFragment").commit();
+    transaction.replace(R.id.scanContainer, scanProgressFragment, "ScanProgressFragment").commit();
   }
 
   @Override
