@@ -1,12 +1,14 @@
 package com.swinburne.irtsa.irtsa.containers;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.swinburne.irtsa.irtsa.MainActivity;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.gallery.GalleryFragment;
 
@@ -30,11 +32,13 @@ public class GalleryContainerFragment extends Fragment {
    * Immediately load the GalleryFragment once this container Fragment becomes visible.
    */
   @Override
-  public void onStart() {
-    super.onStart();
-    GalleryFragment galleryFragment = new GalleryFragment();
-    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    if (savedInstanceState == null) {
+      GalleryFragment galleryFragment = new GalleryFragment();
+      FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-    transaction.replace(R.id.galleryContainer, galleryFragment, "GalleryFragment").commit();
+      transaction.replace(R.id.galleryContainer, galleryFragment, "GalleryFragment").commit();
+    }
   }
 }

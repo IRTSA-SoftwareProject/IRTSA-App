@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.swinburne.irtsa.irtsa.MainActivity;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.server.Message;
 import com.swinburne.irtsa.irtsa.server.Server;
@@ -44,9 +45,9 @@ public class StartScanFragment extends Fragment {
     Body body;
   }
 
-  public StartScanFragment() {
-    setHasOptionsMenu(true);
-  }
+//  public StartScanFragment() {
+//    //setHasOptionsMenu(true);
+//  }
 
 
   @Override
@@ -57,6 +58,10 @@ public class StartScanFragment extends Fragment {
 
     initialiseUi(rootView);
 
+    if (savedInstanceState != null) {
+      setHasOptionsMenu(((MainActivity)getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
+    }
+
     return rootView;
   }
 
@@ -66,12 +71,13 @@ public class StartScanFragment extends Fragment {
    */
   private void initialiseUi(View rootView) {
     Button startScanButton = rootView.findViewById(R.id.startScanButton);
-    startScanButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        beginScan();
-      }
-    });
+    startScanButton.setOnClickListener(view -> beginScan());
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    if (isVisible()) setHasOptionsMenu(true);
   }
 
   /**

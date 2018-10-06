@@ -1,6 +1,7 @@
 package com.swinburne.irtsa.irtsa.containers;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -30,10 +31,12 @@ public class ScanContainerFragment extends Fragment {
    * Immediately load the StartScanFragment once this container Fragment becomes visible.
    */
   @Override
-  public void onStart() {
-    super.onStart();
-    StartScanFragment startScanFragment = new StartScanFragment();
-    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-    transaction.replace(R.id.scanContainer, startScanFragment, "StartScanFragment").commit();
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    if (savedInstanceState == null) {
+      StartScanFragment startScanFragment = new StartScanFragment();
+      FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+      transaction.replace(R.id.scanContainer, startScanFragment, "StartScanFragment").commit();
+    }
   }
 }
