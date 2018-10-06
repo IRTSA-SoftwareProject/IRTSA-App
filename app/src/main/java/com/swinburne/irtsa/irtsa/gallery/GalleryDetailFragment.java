@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.swinburne.irtsa.irtsa.MainActivity;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.model.Scan;
 
@@ -29,10 +30,6 @@ public class GalleryDetailFragment extends Fragment {
   private TextView name;
   private TextView description;
   private TextView date;
-
-  public GalleryDetailFragment() {
-    setHasOptionsMenu(true);
-  }
 
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -70,6 +67,11 @@ public class GalleryDetailFragment extends Fragment {
       scan = bundle.getParcelable("Scan");
     }
     View v = inflater.inflate(R.layout.fragment_gallery_detail, container, false);
+    if (savedInstanceState != null) {
+      setHasOptionsMenu(((MainActivity)getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
+    } else {
+      setHasOptionsMenu(true);
+    }
     initialiseUi(v, scan);
     return v;
   }

@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.swinburne.irtsa.irtsa.MainActivity;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.model.Scan;
 import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
@@ -37,7 +38,12 @@ public class GalleryFragment extends Fragment {
     // Inflate the layout for this fragment
     View v = inflater.inflate(R.layout.fragment_gallery, container, false);
     // Required so the gallery toolbar doesn't display when the app is first launched.
-    setHasOptionsMenu(false);
+    //setHasOptionsMenu(true);
+
+  //  int test = ((MainActivity)getActivity()).getSelectedViewPagerTab();
+    if (savedInstanceState != null) {
+      setHasOptionsMenu(((MainActivity)getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
+    }
 
     initialiseUi(v);
 
@@ -101,14 +107,16 @@ public class GalleryFragment extends Fragment {
      */
     @Override
     protected Boolean doInBackground(Object[] objects) {
-      ScanAccessObject scanAccessObject = new ScanAccessObject(getContext());
-      scans = scanAccessObject.getAllScans();
-      Collections.sort(scans, (scan, scanToCompare) -> {
-        if (scan.createdAt == null || scanToCompare.createdAt == null) {
-          return 0;
-        }
-        return scan.createdAt.compareTo(scanToCompare.createdAt);
-      });
+      if (getContext() != null) {
+        ScanAccessObject scanAccessObject = new ScanAccessObject(getContext());
+        scans = scanAccessObject.getAllScans();
+        Collections.sort(scans, (scan, scanToCompare) -> {
+          if (scan.createdAt == null || scanToCompare.createdAt == null) {
+            return 0;
+          }
+          return scan.createdAt.compareTo(scanToCompare.createdAt);
+        });
+      }
       return true;
     }
 
@@ -120,7 +128,7 @@ public class GalleryFragment extends Fragment {
     @Override
     protected void onPostExecute(Object o) {
       super.onPostExecute(o);
-      adapter.setScanData(scans);
+      if (adapter != null) adapter.setScanData(scans);
     }
   }
 }

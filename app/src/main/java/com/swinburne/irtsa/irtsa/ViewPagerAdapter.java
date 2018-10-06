@@ -2,7 +2,11 @@ package com.swinburne.irtsa.irtsa;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.swinburne.irtsa.irtsa.containers.GalleryContainerFragment;
 import com.swinburne.irtsa.irtsa.containers.ScanContainerFragment;
@@ -15,17 +19,21 @@ import java.util.Map;
 /**
  * This adapter specifies the two container Fragments the ViewPager will display.
  */
-public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+public class ViewPagerAdapter extends FragmentPagerAdapter {
   private Map<Integer, Fragment> fragmentMap;
 
   /**
-  * Constructor that calls the superclass.
-  *
-  * @param fm FragmentManager required to initialise the superclass.
-  */
+   * Constructor that calls the superclass.
+   *
+   * @param fm FragmentManager required to initialise the superclass.
+   */
   public ViewPagerAdapter(FragmentManager fm) {
     super(fm);
     fragmentMap = new HashMap<>();
+  }
+
+  public Map<Integer, Fragment> getFragmentMap() {
+    return fragmentMap;
   }
 
   /**
@@ -37,26 +45,20 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
    */
   @Override
   public Fragment getItem(int position) {
-    final Fragment result;
-
-    if (fragmentMap.containsKey(position)) {
-      return fragmentMap.get(position);
-    } else {
-      switch (position) {
-        case 0:
-          result = new ScanContainerFragment();
-          break;
-        case 1:
-          result = new GalleryContainerFragment();
-          break;
-        default:
-          result = null;
-          break;
-      }
+    switch (position) {
+      case 0:
+        return new ScanContainerFragment();
+      case 1:
+        return new GalleryContainerFragment();
+      default:
+        return null;
     }
-    fragmentMap.put(position, result);
-    return result;
   }
+
+//  @Override
+//  public boolean isViewFromObject(View view, Object fragment) {
+//    return ((Fragment) fragment).getView() == view;
+//  }
 
   /**
    * Returns the amount of ViewPager tabs.
@@ -66,6 +68,13 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
   @Override
   public int getCount() {
     return 2;
+  }
+
+  @Override
+  public Object instantiateItem(ViewGroup container, int position) {
+    Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
+    fragmentMap.put(position, createdFragment);
+    return createdFragment;
   }
 
   /**
@@ -95,19 +104,24 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
    * @return A List containing the currently visible fragment, and any fragments on the backstack.
    */
   public List<Fragment> getNestedFragments(int position) {
-    Fragment fragmentContainer = fragmentMap.get(position);
-    FragmentManager containerChildFm = fragmentContainer.getChildFragmentManager();
     List<Fragment> nestedFragments = new ArrayList<>();
+    if (fragmentMap.containsKey(position)) {
+      Fragment fragmentContainer = fragmentMap.get(position);
+      FragmentManager containerChildFm = fragmentContainer.getChildFragmentManager();
 
-    // Add any fragments not added to the backstack (currently visible fragment in container)
-    for (Fragment fragment : containerChildFm.getFragments()) {
-      nestedFragments.add(fragment);
-    }
 
-    // Add any fragments present in the container's child fragment manager backstack.
-    for (int i = 0; i < containerChildFm.getBackStackEntryCount(); i++) {
-      String name = containerChildFm.getBackStackEntryAt(i).getName();
-      nestedFragments.add(containerChildFm.findFragmentByTag(name));
+      // Add any fragments not added to the backstack (currently visible fragment in container)
+      for (Fragment fragment : containerChildFm.getFragments()) {
+        nestedFragments.add(fragment);
+      }
+
+      // Add any fragments present in the container's child fragment manager backstack.
+      for (int i = 0; i < containerChildFm.getBackStackEntryCount(); i++) {
+        String name = containerChildFm.getBackStackEntryAt(i).getName();
+        nestedFragments.add(containerChildFm.findFragmentByTag(name));
+      }
+    } else {
+      System.out.println("Unable to get nested fragments, fragment map does not contain key");
     }
 
     return nestedFragments;
@@ -121,13 +135,17 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
    * @return The currently displayed fragment
    */
   public Fragment getCurrentlyVisibleFragment(int position) {
-    Fragment fragmentContainer = fragmentMap.get(position);
-    FragmentManager containerChildFm = fragmentContainer.getChildFragmentManager();
+    if (fragmentMap.containsKey(position)) {
+      Fragment fragmentContainer = fragmentMap.get(position);
+      FragmentManager containerChildFm = fragmentContainer.getChildFragmentManager();
 
-    // The container should only contain one fragment (the rest will be on the backstack).
-    for (Fragment fragment : containerChildFm.getFragments()) {
-      System.out.println(fragment.getTag());
-      return fragment;
+      // The container should only contain one fragment (the rest will be on the backstack).
+      for (Fragment fragment : containerChildFm.getFragments()) {
+        System.out.println(fragment.getTag());
+        return fragment;
+      }
+    } else {
+      System.out.println("Unable to get currently visible fragment, fragment map does not contain key");
     }
 
     return null;
