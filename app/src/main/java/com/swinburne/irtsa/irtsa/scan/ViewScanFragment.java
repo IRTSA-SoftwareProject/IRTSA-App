@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.swinburne.irtsa.irtsa.MainActivity;
 import com.swinburne.irtsa.irtsa.R;
 
 /**
@@ -17,10 +18,6 @@ import com.swinburne.irtsa.irtsa.R;
  */
 public class ViewScanFragment extends Fragment {
   private ImageView scanImage;
-
-  public ViewScanFragment() {
-    setHasOptionsMenu(true);
-  }
 
   /**
    * When the view scan fragment is opened the icons are changed in the
@@ -59,6 +56,12 @@ public class ViewScanFragment extends Fragment {
                            Bundle savedInstanceState) {
     // Inflate the layout for this fragment
     View v = inflater.inflate(R.layout.fragment_view_scan, container, false);
+
+    if (savedInstanceState != null) {
+      setHasOptionsMenu(((MainActivity)getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
+    } else {
+      setHasOptionsMenu(true);
+    }
 
     initialiseUi(v);
 

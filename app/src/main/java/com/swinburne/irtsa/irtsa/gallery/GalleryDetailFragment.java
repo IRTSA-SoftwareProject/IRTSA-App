@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.swinburne.irtsa.irtsa.MainActivity;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.model.Scan;
 
@@ -22,6 +23,9 @@ import io.reactivex.functions.Consumer;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,10 +35,7 @@ public class GalleryDetailFragment extends Fragment {
   private ImageView image;
   private TextView name;
   private TextView description;
-
-  public GalleryDetailFragment() {
-    setHasOptionsMenu(true);
-  }
+  private TextView date;
 
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -77,6 +78,11 @@ public class GalleryDetailFragment extends Fragment {
       scan = bundle.getParcelable("Scan");
     }
     View v = inflater.inflate(R.layout.fragment_gallery_detail, container, false);
+    if (savedInstanceState != null) {
+      setHasOptionsMenu(((MainActivity)getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
+    } else {
+      setHasOptionsMenu(true);
+    }
     initialiseUi(v, scan);
     return v;
   }
@@ -85,9 +91,11 @@ public class GalleryDetailFragment extends Fragment {
     image = v.findViewById(R.id.galleryDetailImage);
     image.setImageBitmap(scan.image);
     name = v.findViewById(R.id.galleryDetailName);
-    name.setText("Name: " + scan.name);
+    name.setText(getString(R.string.gallery_detail_label_name) + scan.name);
     description = v.findViewById(R.id.galleryDetailDescription);
-    description.setText("Description: " + scan.description);
+    description.setText(getString(R.string.gallery_detail_label_description) + scan.description);
+    date = v.findViewById(R.id.galleryDetailDate);
+    date.setText(getString(R.string.gallery_detail_label_date) + scan.createdAt);
   }
 
   private void openDeleteDialog() {
