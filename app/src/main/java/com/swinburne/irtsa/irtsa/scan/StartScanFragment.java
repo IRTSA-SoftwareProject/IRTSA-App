@@ -45,11 +45,6 @@ public class StartScanFragment extends Fragment {
     Body body;
   }
 
-//  public StartScanFragment() {
-//    //setHasOptionsMenu(true);
-//  }
-
-
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
@@ -60,6 +55,8 @@ public class StartScanFragment extends Fragment {
 
     if (savedInstanceState != null) {
       setHasOptionsMenu(((MainActivity)getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
+    } else {
+      setHasOptionsMenu(true);
     }
 
     return rootView;
@@ -72,12 +69,6 @@ public class StartScanFragment extends Fragment {
   private void initialiseUi(View rootView) {
     Button startScanButton = rootView.findViewById(R.id.startScanButton);
     startScanButton.setOnClickListener(view -> beginScan());
-  }
-
-  @Override
-  public void onResume() {
-    super.onResume();
-    if (isVisible()) setHasOptionsMenu(true);
   }
 
   /**
@@ -107,7 +98,6 @@ public class StartScanFragment extends Fragment {
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     super.onCreateOptionsMenu(menu, inflater);
-
     inflater.inflate(R.menu.start_scan_toolbar, menu);
   }
 }

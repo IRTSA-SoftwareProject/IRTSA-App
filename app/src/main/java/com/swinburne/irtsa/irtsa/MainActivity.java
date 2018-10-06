@@ -144,6 +144,12 @@ public class MainActivity extends AppCompatActivity {
     }
   }
 
+  /**
+   * Save the name of the currently visible fragment so it can be compared if the app must be
+   * recreated.
+   *
+   * @param outState The bundle that will store data when the activity is destroyed.
+   */
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
