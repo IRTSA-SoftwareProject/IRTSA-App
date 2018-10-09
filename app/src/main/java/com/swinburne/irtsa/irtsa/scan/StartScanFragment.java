@@ -9,7 +9,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.swinburne.irtsa.irtsa.MainActivity;
 import com.swinburne.irtsa.irtsa.R;
@@ -23,6 +29,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Fragment with a button that begins a scan.
  */
 public class StartScanFragment extends Fragment {
+  Button startScanButton;
+  CheckBox allCheckbox;
+  EditText frameInputEditText;
+  Spinner pngPathSpinner;
+  Spinner processingTechniqueSpinner;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,7 +44,7 @@ public class StartScanFragment extends Fragment {
     initialiseUi(rootView);
 
     if (savedInstanceState != null) {
-      setHasOptionsMenu(((MainActivity)getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
+      setHasOptionsMenu(((MainActivity) getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
     } else {
       setHasOptionsMenu(true);
     }
@@ -41,15 +52,48 @@ public class StartScanFragment extends Fragment {
     return rootView;
   }
 
-  /**   * Initialise the Button and set an OnClickListener.
+  /**
+   * Initialise the Button and set an OnClickListener.
    *
    * @param rootView The StartScanFragment's top level View
    */
   private void initialiseUi(View rootView) {
-    Button startScanButton = rootView.findViewById(R.id.startScanButton);
+    startScanButton = rootView.findViewById(R.id.startScanButton);
+    allCheckbox = rootView.findViewById(R.id.allCheckBox);
+    frameInputEditText = rootView.findViewById(R.id.frameInputEditText);
+    pngPathSpinner = rootView.findViewById(R.id.pngPathSpinner);
+    processingTechniqueSpinner = rootView.findViewById(R.id.processingTechniqueSpinner);
+
+    ArrayAdapter<CharSequence> pngPathSpinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.image_png_paths, android.R.layout.simple_spinner_dropdown_item);
+    pngPathSpinner.setAdapter(pngPathSpinnerAdapter);
+    pngPathSpinner.setEnabled(false);
+
+    ArrayAdapter<CharSequence> processingTechniqueSpinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.processing_techniques, android.R.layout.simple_spinner_dropdown_item);
+    processingTechniqueSpinner.setAdapter(processingTechniqueSpinnerAdapter);
+
+    allCheckbox.setOnCheckedChangeListener((button, isChecked) -> {
+      if (Server.getStatus() == Status.CONNECTED && isChecked) {
+        startScanButton.setEnabled(true);
+      } else {
+        startScanButton.setEnabled(false);
+      }
+      frameInputEditText.setEnabled(!isChecked);
+      frameInputEditText.setText("");
+    });
+
+    frameInputEditText.setOnKeyListener((view, keyEvent, eventId) -> {
+      if (!frameInputEditText.getText().toString().equals("") && Server.getStatus() == Status.CONNECTED) {
+        startScanButton.setEnabled(true);
+      } else {
+        startScanButton.setEnabled(false);
+      }
+      return false;
+    });
+
     startScanButton.setOnClickListener(view -> beginScan());
     Server.status.observeOn(AndroidSchedulers.mainThread()).subscribe(connectionStatus ->
-        startScanButton.setEnabled(connectionStatus.compareTo(Status.CONNECTED) == 0));
+            startScanButton.setEnabled(connectionStatus.compareTo(Status.CONNECTED) == 0
+              && (frameInputEditText.getText().toString() != "" || allCheckbox.isChecked())));
   }
 
   /**
@@ -58,14 +102,22 @@ public class StartScanFragment extends Fragment {
    * the user presses the back button.
    */
   private void beginScan() {
-    // Send a message to start the scan
+    Bundle parametersToPass = new Bundle();
+    parametersToPass.putString("processingTechnique", processingTechniqueSpinner.getSelectedItem().toString());
+    parametersToPass.putString("pngPath", pngPathSpinner.getSelectedItem().toString());
 
+    if (allCheckbox.isChecked()) {
+      parametersToPass.putInt("framesToProcess", -1);
+    } else {
+      parametersToPass.putInt("framesToProcess", Integer.parseInt(frameInputEditText.getText().toString()));
+    }
 
     ScanProgressFragment scanProgressFragment = new ScanProgressFragment();
     FragmentTransaction transaction = getParentFragment()
             .getChildFragmentManager().beginTransaction();
     // Store the Fragment in the Fragment back-stack
     transaction.addToBackStack("StartScanFragment");
+    scanProgressFragment.setArguments(parametersToPass);
     transaction.replace(R.id.scanContainer, scanProgressFragment, "ScanProgressFragment").commit();
   }
 
