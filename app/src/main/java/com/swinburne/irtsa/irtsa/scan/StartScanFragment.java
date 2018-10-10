@@ -120,10 +120,4 @@ public class StartScanFragment extends Fragment {
     scanProgressFragment.setArguments(parametersToPass);
     transaction.replace(R.id.scanContainer, scanProgressFragment, "ScanProgressFragment").commit();
   }
-
-  @Override
-  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    super.onCreateOptionsMenu(menu, inflater);
-    inflater.inflate(R.menu.start_scan_toolbar, menu);
-  }
 }
