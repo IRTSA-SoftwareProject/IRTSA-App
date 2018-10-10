@@ -41,10 +41,11 @@
 
     <Spinner
         android:id="@+id/pngPathSpinner"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="@+id/processingTechniqueSpinner"
         app:layout_constraintStart_toStartOf="@+id/textView3" />
 
     <TextView
@@ -83,7 +84,7 @@
         android:id="@+id/allCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="30dp"
         android:text="All"
         app:layout_constraintBaseline_toBaselineOf="@+id/frameInputEditText"
         app:layout_constraintStart_toEndOf="@+id/frameInputEditText" />

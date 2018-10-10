@@ -38,9 +38,10 @@
 
     <Spinner
         android:id="@+id/pngPathSpinner"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/pathTextView"
         app:layout_constraintTop_toBottomOf="@+id/pathTextView" />
 
