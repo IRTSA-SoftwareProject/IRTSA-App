@@ -3,6 +3,7 @@ package com.swinburne.irtsa.irtsa.scan;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -21,6 +22,7 @@ import com.swinburne.irtsa.irtsa.model.ScanInterface;
 public class SaveDialog extends AppCompatDialogFragment {
   private EditText name;
   private EditText description;
+  private byte[] imageByteArray;
 
   /**
    * Initialises the EditText's on the dialog and registers an onClickListener on the Save button.
@@ -35,8 +37,10 @@ public class SaveDialog extends AppCompatDialogFragment {
     //Define where to get the layout from for the dialogs view
     View view = inflater.inflate(R.layout.dialog_save, null);
 
+    imageByteArray = getArguments().getByteArray("scanImage");
     name = view.findViewById(R.id.fName);
     description = view.findViewById(R.id.fDescription);
+
 
     //set the characteristics of the dialog view
     builder.setView(view)
@@ -54,8 +58,7 @@ public class SaveDialog extends AppCompatDialogFragment {
             Scan testScan = new Scan();
             testScan.name = name.getText().toString();
             testScan.description = description.getText().toString();
-            testScan.image
-                = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.phase);
+            testScan.image = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
 
             ScanInterface scanAccessObject = new ScanAccessObject(getContext());
             scanAccessObject.insertScan(testScan);
