@@ -29,6 +29,9 @@ public class ScanProgressFragment extends Fragment {
   }
 
   private class StartScanMessage extends Message {
+    public String pngPath;
+    public String processingTechnique;
+    public int framesToProcess;
     StartScanMessage() {
       type = "processScan";
     }
@@ -38,7 +41,6 @@ public class ScanProgressFragment extends Fragment {
     class Body {
       int percent;
     }
-
     Body body;
   }
 
@@ -46,7 +48,6 @@ public class ScanProgressFragment extends Fragment {
     class Body {
       String base64EncodedString;
     }
-
     Body body;
   }
 
@@ -59,8 +60,14 @@ public class ScanProgressFragment extends Fragment {
     scanProgressBar = v.findViewById(R.id.scanProgressBar);
     scanProgressText = v.findViewById(R.id.scanProgressText);
     scanProgressText.setText("Scan Progress is: 0%");
+    Bundle userSelectedParameters = this.getArguments();
 
-    Server.send(new StartScanMessage());
+    StartScanMessage startScanMessage = new StartScanMessage();
+    startScanMessage.pngPath = userSelectedParameters.getString("pngPath");
+    startScanMessage.processingTechnique = userSelectedParameters.getString("processingTechnique");
+    startScanMessage.framesToProcess = userSelectedParameters.getInt("framesToProcess");
+    Server.send(startScanMessage);
+
     Server.messages.castToType("scan_progress", ScanProgressMessage.class)
             .takeUntil(Server.messages.ofType("scan_complete")).observeOn(AndroidSchedulers.mainThread())
             .subscribe(message -> {

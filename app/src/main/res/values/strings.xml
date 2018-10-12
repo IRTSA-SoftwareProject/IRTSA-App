@@ -16,4 +16,15 @@
     <string name="gallery_toolbar_share_title">Share</string>
     <string name="start_scan_toolbar_title">Settings</string>
     <string name="view_scan_toolbar_title">Save</string>
+    <string-array name="image_png_paths">
+        <item>Final Thermal Hotspot</item>
+    </string-array>
+    <string-array name="processing_techniques">
+        <item>PPT Static</item>
+        <item>PPT Dynamic</item>
+        <item>Image Subtraction Dynamic</item>
+        <item>Image Subtraction Static</item>
+        <item>TSR Static</item>
+        <item>TSR Dynamic</item>
+    </string-array>
 </resources>

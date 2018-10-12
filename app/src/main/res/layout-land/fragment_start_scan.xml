@@ -9,72 +9,73 @@
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="Processing Technique"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline9"
-        app:layout_constraintStart_toStartOf="@+id/pngPathSpinner" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="@+id/processingTechniqueSpinner" />
 
     <Spinner
         android:id="@+id/processingTechniqueSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline9" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
         android:id="@+id/startScanButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:text="@string/start_scan_button_text"
-        app:layout_constraintEnd_toEndOf="@+id/processingTechniqueSpinner"
+        app:layout_constraintBottom_toBottomOf="@+id/pngPathSpinner"
+        app:layout_constraintEnd_toEndOf="@+id/allCheckBox"
+        app:layout_constraintStart_toEndOf="@+id/pngPathSpinner"
         app:layout_constraintTop_toBottomOf="@+id/frameInputEditText" />
 
     <Spinner
         android:id="@+id/pngPathSpinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintEnd_toEndOf="@+id/processingTechniqueSpinner"
-        app:layout_constraintStart_toStartOf="@+id/pathTextView" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/pathTextView"
+        app:layout_constraintTop_toBottomOf="@+id/pathTextView" />
 
     <TextView
         android:id="@+id/pathTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="Path to pngs"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/pngPathSpinner"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/processingTechniqueSpinner"
+        app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         android:text="Frames to process"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/processingTechniqueSpinner"
-        app:layout_constraintTop_toBottomOf="@+id/processingTechniqueSpinner" />
+        app:layout_constraintBottom_toTopOf="@+id/frameInputEditText"
+        app:layout_constraintStart_toEndOf="@+id/processingTechniqueSpinner" />
 
     <EditText
         android:id="@+id/frameInputEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="numberDecimal"
         android:maxWidth="60dp"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/textView4" />
 
     <CheckBox
         android:id="@+id/allCheckBox"
@@ -83,20 +84,27 @@
         android:layout_marginStart="8dp"
         android:text="All"
         app:layout_constraintBaseline_toBaselineOf="@+id/frameInputEditText"
-        app:layout_constraintStart_toEndOf="@+id/frameInputEditText"/>
+        app:layout_constraintStart_toEndOf="@+id/frameInputEditText" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline3"
+        android:id="@+id/guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline9"
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.71" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.55" />
 
 </android.support.constraint.ConstraintLayout>
