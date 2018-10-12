@@ -47,7 +47,6 @@ public class TestStartScanFragment {
    */
   @Test
   public void toolbar_HasCorrectOptions() {
-    onView(withId(R.id.settings)).check(matches(isDisplayed()));
     onView(withId(R.id.delete)).check(doesNotExist());
     onView(withId(R.id.share)).check(doesNotExist());
     onView(withId(R.id.save)).check(doesNotExist());

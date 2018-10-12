@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
  * Class to test the UI contained within the MainActivity.
  */
 @RunWith(AndroidJUnit4.class)
-public class TestMainActivity {
+public class TestMainPage {
 
   /**
    * Launch the MainActivity.
@@ -45,6 +45,15 @@ public class TestMainActivity {
   public void defaultVisibleFragment_isStartScan() {
     onView(withId(R.id.startScanButton)).check(matches(isCompletelyDisplayed()));
     onView(withId(R.id.recyclerView)).check(matches(not(isCompletelyDisplayed())));
+    onView(withId(R.id.textView3)).check(matches(isCompletelyDisplayed()));
+    onView(withId(R.id.processingTechniqueSpinner)).check(matches(isCompletelyDisplayed()));
+    onView(withId(R.id.pngPathSpinner)).check(matches(isCompletelyDisplayed()));
+    onView(withId(R.id.pathTextView)).check(matches(isCompletelyDisplayed()));
+    onView(withId(R.id.textView4)).check(matches(isCompletelyDisplayed()));
+    onView(withId(R.id.frameInputEditText)).check(matches(isCompletelyDisplayed()));
+    onView(withId(R.id.allCheckBox)).check(matches(isCompletelyDisplayed()));
+    onView(withId(R.id.guideline9)).check(matches(isCompletelyDisplayed()));
+    onView(withId(R.id.guideline3)).check(matches(isCompletelyDisplayed()));
   }
 
   /**
@@ -116,4 +125,5 @@ public class TestMainActivity {
     onView(withId(R.id.viewPager)).perform(swipeLeft());
     onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
   }
+
 }
