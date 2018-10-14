@@ -1,0 +1,27 @@
+language: android
+jdk: oraclejdk8
+sudo: false
+
+android:
+  components:
+    - build-tools-28.0.2
+    - android-26
+
+env:
+  global:
+    # GITHUB_TOKEN
+    - secure: dApx7QTJwsoiLpc+1j6Hy+vYEW2O3/gwwbQP1nFItn9T1EGMQS6Vp+qwxZwskw0O3v0O+9WY3baxoKrSry55VvqYYrIhxLwO8tbl7iyftRzuV2VoO0eYe6+FSuKzgpLR87kFKTDXbnT1BQWDWnKE7fAAbdSEjdG41Bg8AY5poLiHx166PfJkCbJt1dah6pLSCgktHpQAEr4nwp1Q2LHFv9Xq3gbFv2/6SX4enqlM2Z3aR7POVYSaNghSxmdZWxXiV/bFph4r/e0L/9DU5x0XuMBEzb4wDNWMYzVH7szCwu8JuRID4h4+NyBWfRHwQRfUy1pob0Oikz+9jT8IvlLI52fRDyfWl5/hL799gvoVnriZMFJ+/9TA/jfb51GcFoaabP01w//uWLw1OkXWB0yHcLXLDMOXXWArSKKb7B4W1Rf3rPQ5kDih/AwMC44qnjT1cq1/d4KiD49dg30PHAskLe10qNIXCZZjDMXKxEEejnSNwe/w/MCYhTCSLanMFY9GDj5cPVwvUoyC+W6yKAUI8fmonSy4RoarReLuK5NKZZeJo2mgFU9djTgzmfXuIh3ksLVl7FqsTiWWL7mjgTq/2lSHgEben3L7ZxzA4shbBo4z1/IfTtruR3AsXZRxwCEBz1f98KMzPCuRuWI6SWp+mB39+ZRqwav8Pxkdycu+jno=
+
+script:
+  - ./gradlew checkstyle
+  - ./gradlew docs
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: "$GITHUB_TOKEN"
+  local-dir: app/build/docs/javadoc
+  allow-empty-commit: true
+  keep-history: true
+  on:
+    branch: development
