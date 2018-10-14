@@ -44,7 +44,8 @@ public class StartScanFragment extends Fragment {
     initialiseUi(rootView);
 
     if (savedInstanceState != null) {
-      setHasOptionsMenu(((MainActivity) getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
+      String previousFragment = ((MainActivity) getActivity()).getPreviouslyFocusedFragment();
+      setHasOptionsMenu(previousFragment.equals(getClass().getCanonicalName()));
     } else {
       setHasOptionsMenu(true);
     }
@@ -64,11 +65,19 @@ public class StartScanFragment extends Fragment {
     pngPathSpinner = rootView.findViewById(R.id.pngPathSpinner);
     processingTechniqueSpinner = rootView.findViewById(R.id.processingTechniqueSpinner);
 
-    ArrayAdapter<CharSequence> pngPathSpinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.image_png_paths, android.R.layout.simple_spinner_dropdown_item);
+    ArrayAdapter<CharSequence> pngPathSpinnerAdapter = ArrayAdapter.createFromResource(
+        getContext(),
+        R.array.image_png_paths,
+        android.R.layout.simple_spinner_dropdown_item
+    );
     pngPathSpinner.setAdapter(pngPathSpinnerAdapter);
     pngPathSpinner.setEnabled(false);
 
-    ArrayAdapter<CharSequence> processingTechniqueSpinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.processing_techniques, android.R.layout.simple_spinner_dropdown_item);
+    ArrayAdapter<CharSequence> processingTechniqueSpinnerAdapter = ArrayAdapter.createFromResource(
+        getContext(),
+        R.array.processing_techniques,
+        android.R.layout.simple_spinner_dropdown_item
+    );
     processingTechniqueSpinner.setAdapter(processingTechniqueSpinnerAdapter);
 
     allCheckbox.setOnCheckedChangeListener((button, isChecked) -> {
@@ -82,7 +91,8 @@ public class StartScanFragment extends Fragment {
     });
 
     frameInputEditText.setOnKeyListener((view, keyEvent, eventId) -> {
-      if (!frameInputEditText.getText().toString().equals("") && Server.getStatus() == Status.CONNECTED) {
+      if (!frameInputEditText.getText().toString().equals("")
+          && Server.getStatus() == Status.CONNECTED) {
         startScanButton.setEnabled(true);
       } else {
         startScanButton.setEnabled(false);
@@ -91,9 +101,12 @@ public class StartScanFragment extends Fragment {
     });
 
     startScanButton.setOnClickListener(view -> beginScan());
-    Server.status.observeOn(AndroidSchedulers.mainThread()).subscribe(connectionStatus ->
-            startScanButton.setEnabled(connectionStatus.compareTo(Status.CONNECTED) == 0
-              && (frameInputEditText.getText().toString() != "" || allCheckbox.isChecked())));
+    Server.status.observeOn(AndroidSchedulers.mainThread())
+        .subscribe(connectionStatus -> {
+          boolean isConnected = connectionStatus.compareTo(Status.CONNECTED) == 0;
+          startScanButton.setEnabled(isConnected
+              && frameInputEditText.getText().toString() != "" || allCheckbox.isChecked());
+        });
   }
 
   /**
@@ -103,13 +116,15 @@ public class StartScanFragment extends Fragment {
    */
   private void beginScan() {
     Bundle parametersToPass = new Bundle();
-    parametersToPass.putString("processingTechnique", processingTechniqueSpinner.getSelectedItem().toString());
+    String processingTechnique = processingTechniqueSpinner.getSelectedItem().toString();
+    parametersToPass.putString("processingTechnique", processingTechnique);
     parametersToPass.putString("pngPath", pngPathSpinner.getSelectedItem().toString());
 
     if (allCheckbox.isChecked()) {
       parametersToPass.putInt("framesToProcess", -1);
     } else {
-      parametersToPass.putInt("framesToProcess", Integer.parseInt(frameInputEditText.getText().toString()));
+      String frame = frameInputEditText.getText().toString();
+      parametersToPass.putInt("framesToProcess", Integer.parseInt(frame));
     }
 
     ScanProgressFragment scanProgressFragment = new ScanProgressFragment();

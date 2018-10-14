@@ -32,7 +32,6 @@ public class SaveDialog extends AppCompatDialogFragment {
    */
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
-    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     LayoutInflater inflater = getActivity().getLayoutInflater();
     //Define where to get the layout from for the dialogs view
     View view = inflater.inflate(R.layout.dialog_save, null);
@@ -43,27 +42,30 @@ public class SaveDialog extends AppCompatDialogFragment {
 
 
     //set the characteristics of the dialog view
+    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     builder.setView(view)
         .setTitle(R.string.save_dialog_title)
         //Create the cancel button
-        .setNegativeButton(R.string.save_dialog_button_cancel, new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialogInterface, int i) {
+        .setNegativeButton(R.string.save_dialog_button_cancel,
+          new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
 
-          }
-        })
+            }
+          })
         //Create the save button
-        .setPositiveButton(R.string.save_dialog_button_save, new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialogInterface, int i) {
+        .setPositiveButton(R.string.save_dialog_button_save,
+          new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+              Scan testScan = new Scan();
+              testScan.name = name.getText().toString();
+              testScan.description = description.getText().toString();
+              testScan.image
+                = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
 
-            Scan testScan = new Scan();
-            testScan.name = name.getText().toString();
-            testScan.description = description.getText().toString();
-            testScan.image = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-
-            ScanInterface scanAccessObject = new ScanAccessObject(getContext());
-            scanAccessObject.insertScan(testScan);
-          }
-        });
+              ScanInterface scanAccessObject = new ScanAccessObject(getContext());
+              scanAccessObject.insertScan(testScan);
+            }
+          });
     //Build the dialog in order for it to popup
     return builder.create();
   }

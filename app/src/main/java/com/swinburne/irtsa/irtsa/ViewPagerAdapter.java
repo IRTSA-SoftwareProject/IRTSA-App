@@ -57,11 +57,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
   }
 
-//  @Override
-//  public boolean isViewFromObject(View view, Object fragment) {
-//    return ((Fragment) fragment).getView() == view;
-//  }
-
   /**
    * Returns the amount of ViewPager tabs.
    *
@@ -147,7 +142,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         return fragment;
       }
     } else {
-      System.out.println("Unable to get currently visible fragment, fragment map does not contain key");
+      System.out.println(
+          "Unable to get currently visible fragment, fragment map does not contain key"
+      );
     }
 
     return null;

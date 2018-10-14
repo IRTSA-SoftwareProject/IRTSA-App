@@ -79,7 +79,8 @@ public class GalleryDetailFragment extends Fragment {
     }
     View v = inflater.inflate(R.layout.fragment_gallery_detail, container, false);
     if (savedInstanceState != null) {
-      setHasOptionsMenu(((MainActivity)getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
+      String previousFragment = ((MainActivity) getActivity()).getPreviouslyFocusedFragment();
+      setHasOptionsMenu(previousFragment.equals(getClass().getCanonicalName()));
     } else {
       setHasOptionsMenu(true);
     }
