@@ -10,16 +10,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.swinburne.irtsa.irtsa.MainActivity;
 import com.swinburne.irtsa.irtsa.R;
+import com.swinburne.irtsa.irtsa.utility.ZoomableImageView;
 
 /**
  * Fragment that displays the details of a completed scan.
  */
 public class ViewScanFragment extends Fragment {
-  private ImageView scanImage;
+  private ZoomableImageView scanImage;
   private Bitmap scanBitmap;
   private byte[] scanByteArray;
 
