@@ -23,42 +23,50 @@ public class ZoomableImageView extends AppCompatImageView {
   PointF start = new PointF();
   float minScale = 1f;
   float maxScale = 4f;
-  float[] m;
+  float[] floatMatrix;
 
-  float redundantXSpace, redundantYSpace;
-  float width, height;
+  float redundantXSpace;
+  float redundantYSpace;
+  float width;
+  float height;
   float saveScale = 1f;
-  float right, bottom, origWidth, origHeight, bmWidth, bmHeight;
+  float right;
+  float bottom;
+  float origWidth;
+  float origHeight;
+  float bmWidth;
+  float bmHeight;
 
-  ScaleGestureDetector mScaleDetector;
+  ScaleGestureDetector scaleDetector;
   Context context;
 
-  public ZoomableImageView(Context context, AttributeSet attr)
-  {
+  /**
+   * Constructs a zoomable image view.
+   * @param context The context
+   * @param attr The attribute set
+   */
+  public ZoomableImageView(Context context, AttributeSet attr) {
     super(context, attr);
     super.setClickable(true);
     this.context = context;
-    mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
+    scaleDetector = new ScaleGestureDetector(context, new ScaleListener());
     matrix.setTranslate(1f, 1f);
-    m = new float[9];
+    floatMatrix = new float[9];
     setImageMatrix(matrix);
     setScaleType(ScaleType.MATRIX);
 
-    setOnTouchListener(new OnTouchListener()
-    {
+    setOnTouchListener(new OnTouchListener() {
 
       @Override
-      public boolean onTouch(View v, MotionEvent event)
-      {
-        mScaleDetector.onTouchEvent(event);
+      public boolean onTouch(View v, MotionEvent event) {
+        scaleDetector.onTouchEvent(event);
 
-        matrix.getValues(m);
-        float x = m[Matrix.MTRANS_X];
-        float y = m[Matrix.MTRANS_Y];
+        matrix.getValues(floatMatrix);
+        float x = floatMatrix[Matrix.MTRANS_X];
+        float y = floatMatrix[Matrix.MTRANS_Y];
         PointF curr = new PointF(event.getX(), event.getY());
 
-        switch (event.getAction())
-        {
+        switch (event.getAction()) {
           //when one finger is touching
           //set the mode to DRAG
           case MotionEvent.ACTION_DOWN:
@@ -78,47 +86,47 @@ public class ZoomableImageView extends AppCompatImageView {
           case MotionEvent.ACTION_MOVE:
             //if the mode is ZOOM or
             //if the mode is DRAG and already zoomed
-            if (mode == ZOOM || (mode == DRAG && saveScale > minScale))
-            {
+            if (mode == ZOOM || (mode == DRAG && saveScale > minScale)) {
               float deltaX = curr.x - last.x;// x difference
               float deltaY = curr.y - last.y;// y difference
-              float scaleWidth = Math.round(origWidth * saveScale);// width after applying current scale
-              float scaleHeight = Math.round(origHeight * saveScale);// height after applying current scale
+              // width after applying current scale
+              float scaleWidth = Math.round(origWidth * saveScale);
+              // height after applying current scale
+              float scaleHeight = Math.round(origHeight * saveScale);
               //if scaleWidth is smaller than the views width
               //in other words if the image width fits in the view
               //limit left and right movement
-              if (scaleWidth < width)
-              {
+              if (scaleWidth < width) {
                 deltaX = 0;
-                if (y + deltaY > 0)
+                if (y + deltaY > 0) {
                   deltaY = -y;
-                else if (y + deltaY < -bottom)
+                } else if (y + deltaY < -bottom) {
                   deltaY = -(y + bottom);
-              }
-              //if scaleHeight is smaller than the views height
-              //in other words if the image height fits in the view
-              //limit up and down movement
-              else if (scaleHeight < height)
-              {
+                }
+              } else if (scaleHeight < height) {
+                //if scaleHeight is smaller than the views height
+                //in other words if the image height fits in the view
+                //limit up and down movement
                 deltaY = 0;
-                if (x + deltaX > 0)
+                if (x + deltaX > 0) {
                   deltaX = -x;
-                else if (x + deltaX < -right)
+                } else if (x + deltaX < -right) {
                   deltaX = -(x + right);
-              }
-              //if the image doesnt fit in the width or height
-              //limit both up and down and left and right
-              else
-              {
-                if (x + deltaX > 0)
+                }
+              } else {
+                //if the image doesn't fit in the width or height
+                //limit both up and down and left and right
+                if (x + deltaX > 0) {
                   deltaX = -x;
-                else if (x + deltaX < -right)
+                } else if (x + deltaX < -right) {
                   deltaX = -(x + right);
+                }
 
-                if (y + deltaY > 0)
+                if (y + deltaY > 0) {
                   deltaY = -y;
-                else if (y + deltaY < -bottom)
+                } else if (y + deltaY < -bottom) {
                   deltaY = -(y + bottom);
+                }
               }
               //move the image with the matrix
               matrix.postTranslate(deltaX, deltaY);
@@ -129,107 +137,97 @@ public class ZoomableImageView extends AppCompatImageView {
           //first finger is lifted
           case MotionEvent.ACTION_UP:
             mode = NONE;
-            int xDiff = (int) Math.abs(curr.x - start.x);
-            int yDiff = (int) Math.abs(curr.y - start.y);
-            if (xDiff < CLICK && yDiff < CLICK)
+            int diffX = (int) Math.abs(curr.x - start.x);
+            int diffY = (int) Math.abs(curr.y - start.y);
+            if (diffX < CLICK && diffY < CLICK) {
               performClick();
+            }
             break;
           // second finger is lifted
           case MotionEvent.ACTION_POINTER_UP:
             mode = NONE;
             break;
+          default:
+            // Ignore
         }
         setImageMatrix(matrix);
         invalidate();
         return true;
       }
-
     });
   }
 
   @Override
-  public void setImageBitmap(Bitmap bm)
-  {
+  public void setImageBitmap(Bitmap bm) {
     super.setImageBitmap(bm);
     bmWidth = bm.getWidth();
     bmHeight = bm.getHeight();
   }
 
-  public void setMaxZoom(float x)
-  {
+  public void setMaxZoom(float x) {
     maxScale = x;
   }
 
-  private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener
-  {
+  private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
 
     @Override
-    public boolean onScaleBegin(ScaleGestureDetector detector)
-    {
+    public boolean onScaleBegin(ScaleGestureDetector detector) {
       mode = ZOOM;
       return true;
     }
 
     @Override
-    public boolean onScale(ScaleGestureDetector detector)
-    {
-      float mScaleFactor = detector.getScaleFactor();
+    public boolean onScale(ScaleGestureDetector detector) {
+      float scaleFactor = detector.getScaleFactor();
       float origScale = saveScale;
-      saveScale *= mScaleFactor;
-      if (saveScale > maxScale)
-      {
+      saveScale *= scaleFactor;
+      if (saveScale > maxScale) {
         saveScale = maxScale;
-        mScaleFactor = maxScale / origScale;
-      }
-      else if (saveScale < minScale)
-      {
+        scaleFactor = maxScale / origScale;
+      } else if (saveScale < minScale) {
         saveScale = minScale;
-        mScaleFactor = minScale / origScale;
+        scaleFactor = minScale / origScale;
       }
       right = width * saveScale - width - (2 * redundantXSpace * saveScale);
       bottom = height * saveScale - height - (2 * redundantYSpace * saveScale);
-      if (origWidth * saveScale <= width || origHeight * saveScale <= height)
-      {
-        matrix.postScale(mScaleFactor, mScaleFactor, width / 2, height / 2);
-        if (mScaleFactor < 1)
-        {
-          matrix.getValues(m);
-          float x = m[Matrix.MTRANS_X];
-          float y = m[Matrix.MTRANS_Y];
-          if (mScaleFactor < 1)
-          {
-            if (Math.round(origWidth * saveScale) < width)
-            {
-              if (y < -bottom)
+      if (origWidth * saveScale <= width || origHeight * saveScale <= height) {
+        matrix.postScale(scaleFactor, scaleFactor, width / 2, height / 2);
+        if (scaleFactor < 1) {
+          matrix.getValues(floatMatrix);
+          float x = floatMatrix[Matrix.MTRANS_X];
+          float y = floatMatrix[Matrix.MTRANS_Y];
+          if (scaleFactor < 1) {
+            if (Math.round(origWidth * saveScale) < width) {
+              if (y < -bottom) {
                 matrix.postTranslate(0, -(y + bottom));
-              else if (y > 0)
+              } else if (y > 0) {
                 matrix.postTranslate(0, -y);
-            }
-            else
-            {
-              if (x < -right)
+              }
+            } else {
+              if (x < -right) {
                 matrix.postTranslate(-(x + right), 0);
-              else if (x > 0)
+              } else if (x > 0) {
                 matrix.postTranslate(-x, 0);
+              }
             }
           }
         }
-      }
-      else
-      {
-        matrix.postScale(mScaleFactor, mScaleFactor, detector.getFocusX(), detector.getFocusY());
-        matrix.getValues(m);
-        float x = m[Matrix.MTRANS_X];
-        float y = m[Matrix.MTRANS_Y];
-        if (mScaleFactor < 1) {
-          if (x < -right)
+      } else {
+        matrix.postScale(scaleFactor, scaleFactor, detector.getFocusX(), detector.getFocusY());
+        matrix.getValues(floatMatrix);
+        float x = floatMatrix[Matrix.MTRANS_X];
+        float y = floatMatrix[Matrix.MTRANS_Y];
+        if (scaleFactor < 1) {
+          if (x < -right) {
             matrix.postTranslate(-(x + right), 0);
-          else if (x > 0)
+          } else if (x > 0) {
             matrix.postTranslate(-x, 0);
-          if (y < -bottom)
+          }
+          if (y < -bottom) {
             matrix.postTranslate(0, -(y + bottom));
-          else if (y > 0)
+          } else if (y > 0) {
             matrix.postTranslate(0, -y);
+          }
         }
       }
       return true;
@@ -237,8 +235,7 @@ public class ZoomableImageView extends AppCompatImageView {
   }
 
   @Override
-  protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec)
-  {
+  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     width = MeasureSpec.getSize(widthMeasureSpec);
     height = MeasureSpec.getSize(heightMeasureSpec);
@@ -252,7 +249,7 @@ public class ZoomableImageView extends AppCompatImageView {
     saveScale = 1f;
 
     // Center the image
-    redundantYSpace = height - (scale * bmHeight) ;
+    redundantYSpace = height - (scale * bmHeight);
     redundantXSpace = width - (scale * bmWidth);
     redundantYSpace /= 2;
     redundantXSpace /= 2;
