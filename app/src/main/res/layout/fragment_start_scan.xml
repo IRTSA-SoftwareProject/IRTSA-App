@@ -84,9 +84,9 @@
         android:layout_marginStart="14dp"
         android:layout_marginTop="8dp"
         android:text="All"
-        app:layout_constraintBottom_toBottomOf="@+id/editText2"
-        app:layout_constraintStart_toEndOf="@+id/editText2"
-        app:layout_constraintTop_toTopOf="@+id/editText2" />
+        app:layout_constraintBottom_toBottomOf="@+id/endFrameRangeEditText"
+        app:layout_constraintStart_toEndOf="@+id/endFrameRangeEditText"
+        app:layout_constraintTop_toTopOf="@+id/endFrameRangeEditText" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline3"
@@ -103,7 +103,7 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/endFrameRangeEditText"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

@@ -3,23 +3,17 @@ package com.swinburne.irtsa.irtsa.scan;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.swinburne.irtsa.irtsa.MainActivity;
 import com.swinburne.irtsa.irtsa.R;
-import com.swinburne.irtsa.irtsa.server.Message;
 import com.swinburne.irtsa.irtsa.server.Server;
 import com.swinburne.irtsa.irtsa.server.Status;
 
@@ -31,7 +25,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class StartScanFragment extends Fragment {
   Button startScanButton;
   CheckBox allCheckbox;
-  EditText frameInputEditText;
+  EditText beginFrameRangeEditText;
+  EditText endFrameRangeEditText;
   Spinner pngPathSpinner;
   Spinner processingTechniqueSpinner;
 
@@ -61,7 +56,8 @@ public class StartScanFragment extends Fragment {
   private void initialiseUi(View rootView) {
     startScanButton = rootView.findViewById(R.id.startScanButton);
     allCheckbox = rootView.findViewById(R.id.allCheckBox);
-    frameInputEditText = rootView.findViewById(R.id.frameInputEditText);
+    beginFrameRangeEditText = rootView.findViewById(R.id.beginFrameRangeEditText);
+    endFrameRangeEditText = rootView.findViewById(R.id.endFrameRangeEditText);
     pngPathSpinner = rootView.findViewById(R.id.pngPathSpinner);
     processingTechniqueSpinner = rootView.findViewById(R.id.processingTechniqueSpinner);
 
@@ -86,12 +82,12 @@ public class StartScanFragment extends Fragment {
       } else {
         startScanButton.setEnabled(false);
       }
-      frameInputEditText.setEnabled(!isChecked);
-      frameInputEditText.setText("");
+      beginFrameRangeEditText.setEnabled(!isChecked);
+      beginFrameRangeEditText.setText("");
     });
 
-    frameInputEditText.setOnKeyListener((view, keyEvent, eventId) -> {
-      if (!frameInputEditText.getText().toString().equals("")
+    beginFrameRangeEditText.setOnKeyListener((view, keyEvent, eventId) -> {
+      if (!beginFrameRangeEditText.getText().toString().equals("")
           && Server.getStatus() == Status.CONNECTED) {
         startScanButton.setEnabled(true);
       } else {
@@ -105,7 +101,7 @@ public class StartScanFragment extends Fragment {
         .subscribe(connectionStatus -> {
           boolean isConnected = connectionStatus.compareTo(Status.CONNECTED) == 0;
           startScanButton.setEnabled(isConnected
-              && frameInputEditText.getText().toString() != "" || allCheckbox.isChecked());
+              && beginFrameRangeEditText.getText().toString() != "" || allCheckbox.isChecked());
         });
   }
 
@@ -122,9 +118,13 @@ public class StartScanFragment extends Fragment {
 
     if (allCheckbox.isChecked()) {
       parametersToPass.putInt("framesToProcess", -1);
+      parametersToPass.putInt("frameStart", -1);
     } else {
-      String frame = frameInputEditText.getText().toString();
-      parametersToPass.putInt("framesToProcess", Integer.parseInt(frame));
+      parametersToPass.putInt("framesToProcess",
+              Integer.parseInt(beginFrameRangeEditText.getText().toString()));
+
+      parametersToPass.putInt("frameStart",
+              Integer.parseInt(endFrameRangeEditText.getText().toString()));
     }
 
     ScanProgressFragment scanProgressFragment = new ScanProgressFragment();
