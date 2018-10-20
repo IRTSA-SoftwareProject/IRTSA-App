@@ -69,25 +69,39 @@
         app:layout_constraintTop_toBottomOf="@+id/processingTechniqueSpinner" />
 
     <EditText
-        android:id="@+id/frameInputEditText"
-        android:layout_width="wrap_content"
+        android:id="@+id/beginFrameRangeEditText"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:gravity="center"
         android:inputType="numberDecimal"
         android:maxWidth="60dp"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="-"
+        android:textSize="36sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/beginFrameRangeEditText"
+        app:layout_constraintStart_toEndOf="@+id/beginFrameRangeEditText" />
+
     <CheckBox
         android:id="@+id/allCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="All"
-        app:layout_constraintBaseline_toBaselineOf="@+id/frameInputEditText"
-        app:layout_constraintStart_toEndOf="@+id/frameInputEditText" />
+        app:layout_constraintBottom_toBottomOf="@+id/editText"
+        app:layout_constraintStart_toEndOf="@+id/editText"
+        app:layout_constraintTop_toTopOf="@+id/editText" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline4"
@@ -109,5 +123,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.55" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="numberSigned"
+        app:layout_constraintBaseline_toBaselineOf="@+id/beginFrameRangeEditText"
+        app:layout_constraintStart_toEndOf="@+id/textView5" />
 
 </android.support.constraint.ConstraintLayout>
