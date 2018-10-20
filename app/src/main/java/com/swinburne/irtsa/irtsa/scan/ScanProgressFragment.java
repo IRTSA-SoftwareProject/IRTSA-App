@@ -1,6 +1,7 @@
 package com.swinburne.irtsa.irtsa.scan;
 
 import android.os.Bundle;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Base64;
@@ -23,6 +24,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class ScanProgressFragment extends Fragment {
   private ProgressBar scanProgressBar;
   private TextView scanProgressText;
+
+  CountingIdlingResource idlingResource = new CountingIdlingResource("PROCESSING");
 
   public ScanProgressFragment() {
     // Required empty public constructor
@@ -57,6 +60,7 @@ public class ScanProgressFragment extends Fragment {
                            Bundle savedInstanceState) {
     // Inflate the layout for this fragment
     View v = inflater.inflate(R.layout.fragment_scan_progress, container, false);
+    idlingResource.increment();
     scanProgressBar = v.findViewById(R.id.scanProgressBar);
     scanProgressText = v.findViewById(R.id.scanProgressText);
     scanProgressText.setText("Scan Progress is: 0%");
@@ -90,6 +94,7 @@ public class ScanProgressFragment extends Fragment {
 
               .getChildFragmentManager().beginTransaction();
       transaction.replace(R.id.scanContainer, viewScanFragment, "ViewScanFragment").commit();
+      idlingResource.decrement();
     });
 
 

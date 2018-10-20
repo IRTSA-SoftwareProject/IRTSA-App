@@ -1,6 +1,7 @@
 package com.swinburne.irtsa.irtsa.scan;
 
 import android.os.Bundle;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
