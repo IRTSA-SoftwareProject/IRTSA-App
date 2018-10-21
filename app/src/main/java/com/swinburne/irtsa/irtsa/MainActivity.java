@@ -1,5 +1,10 @@
 package com.swinburne.irtsa.irtsa;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,6 +14,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.swinburne.irtsa.irtsa.gallery.GalleryFragment;
+import com.swinburne.irtsa.irtsa.model.Scan;
+import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 import com.swinburne.irtsa.irtsa.scan.ViewScanFragment;
 import com.swinburne.irtsa.irtsa.server.Server;
 import com.swinburne.irtsa.irtsa.server.Status;
@@ -40,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     setTheme(R.style.AppThemeLight);
     super.onCreate(savedInstanceState);
+    requestLocalStoragePermission();
+
     if (savedInstanceState != null) {
       previouslyFocusedFragment = savedInstanceState.getString("previouslyFocusedFragment");
     }
@@ -172,5 +181,14 @@ public class MainActivity extends AppCompatActivity {
     Fragment currentFragment = pagerAdapter.getCurrentlyVisibleFragment(pager.getCurrentItem());
     String canonicalName = currentFragment.getClass().getCanonicalName();
     outState.putString("previouslyFocusedFragment", canonicalName);
+  }
+
+  private void requestLocalStoragePermission() {
+    String locationPermission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+    int hasPermission = checkSelfPermission(locationPermission);
+    String[] permissions = new String[] { locationPermission };
+    if (hasPermission != PackageManager.PERMISSION_GRANTED) {
+      requestPermissions(permissions, 1);
+    }
   }
 }

@@ -3,7 +3,6 @@ package com.swinburne.irtsa.irtsa.scan;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -44,14 +43,10 @@ public class SaveDialog extends AppCompatDialogFragment {
     //set the characteristics of the dialog view
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     builder.setView(view)
-        .setTitle(R.string.save_dialog_title)
-        //Create the cancel button
-        .setNegativeButton(R.string.save_dialog_button_cancel,
-          new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-          })
+            .setTitle(R.string.save_dialog_title)
+            //Create the cancel button
+            .setNegativeButton(R.string.save_dialog_button_cancel, (dialogInterface, i) -> {
+            })
         //Create the save button
         .setPositiveButton(R.string.save_dialog_button_save,
           new DialogInterface.OnClickListener() {
@@ -60,7 +55,7 @@ public class SaveDialog extends AppCompatDialogFragment {
               testScan.name = name.getText().toString();
               testScan.description = description.getText().toString();
               testScan.image
-                = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
+                      = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
 
               ScanInterface scanAccessObject = new ScanAccessObject(getContext());
               scanAccessObject.insertScan(testScan);

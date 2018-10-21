@@ -126,6 +126,7 @@ public class StartScanFragment extends Fragment {
    * the user presses the back button.
    */
   private void beginScan() {
+    // Send a message to start the scan
     Bundle parametersToPass = new Bundle();
     String processingTechnique = processingTechniqueSpinner.getSelectedItem().toString();
     parametersToPass.putString("processingTechnique", processingTechnique);
