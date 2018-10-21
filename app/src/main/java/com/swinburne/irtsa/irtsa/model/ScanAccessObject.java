@@ -39,7 +39,11 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
   public Boolean deleteScan(Integer id) {
     SQLiteDatabase db = this.getWritableDatabase();
 
-    return db.delete(TABLE_SCAN, COLUMN_ID + "=" + id, null) > 0;
+    boolean result = db.delete(TABLE_SCAN, COLUMN_ID + "=" + id, null) > 0;
+
+    db.close();
+
+    return result;
   }
 
   @Override
@@ -56,11 +60,12 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
       data.put(COLUMN_DESCRIPTION, description);
     }
 
-    if (data.size() > 0) {
-      return db.update(TABLE_SCAN, data, COLUMN_ID + "=" + id, null) > 0;
-    }  else {
-      return false;
-    }
+    boolean result = data.size() > 0
+            && db.update(TABLE_SCAN, data, COLUMN_ID + "=" + id, null) > 0;
+
+    db.close();
+
+    return result;
   }
 
 
@@ -95,6 +100,8 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
       result.add(scan);
     }
 
+    db.close();
+
     return result;
   }
 
@@ -114,6 +121,8 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
 
     SQLiteDatabase db = this.getWritableDatabase();
     long rowInserted = db.insert(TABLE_SCAN, null, data);
+
+    db.close();
 
     return rowInserted != -1;
   }
