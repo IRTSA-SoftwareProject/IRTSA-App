@@ -14,34 +14,40 @@ import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 import com.swinburne.irtsa.irtsa.model.ScanInterface;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This dialog is displayed when the user selects delete when viewing a saved scan.
+ * It confirms the user would like to delete the scan. If confirmed, the scan is deleted from
+ * the local SQLite database.
  */
 public class GalleryDeleteDialog extends AppCompatDialogFragment {
+
+  /**
+   * Builds the dialog's view and specifies the behaviour of its buttons.
+   * @param savedInstanceState The saved instance of the dialog.
+   * @return The created dialog.
+   */
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     LayoutInflater inflater = getActivity().getLayoutInflater();
-    Integer scanId = getArguments().getInt("scanId");
-    //Define where to get the layout from for the dialogs view
     View view = inflater.inflate(R.layout.dialog_gallery_delete, null);
-    //set the characteristics of the dialog view
+
+    // Get the ID of the scan we wish to delete.
+    Integer scanId = getArguments().getInt("scanId");
+
+    // Set the view and behaviour of this dialog.
     builder.setView(view)
         .setTitle("Confirm Delete of Scan")
         //Create the cancel button
-        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialogInterface, int i) {
-
-          }
+        .setNegativeButton("No", (dialogInterface, i) -> {
         })
         //Create the save button
-        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialogInterface, int i) {
+        .setPositiveButton("Yes", (dialogInterface, i) -> {
             ScanInterface scanAccessObject = new ScanAccessObject(getContext());
             scanAccessObject.deleteScan(scanId);
             getActivity().onBackPressed();
-          }
         });
-    //Build the dialog in order for it to popup
+
+    // Return the created dialog.
     return builder.create();
   }
 }

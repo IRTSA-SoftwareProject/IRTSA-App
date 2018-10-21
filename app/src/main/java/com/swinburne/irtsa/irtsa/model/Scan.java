@@ -16,11 +16,11 @@ import java.util.Date;
  * and easily passed between Fragments/Activities.
  */
 public class Scan implements Parcelable {
-  public Integer id;
-  public Bitmap image;
-  public String description;
-  public String name;
-  public Date createdAt;
+  private Integer id;
+  private Bitmap image;
+  private String description;
+  private String name;
+  private Date createdAt;
 
   public Scan(){}
 
@@ -32,18 +32,58 @@ public class Scan implements Parcelable {
     this.createdAt = new Date(in.readLong());
   }
 
-  private byte[] getImage() {
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public Bitmap getImage() {
+    return image;
+  }
+
+  public void setImage(Bitmap image) {
+    this.image = image;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Date getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  private byte[] getImageAsByteArray() {
     ByteArrayOutputStream stream = new ByteArrayOutputStream();
     image.compress(Bitmap.CompressFormat.PNG, 100, stream);
     return stream.toByteArray();
   }
 
-  static DateFormat getDateFormat() {
-    return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-  }
-
   private void setImage(byte[] image) {
     this.image = BitmapFactory.decodeByteArray(image, 0, image.length);
+  }
+
+  static DateFormat getDateFormat() {
+    return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   }
 
   public static final Parcelable.Creator<Scan> CREATOR = new Parcelable.Creator<Scan>() {
@@ -64,7 +104,7 @@ public class Scan implements Parcelable {
   @Override
   public void writeToParcel(Parcel parcel, int i) {
     parcel.writeInt(this.id);
-    parcel.writeByteArray(this.getImage());
+    parcel.writeByteArray(this.getImageAsByteArray());
     parcel.writeString(this.description);
     parcel.writeString(this.name);
     parcel.writeLong(this.createdAt.getTime());

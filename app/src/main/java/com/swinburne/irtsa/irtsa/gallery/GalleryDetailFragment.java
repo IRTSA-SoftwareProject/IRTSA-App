@@ -25,7 +25,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 /**
- * A simple {@link Fragment} subclass.
+ * This fragment displays a scan that has been selected from the {@link GalleryDetailFragment}.
+ * The user is able to view, share, edit, delete and save the image to local storage from here.
  */
 public class GalleryDetailFragment extends Fragment {
   private Scan scan;
@@ -34,6 +35,57 @@ public class GalleryDetailFragment extends Fragment {
   private TextView description;
   private TextView date;
 
+  /**
+   * Inflate the layout for this fragment.
+   * Retrieves the scan to be displayed from its list of arguments.
+   * @param inflater An inflater to inflate this fragment's layout.
+   * @param container This view's container.
+   * @param savedInstanceState Saved instance of this fragment.
+   * @return This Fragment's view.
+   */
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
+    View v = inflater.inflate(R.layout.fragment_gallery_detail, container, false);
+
+    // Retrieve the scan passed to this fragment that must be displayed.
+    Bundle bundle = this.getArguments();
+    if (bundle != null) {
+      scan = bundle.getParcelable("Scan");
+    }
+
+    // Set the visibility of the options menu
+    if (savedInstanceState != null) {
+      String previousFragment = ((MainActivity) getActivity()).getPreviouslyFocusedFragment();
+      setHasOptionsMenu(previousFragment.equals(getClass().getCanonicalName()));
+    } else {
+      setHasOptionsMenu(true);
+    }
+    initialiseUi(v, scan);
+    return v;
+  }
+
+  /**
+   * Initialise the different UI components to references of their view counterparts.
+   * @param v This layout's root view.
+   * @param scan The scan passed to this Fragment as an argument.
+   */
+  private void initialiseUi(View v, Scan scan) {
+    image = v.findViewById(R.id.galleryDetailImage);
+    image.setImageBitmap(scan.getImage());
+    name = v.findViewById(R.id.galleryDetailName);
+    name.setText(getString(R.string.gallery_detail_label_name) + scan.getName());
+    description = v.findViewById(R.id.galleryDetailDescription);
+    description.setText(getString(R.string.gallery_detail_label_description) + scan.getDescription());
+    date = v.findViewById(R.id.galleryDetailDate);
+    date.setText(getString(R.string.gallery_detail_label_date) + scan.getCreatedAt());
+  }
+
+  /**
+   * Defines the layout to use for the options menu.
+   * @param menu The current menu instance.
+   * @param inflater An inflate to inflate our toolbar layout.
+   */
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     super.onCreateOptionsMenu(menu, inflater);
@@ -41,10 +93,9 @@ public class GalleryDetailFragment extends Fragment {
   }
 
   /**
-   * Opens the DeleteDialog Fragment if the save menu icon is selected.
+   * Performs the appropriate action in response to a click on a toolbar icon.
    *
    * @param item Selected menu item.
-   * @return
    */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
@@ -69,53 +120,33 @@ public class GalleryDetailFragment extends Fragment {
     return super.onOptionsItemSelected(item);
   }
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    Bundle bundle = this.getArguments();
-    if (bundle != null) {
-      scan = bundle.getParcelable("Scan");
-    }
-    View v = inflater.inflate(R.layout.fragment_gallery_detail, container, false);
-    if (savedInstanceState != null) {
-      String previousFragment = ((MainActivity) getActivity()).getPreviouslyFocusedFragment();
-      setHasOptionsMenu(previousFragment.equals(getClass().getCanonicalName()));
-    } else {
-      setHasOptionsMenu(true);
-    }
-    initialiseUi(v, scan);
-    return v;
-  }
-
-  private void initialiseUi(View v, Scan scan) {
-    image = v.findViewById(R.id.galleryDetailImage);
-    image.setImageBitmap(scan.image);
-    name = v.findViewById(R.id.galleryDetailName);
-    name.setText(getString(R.string.gallery_detail_label_name) + scan.name);
-    description = v.findViewById(R.id.galleryDetailDescription);
-    description.setText(getString(R.string.gallery_detail_label_description) + scan.description);
-    date = v.findViewById(R.id.galleryDetailDate);
-    date.setText(getString(R.string.gallery_detail_label_date) + scan.createdAt);
-  }
-
+  /**
+   * Opens a dialog that allows the user to delete a scan from the SQLite database.
+   */
   private void openDeleteDialog() {
     GalleryDeleteDialog deleteDialog = new GalleryDeleteDialog();
     Bundle scanId = new Bundle();
-    scanId.putInt("scanId", scan.id);
+    scanId.putInt("scanId", scan.getId());
     deleteDialog.setArguments(scanId);
     deleteDialog.show(getFragmentManager(), "Delete Dialog");
   }
 
+  /**
+   * Opens a dialog that allows the user to edit the details of a scan in the SQLite database.
+   */
   private void openEditDialog() {
     GalleryEditDialog editDialog = new GalleryEditDialog();
     editDialog.getSavedScanInformation().subscribe(scanDetailsSavedConsumer);
     Bundle scanId = new Bundle();
-    scanId.putInt("scanId", scan.id);
+    scanId.putInt("scanId", scan.getId());
     editDialog.setArguments(scanId);
     editDialog.show(getFragmentManager(), "Edit Dialog");
   }
 
+  /**
+   * Opens a dialog that allows the user to save a scan to
+   * the public gallery folder on their device.
+   */
   private void openSaveToGalleryDialog() {
     GallerySaveDialog saveDialog = new GallerySaveDialog();
     Bundle scanBundle = new Bundle();
@@ -136,7 +167,7 @@ public class GalleryDetailFragment extends Fragment {
       File cachePath = new File(getContext().getCacheDir(), "images");
       cachePath.mkdirs();
       FileOutputStream stream = new FileOutputStream(cachePath + "/imageToShare.png");
-      scan.image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+      scan.getImage().compress(Bitmap.CompressFormat.PNG, 100, stream);
       stream.close();
 
       // Get the saved files URI
@@ -160,11 +191,13 @@ public class GalleryDetailFragment extends Fragment {
     }
   }
 
+  /**
+   * Be notified and update the UI if the details of the currently viewed scan change.
+   */
   Consumer<Bundle> scanDetailsSavedConsumer = (savedScanDetails) -> {
     if (savedScanDetails.containsKey("newName")) {
       name.setText("Description: " + savedScanDetails.getString("newName"));
     }
-
     if (savedScanDetails.containsKey("newDescription")) {
       description.setText("Name: " + savedScanDetails.getString("newDescription"));
     }

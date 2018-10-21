@@ -17,19 +17,20 @@ public class GallerySaveDialog extends AppCompatDialogFragment {
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     LayoutInflater inflater = getActivity().getLayoutInflater();
-    Scan scan = (Scan)getArguments().getParcelable("scan");
-    //Define where to get the layout from for the dialogs view
     View view = inflater.inflate(R.layout.dialog_gallery_save, null);
-    //set the characteristics of the dialog view
+
+    Scan scan = getArguments().getParcelable("scan");
+
+    // Set the view and behaviour of this dialog.
     builder.setView(view)
             .setTitle("Save thermogram to local storage?")
             .setNegativeButton("No", (dialogInterface, i) -> { })
             .setPositiveButton("Yes", (dialogInterface, i) -> {
               String url = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
-                      scan.image, scan.name, scan.description);
+                      scan.getImage(), scan.getName(), scan.getDescription());
               System.out.println("Image saved to: " + url);
             });
-    //Build the dialog in order for it to popup
+    // Build the dialog in order for it to popup
     return builder.create();
   }
 }
