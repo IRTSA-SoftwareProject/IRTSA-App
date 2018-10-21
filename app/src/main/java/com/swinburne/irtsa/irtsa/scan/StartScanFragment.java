@@ -3,6 +3,7 @@ package com.swinburne.irtsa.irtsa.scan;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,7 @@ public class StartScanFragment extends Fragment {
             android.R.layout.simple_spinner_item, new String[]{"Retrieving directories"}));
     pngPathSpinner.setAlpha((float) 0.7);
     pngPathSpinner.setEnabled(false);
+    startScanButton.setEnabled(false);
 
     // Set the text for the technique spinner from strings.xml
     ArrayAdapter<CharSequence> processingTechniqueSpinnerAdapter = ArrayAdapter.createFromResource(
@@ -89,16 +91,8 @@ public class StartScanFragment extends Fragment {
       endFrameRangeEditText.setText("");
     });
 
-    // Enable the start scan button if tex
-    beginFrameRangeEditText.setOnKeyListener((view, keyEvent, eventId) -> {
-      if (!beginFrameRangeEditText.getText().toString().equals("")
-              && Server.getStatus() == Status.CONNECTED) {
-        startScanButton.setEnabled(true);
-      } else {
-        startScanButton.setEnabled(false);
-      }
-      return false;
-    });
+    beginFrameRangeEditText.setOnKeyListener(new InputRangeEnteredListener());
+    endFrameRangeEditText.setOnKeyListener(new InputRangeEnteredListener());
 
     startScanButton.setOnClickListener(view -> beginScan());
 
@@ -109,8 +103,14 @@ public class StartScanFragment extends Fragment {
               if (isConnected) {
                 Server.send(new GetDirectoriesMessage());
               }
-              startScanButton.setEnabled(isConnected
-                  && beginFrameRangeEditText.getText().toString() != "" || allCheckbox.isChecked());
+
+              if (isConnected && allCheckbox.isChecked()) {
+                startScanButton.setEnabled(true);
+              } else {
+                startScanButton.setEnabled(!beginFrameRangeEditText.getText().toString().equals("")
+                        && !endFrameRangeEditText.getText().toString().equals(""));
+              }
+
             });
 
 
@@ -172,5 +172,19 @@ public class StartScanFragment extends Fragment {
     }
 
     Body body;
+  }
+
+  private class InputRangeEnteredListener implements View.OnKeyListener {
+    @Override
+    public boolean onKey(View view, int i, KeyEvent keyEvent) {
+      if (!beginFrameRangeEditText.getText().toString().equals("")
+              && !endFrameRangeEditText.getText().toString().equals("")
+              && Server.getStatus() == Status.CONNECTED) {
+        startScanButton.setEnabled(true);
+      } else {
+        startScanButton.setEnabled(false);
+      }
+      return false;
+    }
   }
 }
