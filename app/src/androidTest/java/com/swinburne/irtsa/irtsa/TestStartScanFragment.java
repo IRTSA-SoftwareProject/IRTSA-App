@@ -8,8 +8,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
+import android.support.test.espresso.IdlingRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,8 +50,6 @@ public class TestStartScanFragment {
    */
   @Test
   public void ToolbarHasCorrectOptions() {
-    onView(withId(R.id.delete)).check(doesNotExist());
-    onView(withId(R.id.share)).check(doesNotExist());
     onView(withId(R.id.save)).check(doesNotExist());
   }
 
@@ -58,6 +59,7 @@ public class TestStartScanFragment {
    */
   @Test
   public void StartScanButtonNavigatesToViewScanFragment() {
+    IdlingRegistry.getInstance().register(activityRule.getActivity().connectionIdleResource);
     onView(withId(R.id.allCheckBox)).perform(click());
     onView(withId(R.id.startScanButton)).perform(click());
     onView(withId(R.id.startScanButton)).check(doesNotExist());
