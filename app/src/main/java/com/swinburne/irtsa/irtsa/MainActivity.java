@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     tabLayout.getTabAt(1).setIcon(R.drawable.ic_gallery);
 
     // Start attempting to connect to the server
-    if (Server.getStatus() != Status.CONNECTING) {
+    if (Server.getStatus() == Status.NOT_CONNECTED) {
       Server.connect();
     }
   }
