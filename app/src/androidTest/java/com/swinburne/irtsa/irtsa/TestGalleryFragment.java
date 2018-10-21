@@ -3,8 +3,10 @@ package com.swinburne.irtsa.irtsa;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -35,7 +37,7 @@ public class TestGalleryFragment {
    * Navigates to the GalleryFragment.
    */
   @Before
-  public void setup() {
+  public void Setup() {
     onView(withId(R.id.viewPager)).perform(swipeLeft());
   }
 
@@ -43,7 +45,7 @@ public class TestGalleryFragment {
    * Asserts the RecyclerView is visible.
    */
   @Test
-  public void recyclerView_IsVisible() {
+  public void RecyclerViewIsVisible() {
     onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
   }
 
@@ -51,32 +53,44 @@ public class TestGalleryFragment {
    * Assert the toolbar is displaying the correct menu options.
    */
   @Test
-  public void toolbar_HasCorrectOptions() {
+  public void ToolbarHasCorrectOptions() {
     onView(withId(R.id.delete)).check(doesNotExist());
     onView(withId(R.id.share)).check(doesNotExist());
     onView(withId(R.id.save)).check(doesNotExist());
-    //onView(withId(R.id.settings)).check(doesNotExist());
   }
+
+  /**
+   * Assert that the bottom navigation bar has the correct options
+   */
   @Test
-  public void bottomNavigation_hasRequiredOptions() {
+  public void BottomNavigationHasRequiredOptions() {
     onView(allOf(withText("Scan"), isDescendantOfA(withId(R.id.tabLayout))))
-            .check(matches(isDisplayed()));
+        .check(matches(isDisplayed()));
     onView(allOf(withText("Gallery"), isDescendantOfA(withId(R.id.tabLayout))))
-            .check(matches(isDisplayed()));
+        .check(matches(isDisplayed()));
   }
+
+  /**
+   * Ensure that the start scan fragment is shown on bottom
+   * navigation scan item press.
+   */
   @Test
-  public void back_to_activity_main_page_by_hit_scan_buttom(){
+  public void BackToStartScanFragmentByHitScanButton(){
     onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
     onView(allOf(withText("Scan"), isDescendantOfA(withId(R.id.tabLayout))))
-            .perform(click());
-    onView(withId(R.id.viewPager)).check(matches(isDisplayed()));
+        .perform(click());
+    onView(withId(R.id.startScanButton)).check(matches(isDisplayed()));
 
   }
+
+  /**
+   * Ensure that start scan is shown after swiping left
+   */
   @Test
-  public void back_to_activity_main_page_by_swipe_right() {
+  public void BackToStartScanFragmentBySwipeRight() {
     onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
-    onView(withId(R.id.recyclerView)).perform(swipeLeft());
-    onView(withId(R.id.viewPager)).check(matches(isDisplayed()));
+    onView(withId(R.id.recyclerView)).perform(swipeRight());
+    onView(withId(R.id.startScanButton)).check(matches(isDisplayed()));
   }
 
 }
