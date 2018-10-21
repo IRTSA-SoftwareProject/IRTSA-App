@@ -12,27 +12,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.swinburne.irtsa.irtsa.MainActivity;
 import com.swinburne.irtsa.irtsa.R;
 import com.swinburne.irtsa.irtsa.model.Scan;
+import com.swinburne.irtsa.irtsa.utility.ZoomableImageView;
 
 import io.reactivex.functions.Consumer;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.List;
-
-import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class GalleryDetailFragment extends Fragment {
   private Scan scan;
-  private ImageView image;
+  private ZoomableImageView image;
   private TextView name;
   private TextView description;
   private TextView date;
@@ -82,7 +79,8 @@ public class GalleryDetailFragment extends Fragment {
     }
     View v = inflater.inflate(R.layout.fragment_gallery_detail, container, false);
     if (savedInstanceState != null) {
-      setHasOptionsMenu(((MainActivity)getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
+      String previousFragment = ((MainActivity) getActivity()).getPreviouslyFocusedFragment();
+      setHasOptionsMenu(previousFragment.equals(getClass().getCanonicalName()));
     } else {
       setHasOptionsMenu(true);
     }

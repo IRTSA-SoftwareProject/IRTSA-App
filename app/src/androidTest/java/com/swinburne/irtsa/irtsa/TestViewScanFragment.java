@@ -66,6 +66,6 @@ public class TestViewScanFragment {
     onView(withId(R.id.save)).check(matches(isDisplayed()));
     onView(withId(R.id.delete)).check(doesNotExist());
     onView(withId(R.id.share)).check(doesNotExist());
-    onView(withId(R.id.settings)).check(doesNotExist());
+    //onView(withId(R.id.settings)).check(doesNotExist());
   }
 }

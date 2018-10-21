@@ -18,6 +18,7 @@ import com.swinburne.irtsa.irtsa.model.Scan;
 import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 import com.swinburne.irtsa.irtsa.scan.ViewScanFragment;
 import com.swinburne.irtsa.irtsa.server.Server;
+import com.swinburne.irtsa.irtsa.server.Status;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -95,7 +96,9 @@ public class MainActivity extends AppCompatActivity {
     tabLayout.getTabAt(1).setIcon(R.drawable.ic_gallery);
 
     // Start attempting to connect to the server
-    Server.connect();
+    if (Server.getStatus() == Status.NOT_CONNECTED) {
+      Server.connect();
+    }
   }
 
   /**
@@ -175,8 +178,9 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    outState.putString("previouslyFocusedFragment",
-            pagerAdapter.getCurrentlyVisibleFragment(pager.getCurrentItem()).getClass().getCanonicalName());
+    Fragment currentFragment = pagerAdapter.getCurrentlyVisibleFragment(pager.getCurrentItem());
+    String canonicalName = currentFragment.getClass().getCanonicalName();
+    outState.putString("previouslyFocusedFragment", canonicalName);
   }
 
   private void requestLocalStoragePermission() {

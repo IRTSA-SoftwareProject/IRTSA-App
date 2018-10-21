@@ -10,17 +10,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.swinburne.irtsa.irtsa.MainActivity;
 import com.swinburne.irtsa.irtsa.R;
+import com.swinburne.irtsa.irtsa.utility.ZoomableImageView;
 
 /**
  * Fragment that displays the details of a completed scan.
  */
 public class ViewScanFragment extends Fragment {
-  private ImageView scanImage;
+  private ZoomableImageView scanImage;
   private Bitmap scanBitmap;
+  private byte[] scanByteArray;
 
   /**
    * When the view scan fragment is opened the icons are changed in the
@@ -60,13 +61,14 @@ public class ViewScanFragment extends Fragment {
     // Inflate the layout for this fragment
     Bundle bundle = this.getArguments();
     if (bundle != null) {
-      byte[] scanByteArray = bundle.getByteArray("scanByteArray");
+      scanByteArray = bundle.getByteArray("scanByteArray");
       scanBitmap = BitmapFactory.decodeByteArray(scanByteArray, 0, scanByteArray.length);
     }
     View v = inflater.inflate(R.layout.fragment_view_scan, container, false);
 
     if (savedInstanceState != null) {
-      setHasOptionsMenu(((MainActivity)getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
+      String previousFragment = ((MainActivity) getActivity()).getPreviouslyFocusedFragment();
+      setHasOptionsMenu(previousFragment.equals(getClass().getCanonicalName()));
     } else {
       setHasOptionsMenu(true);
     }
@@ -81,6 +83,9 @@ public class ViewScanFragment extends Fragment {
    */
   private void openSaveDialog() {
     SaveDialog saveDialog = new SaveDialog();
+    Bundle bundle = new Bundle();
+    bundle.putByteArray("scanImage", scanByteArray);
+    saveDialog.setArguments(bundle);
     saveDialog.show(getFragmentManager(), "Save Dialog");
   }
 
