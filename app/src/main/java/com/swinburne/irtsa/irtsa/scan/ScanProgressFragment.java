@@ -126,7 +126,7 @@ public class ScanProgressFragment extends Fragment {
 
   /**
    * Bind our UI Components to objects in the controller and initialise them.
-   * @param v
+   * @param v The root view for this Fragment.
    */
   private void initView(View v) {
     scanProgressBar = v.findViewById(R.id.scanProgressBar);

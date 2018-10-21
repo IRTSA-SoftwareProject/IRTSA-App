@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
   /**
    * When the activity is created initialise the tabs and view pager.
-   *
+   * Also register listeners and connect to the server if not already connected.
    * @param savedInstanceState Saved representation of the activity state.
    */
   @Override
@@ -55,15 +55,18 @@ public class MainActivity extends AppCompatActivity {
       previouslyFocusedFragment = savedInstanceState.getString("previouslyFocusedFragment");
     }
     setContentView(R.layout.activity_main);
+
     tabLayout = findViewById(R.id.tabLayout);
     pager = findViewById(R.id.viewPager);
 
+    // Setup the PagerAdapter that will contain the different Fragment's of this application.
     pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
     pager.setAdapter(pagerAdapter);
     tabLayout.setupWithViewPager(pager);
     UpdateToolbarListener toolbarListener = new UpdateToolbarListener();
     pager.addOnPageChangeListener(toolbarListener);
 
+    // Observer the server's connection status and set the title bar of the app accordingly.
     Server.status.observeOn(AndroidSchedulers.mainThread()).subscribe(connectionStatus -> {
       setTitle(connectionStatus.toString());
     });
@@ -75,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
       }
 
+      // Refresh the GalleryFragment if the user swipes to the gallery.
       @Override
       public void onPageSelected(int position) {
         // If the gallery fragment is navigated to, refresh the gallery.
@@ -94,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
+    // Set the bottom navigation's tab icons.
     tabLayout.getTabAt(0).setIcon(R.drawable.ic_scan);
     tabLayout.getTabAt(1).setIcon(R.drawable.ic_gallery);
 
@@ -152,7 +157,8 @@ public class MainActivity extends AppCompatActivity {
 
   /**
    * View pager page change listener that invalidates all non visible fragment toolbar menus
-   * when the view pager is swiped.
+   * when the view pager is swiped. Multiple Fragment's are technically all on screen at once,
+   * causing multiple toolabar menus to be rendered, this prevents this.
    */
   private class UpdateToolbarListener implements ViewPager.OnPageChangeListener {
     @Override
@@ -185,11 +191,16 @@ public class MainActivity extends AppCompatActivity {
     outState.putString("previouslyFocusedFragment", canonicalName);
   }
 
+  /**
+   * Request local storage permissions if the app does not have them.
+   * This is required so images can be saved to public external storage on the users device.
+   * Uses the AppCompat library for backwards compatibility.
+   */
   private void requestLocalStoragePermission() {
     String locationPermission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     int hasPermission = ContextCompat.checkSelfPermission(getApplicationContext(),
             locationPermission);
-    String[] permissions = new String[] { locationPermission };
+    String[] permissions = new String[]{locationPermission};
     if (hasPermission != PackageManager.PERMISSION_GRANTED) {
       ActivityCompat.requestPermissions(this, permissions, 1);
     }

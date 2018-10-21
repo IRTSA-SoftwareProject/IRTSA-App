@@ -2,8 +2,6 @@ package com.swinburne.irtsa.irtsa.model;
 
 import java.util.List;
 
-import io.reactivex.annotations.Nullable;
-
 /**
  * Defines constants and methods to access the Scan table in the SQLite database.
  */
