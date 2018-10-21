@@ -29,9 +29,10 @@ public class ScanProgressFragment extends Fragment {
   }
 
   private class StartScanMessage extends Message {
-    public String pngPath;
-    public String processingTechnique;
-    public int framesToProcess;
+    String pngPath;
+    String processingTechnique;
+    int framesToProcess;
+    int frameStart;
 
     StartScanMessage() {
       type = "processScan";
@@ -69,6 +70,7 @@ public class ScanProgressFragment extends Fragment {
     startScanMessage.pngPath = userSelectedParameters.getString("pngPath");
     startScanMessage.processingTechnique = userSelectedParameters.getString("processingTechnique");
     startScanMessage.framesToProcess = userSelectedParameters.getInt("framesToProcess");
+    startScanMessage.frameStart = userSelectedParameters.getInt("frameStart");
     Server.send(startScanMessage);
 
     Server.messages.castToType("scan_progress", ScanProgressMessage.class)
