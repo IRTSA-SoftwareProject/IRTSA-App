@@ -30,7 +30,7 @@ public class TestStartScanFragment {
    * Assert the Start Scan Button is displayed.
    */
   @Test
-  public void startScanButton_IsVisible() {
+  public void StartScanButtonIsVisible() {
     onView(withId(R.id.startScanButton)).check(matches(isDisplayed()));
   }
 
@@ -38,7 +38,7 @@ public class TestStartScanFragment {
    * Assert the Start Scan Button contains the correct text.
    */
   @Test
-  public void startScanButton_CorrectText() {
+  public void StartScanButtonCorrectText() {
     onView(withId(R.id.startScanButton)).check(matches(withText("Start Scan")));
   }
 
@@ -46,8 +46,7 @@ public class TestStartScanFragment {
    * Assert the toolbar is displaying the correct options.
    */
   @Test
-  public void toolbar_HasCorrectOptions() {
-    //onView(withId(R.id.settings)).check(matches(isDisplayed()));
+  public void ToolbarHasCorrectOptions() {
     onView(withId(R.id.delete)).check(doesNotExist());
     onView(withId(R.id.share)).check(doesNotExist());
     onView(withId(R.id.save)).check(doesNotExist());
@@ -55,12 +54,14 @@ public class TestStartScanFragment {
 
   /**
    * Assert the start scan button removes the Start Scan Fragment
-   * and displays the View Scan Fragment.
+   * and displays the Scan Progress Fragment.
    */
   @Test
-  public void startScanButton_NavigatesToViewScanFragment() {
+  public void StartScanButtonNavigatesToViewScanFragment() {
+    onView(withId(R.id.allCheckBox)).perform(click());
     onView(withId(R.id.startScanButton)).perform(click());
     onView(withId(R.id.startScanButton)).check(doesNotExist());
-    onView(withId(R.id.scanImage)).check(matches(isDisplayed()));
+    onView(withId(R.id.scanProgressBar)).check(matches(isDisplayed()));
   }
+
 }
