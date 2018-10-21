@@ -23,12 +23,12 @@ public class GallerySaveDialog extends AppCompatDialogFragment {
     //set the characteristics of the dialog view
     builder.setView(view)
             .setTitle("Save thermogram to local storage?")
-            .setNegativeButton("No", (dialogInterface, i) -> {})
+            .setNegativeButton("No", (dialogInterface, i) -> { })
             .setPositiveButton("Yes", (dialogInterface, i) -> {
-                String url = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
-                        scan.image, scan.name ,scan.description);
-                System.out.println("Image saved to: " + url);
-              });
+              String url = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
+                      scan.image, scan.name, scan.description);
+              System.out.println("Image saved to: " + url);
+            });
     //Build the dialog in order for it to popup
     return builder.create();
   }
