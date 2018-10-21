@@ -34,7 +34,7 @@ public class TestMainActivity {
    * Check if the View Pager is visible.
    */
   @Test
-  public void ViewPagerIsVisible() {
+  public void viewPagerIsVisible() {
     onView(withId(R.id.viewPager)).check(matches(isDisplayed()));
   }
 
@@ -42,7 +42,7 @@ public class TestMainActivity {
    * Assert the first visible fragment is the StartScanFragment.
    */
   @Test
-  public void DefaultVisibleFragmentIsStartScan() {
+  public void defaultVisibleFragmentIsStartScan() {
     onView(withId(R.id.startScanButton)).check(matches(isCompletelyDisplayed()));
     onView(withId(R.id.recyclerView)).check(matches(not(isCompletelyDisplayed())));
     onView(withId(R.id.textView3)).check(matches(isCompletelyDisplayed()));
@@ -61,7 +61,7 @@ public class TestMainActivity {
    * Assert the fragment on the right of the viewpager is visible if swiped right.
    */
   @Test
-  public void DefaultRightPagerFragmentIsGalleryFragment() {
+  public void defaultRightPagerFragmentIsGalleryFragment() {
     onView(withId(R.id.recyclerView)).check(matches(not(isCompletelyDisplayed())));
     onView(withId(R.id.viewPager)).perform(swipeLeft());
     onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
@@ -71,7 +71,7 @@ public class TestMainActivity {
    * Assert the bottom navigation menu is visible.
    */
   @Test
-  public void BottomNavigationIsVisible() {
+  public void bottomNavigationIsVisible() {
     onView(withId(R.id.tabLayout)).check(matches(isDisplayed()));
   }
 
@@ -79,7 +79,7 @@ public class TestMainActivity {
    * Assert the bottom navigation bar has the required menu options.
    */
   @Test
-  public void BottomNavigationHasRequiredOptions() {
+  public void bottomNavigationHasRequiredOptions() {
     onView(allOf(withText("Scan"), isDescendantOfA(withId(R.id.tabLayout))))
         .check(matches(isDisplayed()));
     onView(allOf(withText("Gallery"), isDescendantOfA(withId(R.id.tabLayout))))
@@ -90,14 +90,14 @@ public class TestMainActivity {
    * Assert the ViewPager contains the ScanContainerFragment.
    */
   @Test
-  public void ViewPagerHasScanContainer() {
+  public void viewPagerHasScanContainer() {
     onView(withId(R.id.scanContainer)).check(matches(isCompletelyDisplayed()));
   }
 
   /**
    * Assert the ViewPager contains the GalleryContainerFragment.
    */
-  public void ViewPagerHasGalleryContainer() {
+  public void viewPagerHasGalleryContainer() {
     onView(withId(R.id.galleryContainer)).check(matches(not(isCompletelyDisplayed())));
     onView(withId(R.id.viewPager)).perform(swipeLeft());
     onView(withId(R.id.galleryContainer)).check(matches(isCompletelyDisplayed()));
@@ -108,7 +108,7 @@ public class TestMainActivity {
    * the user to the StartScanFragment.
    */
   @Test
-  public void BottomNavScanButtonNavigatesToStartScanFragment() {
+  public void bottomNavScanButtonNavigatesToStartScanFragment() {
     onView(withId(R.id.startScanButton)).check(matches(isCompletelyDisplayed()));
     onView(withId(R.id.viewPager)).perform(swipeLeft());
     onView(withId(R.id.startScanButton)).check(matches(not(isCompletelyDisplayed())));
@@ -121,7 +121,7 @@ public class TestMainActivity {
    * the user to the GalleryFragment.
    */
   @Test
-  public void BottomNavGalleryButtonNavigatesToGalleryFragment() {
+  public void bottomNavGalleryButtonNavigatesToGalleryFragment() {
     onView(withId(R.id.recyclerView)).check(matches(not(isCompletelyDisplayed())));
     onView(withId(R.id.viewPager)).perform(swipeLeft());
     onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));

@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-
 import com.swinburne.irtsa.irtsa.gallery.GalleryFragment;
 import com.swinburne.irtsa.irtsa.scan.ViewScanFragment;
 import com.swinburne.irtsa.irtsa.server.Server;

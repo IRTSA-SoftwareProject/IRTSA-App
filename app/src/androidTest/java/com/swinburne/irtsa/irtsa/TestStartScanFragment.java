@@ -33,7 +33,7 @@ public class TestStartScanFragment {
    * Assert the Start Scan Button is displayed.
    */
   @Test
-  public void StartScanButtonIsVisible() {
+  public void startScanButtonIsVisible() {
     onView(withId(R.id.startScanButton)).check(matches(isDisplayed()));
   }
 
@@ -41,7 +41,7 @@ public class TestStartScanFragment {
    * Assert the Start Scan Button contains the correct text.
    */
   @Test
-  public void StartScanButtonCorrectText() {
+  public void startScanButtonCorrectText() {
     onView(withId(R.id.startScanButton)).check(matches(withText("Start Scan")));
   }
 
@@ -49,7 +49,7 @@ public class TestStartScanFragment {
    * Assert the toolbar is displaying the correct options.
    */
   @Test
-  public void ToolbarHasCorrectOptions() {
+  public void toolbarHasCorrectOptions() {
     onView(withId(R.id.save)).check(doesNotExist());
   }
 
@@ -58,7 +58,7 @@ public class TestStartScanFragment {
    * and displays the Scan Progress Fragment.
    */
   @Test
-  public void StartScanButtonNavigatesToViewScanFragment() {
+  public void startScanButtonNavigatesToViewScanFragment() {
     IdlingRegistry.getInstance().register(activityRule.getActivity().connectionIdleResource);
     onView(withId(R.id.allCheckBox)).perform(click());
     onView(withId(R.id.startScanButton)).perform(click());
