@@ -50,7 +50,7 @@ public class GalleryEditDialog extends AppCompatDialogFragment {
     builder.setView(view)
         .setTitle("Rename Scan")
         //Create the cancel button
-        .setNegativeButton("Cancel", ((dialogInterface, i) -> { } ))
+        .setNegativeButton("Cancel", ((dialogInterface, i) -> { }))
         //Create the save button
         .setPositiveButton("Save", ((dialogInterface, i) -> {
           scanName = name.getText().toString();

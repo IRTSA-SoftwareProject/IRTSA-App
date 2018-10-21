@@ -76,7 +76,8 @@ public class GalleryDetailFragment extends Fragment {
     name = v.findViewById(R.id.galleryDetailName);
     name.setText(getString(R.string.gallery_detail_label_name) + scan.getName());
     description = v.findViewById(R.id.galleryDetailDescription);
-    description.setText(getString(R.string.gallery_detail_label_description) + scan.getDescription());
+    description.setText(getString(R.string.gallery_detail_label_description)
+            + scan.getDescription());
     date = v.findViewById(R.id.galleryDetailDate);
     date.setText(getString(R.string.gallery_detail_label_date) + scan.getCreatedAt());
   }

@@ -42,9 +42,9 @@ public class GalleryDeleteDialog extends AppCompatDialogFragment {
         })
         //Create the save button
         .setPositiveButton("Yes", (dialogInterface, i) -> {
-            ScanInterface scanAccessObject = new ScanAccessObject(getContext());
-            scanAccessObject.deleteScan(scanId);
-            getActivity().onBackPressed();
+          ScanInterface scanAccessObject = new ScanAccessObject(getContext());
+          scanAccessObject.deleteScan(scanId);
+          getActivity().onBackPressed();
         });
 
     // Return the created dialog.

@@ -44,8 +44,18 @@ public class Scan implements Parcelable {
     return image;
   }
 
+  private byte[] getImageAsByteArray() {
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+    return stream.toByteArray();
+  }
+
   public void setImage(Bitmap image) {
     this.image = image;
+  }
+
+  private void setImage(byte[] image) {
+    this.image = BitmapFactory.decodeByteArray(image, 0, image.length);
   }
 
   public String getDescription() {
@@ -70,16 +80,6 @@ public class Scan implements Parcelable {
 
   public void setCreatedAt(Date createdAt) {
     this.createdAt = createdAt;
-  }
-
-  private byte[] getImageAsByteArray() {
-    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-    image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-    return stream.toByteArray();
-  }
-
-  private void setImage(byte[] image) {
-    this.image = BitmapFactory.decodeByteArray(image, 0, image.length);
   }
 
   static DateFormat getDateFormat() {
