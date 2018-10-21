@@ -2,20 +2,16 @@ package com.swinburne.irtsa.irtsa;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+
 import com.swinburne.irtsa.irtsa.gallery.GalleryFragment;
-import com.swinburne.irtsa.irtsa.model.Scan;
-import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 import com.swinburne.irtsa.irtsa.scan.ViewScanFragment;
 import com.swinburne.irtsa.irtsa.server.Server;
 import com.swinburne.irtsa.irtsa.server.Status;
@@ -33,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
   private ViewPagerAdapter pagerAdapter;
   private TabLayout tabLayout;
   private String previouslyFocusedFragment;
+
+  CountingIdlingResource connectionIdleResource = new CountingIdlingResource("CONNECTING_TO_PI");
 
   public String getPreviouslyFocusedFragment() {
     return previouslyFocusedFragment;
@@ -63,6 +61,15 @@ public class MainActivity extends AppCompatActivity {
     pager.addOnPageChangeListener(toolbarListener);
 
     Server.status.observeOn(AndroidSchedulers.mainThread()).subscribe(connectionStatus -> {
+      /**
+       * If condition to allow tests to wait for the connection
+       * to be established before running.
+       */
+      if (connectionStatus == Status.CONNECTED && !connectionIdleResource.isIdleNow()) {
+        connectionIdleResource.decrement();
+      } else if (connectionIdleResource.isIdleNow()) {
+        connectionIdleResource.increment();
+      }
       setTitle(connectionStatus.toString());
     });
 
