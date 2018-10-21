@@ -96,7 +96,9 @@ public class StartScanFragment extends Fragment {
     });
 
     startScanButton.setOnClickListener(view -> beginScan());
+
     Server.status.observeOn(AndroidSchedulers.mainThread())
+            .takeWhile(event -> getActivity() != null)
             .subscribe(connectionStatus -> {
               boolean isConnected = connectionStatus.compareTo(Status.CONNECTED) == 0;
               if (isConnected) {

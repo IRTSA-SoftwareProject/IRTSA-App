@@ -75,6 +75,7 @@ public class ScanProgressFragment extends Fragment {
 
     Server.messages.castToType("scan_progress", ScanProgressMessage.class)
         .takeUntil(Server.messages.ofType("scan_complete"))
+        .takeWhile(event -> getActivity() != null)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(message -> {
           Log.i("MESSAGE", "Message received");
@@ -86,6 +87,7 @@ public class ScanProgressFragment extends Fragment {
 
     Server.messages.castToType("scan_complete", ScanCompleteMessage.class)
         .observeOn(AndroidSchedulers.mainThread())
+        .takeWhile(event -> getActivity() != null)
         .subscribe(message -> {
           String imageEncodedToBase64 = message.body.base64EncodedString;
           byte[] decodedImage = Base64.decode(imageEncodedToBase64, Base64.DEFAULT);
