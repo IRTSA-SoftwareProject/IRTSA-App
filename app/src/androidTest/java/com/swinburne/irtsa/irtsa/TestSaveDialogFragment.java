@@ -11,6 +11,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isFocusable;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
+import android.support.test.espresso.IdlingRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import org.junit.Before;
@@ -35,7 +36,10 @@ public class TestSaveDialogFragment {
    */
   @Before
   public void setup() {
+    IdlingRegistry.getInstance().register(activityRule.getActivity().connectionIdleResource);
+    onView(withId(R.id.allCheckBox)).perform(click());
     onView(withId(R.id.startScanButton)).perform(click());
+    IdlingRegistry.getInstance().register(activityRule.getActivity().progressIdleResource);
     onView(withId(R.id.save)).perform(click());
   }
 
@@ -43,7 +47,7 @@ public class TestSaveDialogFragment {
    * Assert that the name input is visible.
    */
   @Test
-  public void nameInput_IsVisible() {
+  public void nameInputIsVisible() {
     onView(withId(R.id.fName)).check(matches(isDisplayed()));
   }
 
@@ -51,7 +55,7 @@ public class TestSaveDialogFragment {
    * Assert that the description input is visible.
    */
   @Test
-  public void descriptionInput_IsVisible() {
+  public void descriptionInputIsVisible() {
     onView(withId(R.id.fDescription)).check(matches(isDisplayed()));
   }
 
@@ -59,7 +63,7 @@ public class TestSaveDialogFragment {
    * Assert the name input can be selected and manipulated.
    */
   @Test
-  public void nameInput_AcceptsInput() {
+  public void nameInputAcceptsInput() {
     onView(withId(R.id.fName)).check(matches(isFocusable()));
     onView(withId(R.id.fName)).perform(replaceText("Test String"));
     onView(withId(R.id.fName)).check(matches(withText("Test String")));
@@ -69,7 +73,7 @@ public class TestSaveDialogFragment {
    * Assert the description input can be selected and manipulated.
    */
   @Test
-  public void descriptionInput_AcceptsInput() {
+  public void descriptionInputAcceptsInput() {
     onView(withId(R.id.fDescription)).check(matches(isFocusable()));
     onView(withId(R.id.fDescription)).perform(replaceText("Test String"));
     onView(withId(R.id.fDescription)).check(matches(withText("Test String")));
@@ -79,7 +83,7 @@ public class TestSaveDialogFragment {
    * Assert that the save button closes the dialog and display's the ViewScan Fragment.
    */
   @Test
-  public void saveButton_ClosesDialog_ShowsViewScanFragment() {
+  public void saveButtonClosesDialogShowsViewScanFragment() {
     onView(withId(R.id.scanImage)).check(doesNotExist());
     onView(withText("SAVE")).check(matches(isDisplayed()));
 
@@ -93,7 +97,7 @@ public class TestSaveDialogFragment {
    * Assert that the cancel button closes the dialog and display's the ViewScan Fragment.
    */
   @Test
-  public void cancelButton_ClosesDialog_ShowsViewScanFragment() {
+  public void cancelButtonClosesDialogShowsViewScanFragment() {
     onView(withId(R.id.scanImage)).check(doesNotExist());
     onView(withText("CANCEL")).check(matches(isDisplayed()));
 
@@ -107,13 +111,11 @@ public class TestSaveDialogFragment {
    * Assert that the back-press button closes the dialog and display's the ViewScan Fragment.
    */
   @Test
-  public void backPress_ClosesDialog_ShowsViewScanFragment() {
+  public void backPressClosesDialogShowsViewScanFragment() {
     onView(withId(R.id.scanImage)).check(doesNotExist());
     onView(withText("CANCEL")).check(matches(isDisplayed()));
 
-    // Press back twice to close the keyboard.
     pressBack();
-    //pressBack();
 
     onView(withText("CANCEL")).check(doesNotExist());
     onView(withId(R.id.scanImage)).check(matches(isDisplayed()));

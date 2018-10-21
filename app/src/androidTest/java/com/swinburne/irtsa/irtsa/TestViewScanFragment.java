@@ -36,6 +36,7 @@ public class TestViewScanFragment {
     IdlingRegistry.getInstance().register(activityRule.getActivity().connectionIdleResource);
     onView(withId(R.id.allCheckBox)).perform(click());
     onView(withId(R.id.startScanButton)).perform(click());
+    IdlingRegistry.getInstance().register(activityRule.getActivity().progressIdleResource);
   }
 
   /**
@@ -43,7 +44,6 @@ public class TestViewScanFragment {
    */
   @Test
   public void imageIsVisible() {
-    IdlingRegistry.getInstance().register(activityRule.getActivity().progressIdleResource);
     onView(withId(R.id.scanImage)).check(matches(isDisplayed()));
   }
 
@@ -53,12 +53,9 @@ public class TestViewScanFragment {
    */
   @Test
   public void backPressNavigatesToStartScanFragment() {
-    IdlingRegistry.getInstance().register(activityRule.getActivity().progressIdleResource);
     onView(withId(R.id.scanImage)).check(matches(isDisplayed()));
     onView(withId(R.id.startScanButton)).check(doesNotExist());
-
     pressBack();
-
     onView(withId(R.id.scanImage)).check(doesNotExist());
     onView(withId(R.id.startScanButton)).check(matches(isDisplayed()));
   }
@@ -68,10 +65,6 @@ public class TestViewScanFragment {
    */
   @Test
   public void toolbarHasCorrectOptions() {
-    IdlingRegistry.getInstance().register(activityRule.getActivity().progressIdleResource);
     onView(withId(R.id.save)).check(matches(isDisplayed()));
-    onView(withId(R.id.delete)).check(doesNotExist());
-    onView(withId(R.id.share)).check(doesNotExist());
-    //onView(withId(R.id.settings)).check(doesNotExist());
   }
 }
