@@ -7,9 +7,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -185,10 +187,11 @@ public class MainActivity extends AppCompatActivity {
 
   private void requestLocalStoragePermission() {
     String locationPermission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
-    int hasPermission = checkSelfPermission(locationPermission);
+    int hasPermission = ContextCompat.checkSelfPermission(getApplicationContext(),
+            locationPermission);
     String[] permissions = new String[] { locationPermission };
     if (hasPermission != PackageManager.PERMISSION_GRANTED) {
-      requestPermissions(permissions, 1);
+      ActivityCompat.requestPermissions(this, permissions, 1);
     }
   }
 }
