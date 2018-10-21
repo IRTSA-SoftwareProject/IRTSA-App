@@ -1,9 +1,7 @@
 package com.swinburne.irtsa.irtsa.scan;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,14 +61,15 @@ public class StartScanFragment extends Fragment {
     endFrameRangeEditText = rootView.findViewById(R.id.endFrameRangeEditText);
     pngPathSpinner = rootView.findViewById(R.id.pngPathSpinner);
     processingTechniqueSpinner = rootView.findViewById(R.id.processingTechniqueSpinner);
-    pngPathSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, new String[]{"Retrieving directories"}));
-    pngPathSpinner.setAlpha((float)0.7);
+    pngPathSpinner.setAdapter(new ArrayAdapter<>(getActivity(),
+            android.R.layout.simple_spinner_item, new String[]{"Retrieving directories"}));
+    pngPathSpinner.setAlpha((float) 0.7);
     pngPathSpinner.setEnabled(false);
 
     ArrayAdapter<CharSequence> processingTechniqueSpinnerAdapter = ArrayAdapter.createFromResource(
-        getContext(),
-        R.array.processing_techniques,
-        android.R.layout.simple_spinner_dropdown_item
+            getContext(),
+            R.array.processing_techniques,
+            android.R.layout.simple_spinner_dropdown_item
     );
     processingTechniqueSpinner.setAdapter(processingTechniqueSpinnerAdapter);
 
@@ -88,7 +87,7 @@ public class StartScanFragment extends Fragment {
 
     beginFrameRangeEditText.setOnKeyListener((view, keyEvent, eventId) -> {
       if (!beginFrameRangeEditText.getText().toString().equals("")
-          && Server.getStatus() == Status.CONNECTED) {
+              && Server.getStatus() == Status.CONNECTED) {
         startScanButton.setEnabled(true);
       } else {
         startScanButton.setEnabled(false);
@@ -98,26 +97,27 @@ public class StartScanFragment extends Fragment {
 
     startScanButton.setOnClickListener(view -> beginScan());
     Server.status.observeOn(AndroidSchedulers.mainThread())
-        .subscribe(connectionStatus -> {
-          boolean isConnected = connectionStatus.compareTo(Status.CONNECTED) == 0;
-          if (isConnected) Server.send(new GetDirectoriesMessage());
-          startScanButton.setEnabled(isConnected
-              && beginFrameRangeEditText.getText().toString() != "" || allCheckbox.isChecked());
-        });
+            .subscribe(connectionStatus -> {
+              boolean isConnected = connectionStatus.compareTo(Status.CONNECTED) == 0;
+              if (isConnected) {
+                Server.send(new GetDirectoriesMessage());
+              }
+              startScanButton.setEnabled(isConnected
+                  && beginFrameRangeEditText.getText().toString() != "" || allCheckbox.isChecked());
+            });
 
 
     Server.messages.castToType("simulationList", PngDirectoriesMessage.class)
             .takeWhile(event -> getActivity() != null)
             .observeOn(AndroidSchedulers.mainThread()).subscribe(message -> {
-                System.out.println(message.body);
-                ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, message.body.directories);
-                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                pngPathSpinner.setAdapter(spinnerAdapter);
-                pngPathSpinner.setEnabled(true);
-                pngPathSpinner.setAlpha(1);
-    });
-
-
+              System.out.println(message.body);
+              ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getActivity(),
+                  android.R.layout.simple_spinner_item, message.body.directories);
+              spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+              pngPathSpinner.setAdapter(spinnerAdapter);
+              pngPathSpinner.setEnabled(true);
+              pngPathSpinner.setAlpha(1);
+            });
   }
 
   /**
@@ -158,9 +158,11 @@ public class StartScanFragment extends Fragment {
   }
 
   private class PngDirectoriesMessage extends Message {
+
     class Body {
       String[] directories;
     }
+
     Body body;
   }
 }
