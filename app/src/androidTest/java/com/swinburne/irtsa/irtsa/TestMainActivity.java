@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
  * Class to test the UI contained within the MainActivity.
  */
 @RunWith(AndroidJUnit4.class)
-public class TestMainPage {
+public class TestMainActivity {
 
   /**
    * Launch the MainActivity.
