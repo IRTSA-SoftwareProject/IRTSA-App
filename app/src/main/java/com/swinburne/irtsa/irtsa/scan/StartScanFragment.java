@@ -61,11 +61,14 @@ public class StartScanFragment extends Fragment {
     endFrameRangeEditText = rootView.findViewById(R.id.endFrameRangeEditText);
     pngPathSpinner = rootView.findViewById(R.id.pngPathSpinner);
     processingTechniqueSpinner = rootView.findViewById(R.id.processingTechniqueSpinner);
+
+    // Set the path spinner to disabled and to have the text 'Retrieving Directories'
     pngPathSpinner.setAdapter(new ArrayAdapter<>(getActivity(),
             android.R.layout.simple_spinner_item, new String[]{"Retrieving directories"}));
     pngPathSpinner.setAlpha((float) 0.7);
     pngPathSpinner.setEnabled(false);
 
+    // Set the text for the technique spinner from strings.xml
     ArrayAdapter<CharSequence> processingTechniqueSpinnerAdapter = ArrayAdapter.createFromResource(
             getContext(),
             R.array.processing_techniques,
@@ -73,6 +76,7 @@ public class StartScanFragment extends Fragment {
     );
     processingTechniqueSpinner.setAdapter(processingTechniqueSpinnerAdapter);
 
+    // Check to see if the start scan button should be enabled/disabled if the checkbox is checked.
     allCheckbox.setOnCheckedChangeListener((button, isChecked) -> {
       if (Server.getStatus() == Status.CONNECTED && isChecked) {
         startScanButton.setEnabled(true);
@@ -85,6 +89,7 @@ public class StartScanFragment extends Fragment {
       endFrameRangeEditText.setText("");
     });
 
+    // Enable the start scan button if tex
     beginFrameRangeEditText.setOnKeyListener((view, keyEvent, eventId) -> {
       if (!beginFrameRangeEditText.getText().toString().equals("")
               && Server.getStatus() == Status.CONNECTED) {

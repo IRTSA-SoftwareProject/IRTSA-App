@@ -72,7 +72,7 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
   @Override
   public List<Scan> getAllScans() {
     SQLiteDatabase db = this.getReadableDatabase();
-    List<Scan> result = new ArrayList<Scan>();
+    List<Scan> result = new ArrayList<>();
 
     String sql = "SELECT * FROM " + TABLE_SCAN;
 
@@ -89,10 +89,10 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
                 resultCursor.getString(resultCursor.getColumnIndex(COLUMN_CREATED_AT))));
       } catch (ParseException e) {
         Log.e("ScanAccessObject",
-                "(" + scan.getId() + ", " + scan.getName() + ") Unable to parse created at date: "
+                "(" + scan.getId() + ", "
+                        + scan.getName() + ") Unable to parse created at date: "
                         + e.getMessage());
       }
-
 
       byte[] image = resultCursor.getBlob(resultCursor.getColumnIndex(COLUMN_IMAGE));
       scan.setImage(BitmapFactory.decodeByteArray(image, 0, image.length));
@@ -107,7 +107,7 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
 
   @Override
   public Boolean insertScan(Scan scan) {
-    //Convert the Bitmap into a byte array
+    //Convert the Bitmap into a byte array so it can be stored in the database.
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     scan.getImage().compress(Bitmap.CompressFormat.PNG, 100, outputStream);
     byte[] imageBlob = outputStream.toByteArray();
