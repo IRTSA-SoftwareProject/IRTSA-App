@@ -39,7 +39,8 @@ public class GalleryFragment extends Fragment {
     View v = inflater.inflate(R.layout.fragment_gallery, container, false);
 
     if (savedInstanceState != null) {
-      setHasOptionsMenu(((MainActivity)getActivity()).getPreviouslyFocusedFragment().equals(getClass().getCanonicalName()));
+      String previousFragment = ((MainActivity) getActivity()).getPreviouslyFocusedFragment();
+      setHasOptionsMenu(previousFragment.equals(getClass().getCanonicalName()));
     } else {
       setHasOptionsMenu(true);
     }
@@ -121,7 +122,9 @@ public class GalleryFragment extends Fragment {
     @Override
     protected void onPostExecute(Object o) {
       super.onPostExecute(o);
-      if (adapter != null) adapter.setScanData(scans);
+      if (adapter != null) {
+        adapter.setScanData(scans);
+      }
     }
   }
 }

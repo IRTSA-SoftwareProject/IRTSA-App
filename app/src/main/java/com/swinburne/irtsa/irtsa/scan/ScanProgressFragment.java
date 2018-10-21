@@ -29,9 +29,11 @@ public class ScanProgressFragment extends Fragment {
   }
 
   private class StartScanMessage extends Message {
-    public String pngPath;
-    public String processingTechnique;
-    public int framesToProcess;
+    String pngPath;
+    String processingTechnique;
+    int framesToProcess;
+    int frameStart;
+
     StartScanMessage() {
       type = "processScan";
     }
@@ -41,6 +43,7 @@ public class ScanProgressFragment extends Fragment {
     class Body {
       int percent;
     }
+
     Body body;
   }
 
@@ -48,6 +51,7 @@ public class ScanProgressFragment extends Fragment {
     class Body {
       String base64EncodedString;
     }
+
     Body body;
   }
 
@@ -66,31 +70,35 @@ public class ScanProgressFragment extends Fragment {
     startScanMessage.pngPath = userSelectedParameters.getString("pngPath");
     startScanMessage.processingTechnique = userSelectedParameters.getString("processingTechnique");
     startScanMessage.framesToProcess = userSelectedParameters.getInt("framesToProcess");
+    startScanMessage.frameStart = userSelectedParameters.getInt("frameStart");
     Server.send(startScanMessage);
 
     Server.messages.castToType("scan_progress", ScanProgressMessage.class)
-            .takeUntil(Server.messages.ofType("scan_complete")).observeOn(AndroidSchedulers.mainThread())
-            .subscribe(message -> {
-              Log.i("MESSAGE", "Message received");
-              Log.i("MESSAGE_TYPE", message.type);
-              Log.i("MESSAGE_PERCENT", Integer.toString(message.body.percent));
-              scanProgressBar.setProgress(message.body.percent);
-              scanProgressText.setText("Scan Progress is: " + message.body.percent + "%");
-            });
+        .takeUntil(Server.messages.ofType("scan_complete"))
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(message -> {
+          Log.i("MESSAGE", "Message received");
+          Log.i("MESSAGE_TYPE", message.type);
+          Log.i("MESSAGE_PERCENT", Integer.toString(message.body.percent));
+          scanProgressBar.setProgress(message.body.percent);
+          scanProgressText.setText("Scan Progress is: " + message.body.percent + "%");
+        });
 
-    Server.messages.castToType("scan_complete", ScanCompleteMessage.class).observeOn(AndroidSchedulers.mainThread()).subscribe(message -> {
-      String imageEncodedToBase64 = message.body.base64EncodedString;
-      byte[] decodedImage = Base64.decode(imageEncodedToBase64, Base64.DEFAULT);
-      Bundle bundle = new Bundle();
-      bundle.putByteArray("scanByteArray", decodedImage);
+    Server.messages.castToType("scan_complete", ScanCompleteMessage.class)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(message -> {
+          String imageEncodedToBase64 = message.body.base64EncodedString;
+          byte[] decodedImage = Base64.decode(imageEncodedToBase64, Base64.DEFAULT);
+          Bundle bundle = new Bundle();
+          bundle.putByteArray("scanByteArray", decodedImage);
 
-      ViewScanFragment viewScanFragment = new ViewScanFragment();
-      viewScanFragment.setArguments(bundle);
-      FragmentTransaction transaction = getParentFragment()
+          ViewScanFragment viewScanFragment = new ViewScanFragment();
+          viewScanFragment.setArguments(bundle);
+          FragmentTransaction transaction = getParentFragment()
 
-              .getChildFragmentManager().beginTransaction();
-      transaction.replace(R.id.scanContainer, viewScanFragment, "ViewScanFragment").commit();
-    });
+                  .getChildFragmentManager().beginTransaction();
+          transaction.replace(R.id.scanContainer, viewScanFragment, "ViewScanFragment").commit();
+        });
 
 
     return v;

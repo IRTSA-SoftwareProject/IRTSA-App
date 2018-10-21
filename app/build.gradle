@@ -1,11 +1,10 @@
 apply plugin: 'com.android.application'
-apply from: './checkstyle.gradle'
 
 android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.swinburne.irtsa.irtsa"
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -45,3 +44,6 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     implementation 'com.google.code.gson:gson:2.8.5'
 }
+
+apply from: './docs.gradle'
+apply from: './checkstyle.gradle'

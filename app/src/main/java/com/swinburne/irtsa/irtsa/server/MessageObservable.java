@@ -11,11 +11,22 @@ import io.reactivex.internal.operators.observable.ObservableFilter;
 
 import java.util.Objects;
 
+/**
+ * The MessageObservable class provides some utilities for interacting with a stream of messages. It
+ * handles parsing and casting plain strings from the server into Message instances that can be used
+ * in the app. In normal use, you wouldn't normally need to construct the MessageObservable yourself
+ * as one is already created on the Server class.
+ */
 public class MessageObservable extends Observable<Message> {
   private static final Gson gson = new Gson();
 
   private final Observable<String> messages;
 
+  /**
+   * The constructor that allows this class to convert a normal stream of messages into a stream
+   * of Messages objects.
+   * @param messages Observable of stringified JSON objects.
+   */
   MessageObservable(Observable<String> messages) {
     this.messages = messages;
   }
@@ -61,6 +72,11 @@ public class MessageObservable extends Observable<Message> {
         });
   }
 
+  /**
+   * Utility function to build a predicate that will filter messages by their type.
+   * @param type The message type to filter by.
+   * @return A function that will return true when given a message with a matching type.
+   */
   private Predicate<Message> isOfType(String type) {
     return message -> Objects.equals(message.type, type);
   }

@@ -55,6 +55,7 @@ public class TestGalleryFragment {
     onView(withId(R.id.delete)).check(doesNotExist());
     onView(withId(R.id.share)).check(doesNotExist());
     onView(withId(R.id.save)).check(doesNotExist());
+    //onView(withId(R.id.settings)).check(doesNotExist());
   }
   @Test
   public void bottomNavigation_hasRequiredOptions() {
