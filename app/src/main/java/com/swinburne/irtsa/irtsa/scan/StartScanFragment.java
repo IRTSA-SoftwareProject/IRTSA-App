@@ -1,7 +1,9 @@
 package com.swinburne.irtsa.irtsa.scan;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.Spinner;
 
 import com.swinburne.irtsa.irtsa.MainActivity;
 import com.swinburne.irtsa.irtsa.R;
+import com.swinburne.irtsa.irtsa.server.Message;
 import com.swinburne.irtsa.irtsa.server.Server;
 import com.swinburne.irtsa.irtsa.server.Status;
 
@@ -60,13 +63,8 @@ public class StartScanFragment extends Fragment {
     endFrameRangeEditText = rootView.findViewById(R.id.endFrameRangeEditText);
     pngPathSpinner = rootView.findViewById(R.id.pngPathSpinner);
     processingTechniqueSpinner = rootView.findViewById(R.id.processingTechniqueSpinner);
-
-    ArrayAdapter<CharSequence> pngPathSpinnerAdapter = ArrayAdapter.createFromResource(
-        getContext(),
-        R.array.image_png_paths,
-        android.R.layout.simple_spinner_dropdown_item
-    );
-    pngPathSpinner.setAdapter(pngPathSpinnerAdapter);
+    pngPathSpinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, new String[]{"Retrieving directories"}));
+    pngPathSpinner.setAlpha((float)0.7);
     pngPathSpinner.setEnabled(false);
 
     ArrayAdapter<CharSequence> processingTechniqueSpinnerAdapter = ArrayAdapter.createFromResource(
@@ -83,7 +81,9 @@ public class StartScanFragment extends Fragment {
         startScanButton.setEnabled(false);
       }
       beginFrameRangeEditText.setEnabled(!isChecked);
+      endFrameRangeEditText.setEnabled(!isChecked);
       beginFrameRangeEditText.setText("");
+      endFrameRangeEditText.setText("");
     });
 
     beginFrameRangeEditText.setOnKeyListener((view, keyEvent, eventId) -> {
@@ -100,9 +100,24 @@ public class StartScanFragment extends Fragment {
     Server.status.observeOn(AndroidSchedulers.mainThread())
         .subscribe(connectionStatus -> {
           boolean isConnected = connectionStatus.compareTo(Status.CONNECTED) == 0;
+          if (isConnected) Server.send(new GetDirectoriesMessage());
           startScanButton.setEnabled(isConnected
               && beginFrameRangeEditText.getText().toString() != "" || allCheckbox.isChecked());
         });
+
+
+    Server.messages.castToType("simulationList", PngDirectoriesMessage.class)
+            .takeWhile(event -> getActivity() != null)
+            .observeOn(AndroidSchedulers.mainThread()).subscribe(message -> {
+                System.out.println(message.body);
+                ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, message.body.directories);
+                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                pngPathSpinner.setAdapter(spinnerAdapter);
+                pngPathSpinner.setEnabled(true);
+                pngPathSpinner.setAlpha(1);
+    });
+
+
   }
 
   /**
@@ -134,5 +149,18 @@ public class StartScanFragment extends Fragment {
     transaction.addToBackStack("StartScanFragment");
     scanProgressFragment.setArguments(parametersToPass);
     transaction.replace(R.id.scanContainer, scanProgressFragment, "ScanProgressFragment").commit();
+  }
+
+  private class GetDirectoriesMessage extends Message {
+    GetDirectoriesMessage() {
+      type = "getPngDir";
+    }
+  }
+
+  private class PngDirectoriesMessage extends Message {
+    class Body {
+      String[] directories;
+    }
+    Body body;
   }
 }
