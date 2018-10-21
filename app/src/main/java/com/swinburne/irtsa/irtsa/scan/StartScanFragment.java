@@ -42,7 +42,7 @@ public class StartScanFragment extends Fragment {
     // Inflate the layout for this fragment
     View rootView = inflater.inflate(R.layout.fragment_start_scan, container, false);
 
-    initialiseUi(rootView);
+    initialiseUi(rootView, savedInstanceState);
 
     if (savedInstanceState != null) {
       String previousFragment = ((MainActivity) getActivity()).getPreviouslyFocusedFragment();
@@ -59,7 +59,7 @@ public class StartScanFragment extends Fragment {
    *
    * @param rootView The StartScanFragment's top level View
    */
-  private void initialiseUi(View rootView) {
+  private void initialiseUi(View rootView, Bundle savedInstanceState) {
     startScanButton = rootView.findViewById(R.id.startScanButton);
     allCheckbox = rootView.findViewById(R.id.allCheckBox);
     beginFrameRangeEditText = rootView.findViewById(R.id.beginFrameRangeEditText);
@@ -67,12 +67,23 @@ public class StartScanFragment extends Fragment {
     pngPathSpinner = rootView.findViewById(R.id.pngPathSpinner);
     processingTechniqueSpinner = rootView.findViewById(R.id.processingTechniqueSpinner);
 
-    // Set the path spinner to disabled and to have the text 'Retrieving Directories'
-    pngPathSpinner.setAdapter(new ArrayAdapter<>(getActivity(),
-            android.R.layout.simple_spinner_item, new String[]{"Retrieving directories"}));
-    pngPathSpinner.setAlpha((float) 0.7);
-    pngPathSpinner.setEnabled(false);
-    startScanButton.setEnabled(false);
+    // If this Fragment is being resumed, restore its state. Otherwise initialise as normal.
+    if (savedInstanceState != null) {
+      pngPathSpinner.setEnabled(savedInstanceState.getBoolean("pathSpinnerEnabled"));
+      startScanButton.setEnabled(savedInstanceState.getBoolean("startScanButtonEnabled"));
+      ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getActivity(),
+              android.R.layout.simple_spinner_item,
+              savedInstanceState.getStringArray("pathSpinnerChoices"));
+      spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+      pngPathSpinner.setAdapter(spinnerAdapter);
+    } else {
+      // Set the path spinner to disabled and to have the text 'Retrieving Directories'
+      pngPathSpinner.setAdapter(new ArrayAdapter<>(getActivity(),
+              android.R.layout.simple_spinner_item, new String[]{"Retrieving directories"}));
+      pngPathSpinner.setAlpha((float) 0.7);
+      pngPathSpinner.setEnabled(false);
+      startScanButton.setEnabled(false);
+    }
 
     // Register beginScan as the method to execute when the start scan button is pressed.
     startScanButton.setOnClickListener(view -> beginScan());
@@ -109,7 +120,7 @@ public class StartScanFragment extends Fragment {
               boolean isConnected = connectionStatus.compareTo(Status.CONNECTED) == 0;
 
               // If connected to the server, get the list of available directories.
-              if (isConnected) {
+              if (isConnected && !pngPathSpinner.isEnabled()) {
                 Server.send(new GetDirectoriesMessage());
               }
 
@@ -209,5 +220,24 @@ public class StartScanFragment extends Fragment {
       }
       return false;
     }
+  }
+
+  /**
+   * Save the state of the inputs so they can be restored if this app is taken out of
+   * focus and then brought back into focus.
+   * @param outState The bundle to store state information in.
+   */
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putBoolean("pathSpinnerEnabled", pngPathSpinner.isEnabled());
+    outState.putBoolean("startScanButtonEnabled", startScanButton.isEnabled());
+
+    String[] pathSpinnerChoices = new String[pngPathSpinner.getCount()];
+    for (int i = 0; i < pngPathSpinner.getCount(); i++) {
+      pathSpinnerChoices[i] = (String)pngPathSpinner.getAdapter().getItem(i);
+    }
+
+    outState.putStringArray("pathSpinnerChoices", pathSpinnerChoices);
   }
 }
