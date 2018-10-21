@@ -10,6 +10,9 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
+/**
+ * Extension of ImageView that allows for zooming of the image in response to taps/gestures.
+ */
 public class ZoomableImageView extends AppCompatImageView {
   Matrix matrix = new Matrix();
 

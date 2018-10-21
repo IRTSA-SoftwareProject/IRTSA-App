@@ -18,7 +18,8 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
 /**
- * Model Dialog Fragment that displays when a user taps the edit icon on the toolbar.
+ * Modal Dialog Fragment that displays when a user taps the edit icon on the toolbar.
+ * Used to edit the detail's of the currently selected Scan saved in the SQLite database.
  */
 public class GalleryEditDialog extends AppCompatDialogFragment {
   private EditText name;
@@ -45,35 +46,32 @@ public class GalleryEditDialog extends AppCompatDialogFragment {
     name = view.findViewById(R.id.editName);
     description = view.findViewById(R.id.editDescription);
 
-    //set the characteristics of the dialog view
+    // Set the view and behaviour of this dialog.
     builder.setView(view)
         .setTitle("Rename Scan")
         //Create the cancel button
-        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialogInterface, int i) {
-
-          }
-        })
+        .setNegativeButton("Cancel", ((dialogInterface, i) -> { }))
         //Create the save button
-        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialogInterface, int i) {
-            scanName = name.getText().toString();
-            scanDescription = description.getText().toString();
-            ScanInterface scanAccessObject = new ScanAccessObject(getContext());
-            scanAccessObject.editScan(scanId, scanName, scanDescription);
+        .setPositiveButton("Save", ((dialogInterface, i) -> {
+          scanName = name.getText().toString();
+          scanDescription = description.getText().toString();
 
-            Bundle newScanData = new Bundle();
-            if (scanName.length() > 0) {
-              newScanData.putString("newName", scanName);
-            }
+          // Edit the scan's details in the SQLite database.
+          ScanInterface scanAccessObject = new ScanAccessObject(getContext());
+          scanAccessObject.editScan(scanId, scanName, scanDescription);
 
-            if (scanDescription.length() > 0) {
-              newScanData.putString("newDescription", scanDescription);
-            }
-
-            onClickSave.onNext(newScanData);
+          Bundle newScanData = new Bundle();
+          if (scanName.length() > 0) {
+            newScanData.putString("newName", scanName);
           }
-        });
+
+          if (scanDescription.length() > 0) {
+            newScanData.putString("newDescription", scanDescription);
+          }
+
+          // This notifies the GalleryDetailFragment that the scan has had its details edited.
+          onClickSave.onNext(newScanData);
+        }));
     //Build the dialog in order for it to popup
     return builder.create();
   }

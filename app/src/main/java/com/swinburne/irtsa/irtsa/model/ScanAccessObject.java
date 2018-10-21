@@ -72,7 +72,7 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
   @Override
   public List<Scan> getAllScans() {
     SQLiteDatabase db = this.getReadableDatabase();
-    List<Scan> result = new ArrayList<Scan>();
+    List<Scan> result = new ArrayList<>();
 
     String sql = "SELECT * FROM " + TABLE_SCAN;
 
@@ -80,22 +80,22 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
 
     while (resultCursor.moveToNext()) {
       Scan scan = new Scan();
-      scan.id = resultCursor.getInt(resultCursor.getColumnIndex(COLUMN_ID));
-      scan.name = resultCursor.getString(resultCursor.getColumnIndex(COLUMN_NAME));
-      scan.description = resultCursor.getString(resultCursor.getColumnIndex(COLUMN_DESCRIPTION));
+      scan.setId(resultCursor.getInt(resultCursor.getColumnIndex(COLUMN_ID)));
+      scan.setName(resultCursor.getString(resultCursor.getColumnIndex(COLUMN_NAME)));
+      scan.setDescription(resultCursor.getString(resultCursor.getColumnIndex(COLUMN_DESCRIPTION)));
 
       try {
-        scan.createdAt = Scan.getDateFormat().parse(
-                resultCursor.getString(resultCursor.getColumnIndex(COLUMN_CREATED_AT)));
+        scan.setCreatedAt(Scan.getDateFormat().parse(
+                resultCursor.getString(resultCursor.getColumnIndex(COLUMN_CREATED_AT))));
       } catch (ParseException e) {
         Log.e("ScanAccessObject",
-                "(" + scan.id + ", " + scan.name + ") Unable to parse created at date: "
+                "(" + scan.getId() + ", "
+                        + scan.getName() + ") Unable to parse created at date: "
                         + e.getMessage());
       }
 
-
       byte[] image = resultCursor.getBlob(resultCursor.getColumnIndex(COLUMN_IMAGE));
-      scan.image = BitmapFactory.decodeByteArray(image, 0, image.length);
+      scan.setImage(BitmapFactory.decodeByteArray(image, 0, image.length));
 
       result.add(scan);
     }
@@ -107,15 +107,15 @@ public class ScanAccessObject extends SQLiteOpenHelper implements ScanInterface 
 
   @Override
   public Boolean insertScan(Scan scan) {
-    //Convert the Bitmap into a byte array
+    //Convert the Bitmap into a byte array so it can be stored in the database.
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    scan.image.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+    scan.getImage().compress(Bitmap.CompressFormat.PNG, 100, outputStream);
     byte[] imageBlob = outputStream.toByteArray();
 
     // Build the SQL query
     ContentValues data = new ContentValues();
-    data.put(COLUMN_NAME, scan.name);
-    data.put(COLUMN_DESCRIPTION, scan.description);
+    data.put(COLUMN_NAME, scan.getName());
+    data.put(COLUMN_DESCRIPTION, scan.getDescription());
     data.put(COLUMN_IMAGE, imageBlob);
     data.put(COLUMN_CREATED_AT, Scan.getDateFormat().format(new Date()));
 

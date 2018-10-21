@@ -17,6 +17,8 @@ import com.swinburne.irtsa.irtsa.utility.ZoomableImageView;
 
 /**
  * Fragment that displays the details of a completed scan.
+ * The ScanProgressFragment passes the scan image it has received
+ * from the server in an argument to this Fragment, this Fragment then displays that image.
  */
 public class ViewScanFragment extends Fragment {
   private ZoomableImageView scanImage;
@@ -24,8 +26,55 @@ public class ViewScanFragment extends Fragment {
   private byte[] scanByteArray;
 
   /**
-   * When the view scan fragment is opened the icons are changed in the
-   * top menu toolbar.
+   * Display the modal SaveDialog Fragment.
+   */
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
+    // Inflate the layout for this fragment
+    Bundle bundle = this.getArguments();
+    if (bundle != null) {
+      scanByteArray = bundle.getByteArray("scanByteArray");
+      scanBitmap = BitmapFactory.decodeByteArray(scanByteArray, 0, scanByteArray.length);
+    }
+    View v = inflater.inflate(R.layout.fragment_view_scan, container, false);
+
+    // Determines if this Fragment's toolbar should be shown in the case the app is rotated.
+    if (savedInstanceState != null) {
+      String previousFragment = ((MainActivity) getActivity()).getPreviouslyFocusedFragment();
+      setHasOptionsMenu(previousFragment.equals(getClass().getCanonicalName()));
+    } else {
+      setHasOptionsMenu(true);
+    }
+
+    initialiseUi(v, scanBitmap);
+
+    return v;
+  }
+
+  /**
+   * Bind the different layout components in the view to objects here in the controller..
+   * @param v The root view
+   * @param scanBitmap The
+   */
+  private void initialiseUi(View v, Bitmap scanBitmap) {
+    scanImage = v.findViewById(R.id.scanImage);
+    scanImage.setImageBitmap(scanBitmap);
+  }
+
+  /**
+   * Initialise the ImageView and have it display an image.
+   */
+  private void openSaveDialog() {
+    SaveDialog saveDialog = new SaveDialog();
+    Bundle bundle = new Bundle();
+    bundle.putByteArray("scanImage", scanByteArray);
+    saveDialog.setArguments(bundle);
+    saveDialog.show(getFragmentManager(), "Save Dialog");
+  }
+
+  /**
+   * When the view scan fragment is opened inflate the appropriate toolbar layout.
    *
    * @param menu Menu View to contain the inflated menu.
    * @param inflater Inflates the menu resource into the Menu View
@@ -50,47 +99,5 @@ public class ViewScanFragment extends Fragment {
       openSaveDialog();
     }
     return super.onOptionsItemSelected(item);
-  }
-
-  /**
-   * Display the modal SaveDialog Fragment.
-   */
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    Bundle bundle = this.getArguments();
-    if (bundle != null) {
-      scanByteArray = bundle.getByteArray("scanByteArray");
-      scanBitmap = BitmapFactory.decodeByteArray(scanByteArray, 0, scanByteArray.length);
-    }
-    View v = inflater.inflate(R.layout.fragment_view_scan, container, false);
-
-    if (savedInstanceState != null) {
-      String previousFragment = ((MainActivity) getActivity()).getPreviouslyFocusedFragment();
-      setHasOptionsMenu(previousFragment.equals(getClass().getCanonicalName()));
-    } else {
-      setHasOptionsMenu(true);
-    }
-
-    initialiseUi(v, scanBitmap);
-
-    return v;
-  }
-
-  /**
-   * Initialise the ImageView and have it display an image.
-   */
-  private void openSaveDialog() {
-    SaveDialog saveDialog = new SaveDialog();
-    Bundle bundle = new Bundle();
-    bundle.putByteArray("scanImage", scanByteArray);
-    saveDialog.setArguments(bundle);
-    saveDialog.show(getFragmentManager(), "Save Dialog");
-  }
-
-  private void initialiseUi(View v, Bitmap scanBitmap) {
-    scanImage = v.findViewById(R.id.scanImage);
-    scanImage.setImageBitmap(scanBitmap);
   }
 }
