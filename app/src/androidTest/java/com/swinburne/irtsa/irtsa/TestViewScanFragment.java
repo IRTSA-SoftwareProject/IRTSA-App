@@ -8,6 +8,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
+import android.support.test.espresso.IdlingRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import org.junit.Before;
@@ -32,6 +33,8 @@ public class TestViewScanFragment {
    */
   @Before
   public void setup() {
+    IdlingRegistry.getInstance().register(activityRule.getActivity().connectionIdleResource);
+    onView(withId(R.id.allCheckBox)).perform(click());
     onView(withId(R.id.startScanButton)).perform(click());
   }
 
@@ -39,7 +42,8 @@ public class TestViewScanFragment {
    * Assert the scan image is visible.
    */
   @Test
-  public void image_IsVisible() {
+  public void imageIsVisible() {
+    IdlingRegistry.getInstance().register(activityRule.getActivity().progressIdleResource);
     onView(withId(R.id.scanImage)).check(matches(isDisplayed()));
   }
 
@@ -48,7 +52,8 @@ public class TestViewScanFragment {
    * displays the Start Scan Fragment.
    */
   @Test
-  public void backPress_NavigatesToStartScanFragment() {
+  public void backPressNavigatesToStartScanFragment() {
+    IdlingRegistry.getInstance().register(activityRule.getActivity().progressIdleResource);
     onView(withId(R.id.scanImage)).check(matches(isDisplayed()));
     onView(withId(R.id.startScanButton)).check(doesNotExist());
 
@@ -62,7 +67,8 @@ public class TestViewScanFragment {
    * Assert the toolbar is displaying the correct options.
    */
   @Test
-  public void toolbar_HasCorrectOptions() {
+  public void toolbarHasCorrectOptions() {
+    IdlingRegistry.getInstance().register(activityRule.getActivity().progressIdleResource);
     onView(withId(R.id.save)).check(matches(isDisplayed()));
     onView(withId(R.id.delete)).check(doesNotExist());
     onView(withId(R.id.share)).check(doesNotExist());
