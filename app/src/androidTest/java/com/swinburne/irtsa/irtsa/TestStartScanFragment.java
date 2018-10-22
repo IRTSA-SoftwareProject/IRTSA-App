@@ -52,18 +52,4 @@ public class TestStartScanFragment {
   public void toolbarHasCorrectOptions() {
     onView(withId(R.id.save)).check(doesNotExist());
   }
-
-  /**
-   * Assert the start scan button removes the Start Scan Fragment
-   * and displays the Scan Progress Fragment.
-   */
-  @Test
-  public void startScanButtonNavigatesToViewScanFragment() {
-    IdlingRegistry.getInstance().register(activityRule.getActivity().connectionIdleResource);
-    onView(withId(R.id.allCheckBox)).perform(click());
-    onView(withId(R.id.startScanButton)).perform(click());
-    onView(withId(R.id.startScanButton)).check(doesNotExist());
-    onView(withId(R.id.scanProgressBar)).check(matches(isDisplayed()));
-  }
-
 }
