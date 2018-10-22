@@ -23,10 +23,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
-
 /**
- * Fragment that displays the saved scan gallery.
+ * This Fragment displays a tiled gallery of all scans saved in the SQLite database.
+ * Items in the gallery can be selected, doing so will bring up a more detailed view of the
+ * selected item.
  */
 public class GalleryFragment extends Fragment {
   private RecyclerView recyclerView;
@@ -58,24 +58,21 @@ public class GalleryFragment extends Fragment {
     recyclerView.setAdapter(adapter);
 
     // Consumes the event emitted from the adapter when a gallery item is selected.
-    Consumer<Scan> galleryItemSelectedConsumer = new Consumer<Scan>() {
-      @Override
-      public void accept(Scan selectedScan) {
-        // Scan objects now implement Parcelable, making them easy
-        // to pass to fragments as shown below.
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("Scan", selectedScan);
+    Consumer<Scan> galleryItemSelectedConsumer = selectedScan -> {
+      Bundle bundle = new Bundle();
+      bundle.putParcelable("Scan", selectedScan);
 
-        GalleryDetailFragment galleryDetailFragment = new GalleryDetailFragment();
-        galleryDetailFragment.setArguments(bundle);
-        FragmentTransaction transaction = getParentFragment()
-                .getChildFragmentManager().beginTransaction();
-        // Store the Fragment in the Fragment back-stack
-        transaction.addToBackStack("GalleryFragment");
-        transaction.replace(R.id.galleryContainer, galleryDetailFragment,
-                "GalleryDetailFragment").commit();
-      }
+      GalleryDetailFragment galleryDetailFragment = new GalleryDetailFragment();
+      galleryDetailFragment.setArguments(bundle);
+      FragmentTransaction transaction = getParentFragment()
+              .getChildFragmentManager().beginTransaction();
+
+      // Store the Fragment in the Fragment back-stack
+      transaction.addToBackStack("GalleryFragment");
+      transaction.replace(R.id.galleryContainer, galleryDetailFragment,
+              "GalleryDetailFragment").commit();
     };
+
     // Register the consumer as a gallery item subscriber
     adapter.getGalleryClick().subscribe(galleryItemSelectedConsumer);
   }
@@ -96,8 +93,8 @@ public class GalleryFragment extends Fragment {
      * Get all scans.
      * Return type is irrelevant here.
      *
-     * @param objects Data to work with in the background, irrelevant for this implementation.
-     * @return data to return, irrelevant for this implementation.
+     * @param objects Data to work with in the background..
+     * @return data to return.
      */
     @Override
     protected Boolean doInBackground(Object[] objects) {
@@ -105,10 +102,10 @@ public class GalleryFragment extends Fragment {
         ScanAccessObject scanAccessObject = new ScanAccessObject(getContext());
         scans = scanAccessObject.getAllScans();
         Collections.sort(scans, (scan, scanToCompare) -> {
-          if (scan.createdAt == null || scanToCompare.createdAt == null) {
+          if (scan.getCreatedAt() == null || scanToCompare.getCreatedAt() == null) {
             return 0;
           }
-          return scan.createdAt.compareTo(scanToCompare.createdAt);
+          return scan.getCreatedAt().compareTo(scanToCompare.getCreatedAt());
         });
       }
       return true;

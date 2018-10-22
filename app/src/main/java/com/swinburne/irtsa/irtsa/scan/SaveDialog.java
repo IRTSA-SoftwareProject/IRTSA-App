@@ -39,7 +39,6 @@ public class SaveDialog extends AppCompatDialogFragment {
     name = view.findViewById(R.id.fName);
     description = view.findViewById(R.id.fDescription);
 
-
     //set the characteristics of the dialog view
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     builder.setView(view)
@@ -48,19 +47,16 @@ public class SaveDialog extends AppCompatDialogFragment {
             .setNegativeButton(R.string.save_dialog_button_cancel, (dialogInterface, i) -> {
             })
         //Create the save button
-        .setPositiveButton(R.string.save_dialog_button_save,
-          new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogInterface, int i) {
-              Scan testScan = new Scan();
-              testScan.name = name.getText().toString();
-              testScan.description = description.getText().toString();
-              testScan.image
-                      = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
+        .setPositiveButton(R.string.save_dialog_button_save, ((dialogInterface, i) -> {
+          Scan testScan = new Scan();
+          testScan.setName(name.getText().toString());
+          testScan.setDescription(description.getText().toString());
+          testScan.setImage(BitmapFactory.decodeByteArray(
+                  imageByteArray, 0, imageByteArray.length));
 
-              ScanInterface scanAccessObject = new ScanAccessObject(getContext());
-              scanAccessObject.insertScan(testScan);
-            }
-          });
+          ScanInterface scanAccessObject = new ScanAccessObject(getContext());
+          scanAccessObject.insertScan(testScan);
+        }));
     //Build the dialog in order for it to popup
     return builder.create();
   }

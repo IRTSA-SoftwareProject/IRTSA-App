@@ -35,7 +35,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
   /**
    * Retrieve all scans from the database to initialise scans member variable.
-   *
    * @param context Context of the current state of the application.
    */
   public GalleryAdapter(Context context) {
@@ -47,7 +46,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   /**
    * Update the scan data and notify the adapter that the data has changed.
    * This triggers the gallery to redraw.
-   *
    * @param scans New scan data to set.
    */
   public void setScanData(List<Scan> scans) {
@@ -56,8 +54,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   }
 
   /**
-   * Simple ViewHolder object that initialises thumbImage and thumbTitle to references.
-   * of the ViewHolder's ImageView and TextView
+   * Simple ViewHolder object that initialises thumbImage and thumbTitle to references
+   * of the ViewHolder's ImageView and TextView.
    */
   public class ViewHolder extends RecyclerView.ViewHolder {
     /**
@@ -72,15 +70,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   }
 
   /**
-   * Method that returns the amount of gallery items displayed in the gallery.
-   *
-   * @return The size (count) of Scan objects in the Scan List.
+   * Here we specify the layout to use for each gallery item.
+   * @param parent The container for this view.
+   * @param viewType The type of view.
+   * @return The view to hold the gallery item.
    */
-  @Override
-  public int getItemCount() {
-    return scans.size();
-  }
-
   @Override
   public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
@@ -91,30 +85,30 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   /**
    * Sets the thumbnail and text of a Gallery Item.
    * The position of the ViewHolder is used to index the scans List and retrieve Scan information.
-   *
    * @param holder The ViewHolder being created.
    * @param position The position of the ViewHolder in relation to the others.
    */
   @Override
   public void onBindViewHolder(ViewHolder holder, final int position) {
     // Add image and text into each view.
-    thumbImage.setImageBitmap(scans.get(position).image);
-    thumbTitle.setText(scans.get(position).name);
+    thumbImage.setImageBitmap(scans.get(position).getImage());
+    thumbTitle.setText(scans.get(position).getName());
 
-    // Listen for a click on the gallery item.
-    holder.itemView.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        // Notify subscribers that a gallery item was selected.
-        onClickGalleryItem.onNext(scans.get(position));
-      }
-    });
+    // Listen for a click on the gallery item and broadcast to observers when one is selected.
+    holder.itemView.setOnClickListener(event -> onClickGalleryItem.onNext(scans.get(position)));
+  }
 
+  /**
+   * Method that returns the amount of gallery items displayed in the gallery.
+   * @return The size (count) of Scan objects in the Scan List.
+   */
+  @Override
+  public int getItemCount() {
+    return scans.size();
   }
 
   /**
    * Exposes gallery item to its observers.
-   *
    * @return An Observable that emits Scan objects.
    */
   public Observable<Scan> getGalleryClick() {
@@ -122,15 +116,16 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
   }
 
   /**
-   * Comparator to sort scans by their created at date.
+   * Comparator to sort {@link Scan} objects by their created at date.
+   * Used to sort the order in which {@link Scan} objects are displayed in the gallery.
    */
   private class SortByCreatedAt implements Comparator<Scan> {
     @Override
     public int compare(Scan scan, Scan t1) {
-      if (scan.createdAt == null || t1.createdAt == null) {
+      if (scan.getCreatedAt() == null || t1.getCreatedAt() == null) {
         return 0;
       }
-      return scan.createdAt.compareTo(t1.createdAt);
+      return scan.getCreatedAt().compareTo(t1.getCreatedAt());
     }
   }
 }
