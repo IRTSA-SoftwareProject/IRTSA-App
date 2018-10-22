@@ -196,10 +196,10 @@ public class GalleryDetailFragment extends Fragment {
    */
   Consumer<Bundle> scanDetailsSavedConsumer = (savedScanDetails) -> {
     if (savedScanDetails.containsKey("newName")) {
-      name.setText("Description: " + savedScanDetails.getString("newName"));
+      name.setText(savedScanDetails.getString("newName"));
     }
     if (savedScanDetails.containsKey("newDescription")) {
-      description.setText("Name: " + savedScanDetails.getString("newDescription"));
+      description.setText(savedScanDetails.getString("newDescription"));
     }
   };
 }
