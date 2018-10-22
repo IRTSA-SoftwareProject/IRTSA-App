@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
   private String previouslyFocusedFragment;
 
   CountingIdlingResource connectionIdleResource = new CountingIdlingResource("CONNECTING_TO_PI");
+  CountingIdlingResource progressIdleResource = new CountingIdlingResource("SCAN_PROGRESS");
 
   public String getPreviouslyFocusedFragment() {
     return previouslyFocusedFragment;
@@ -72,6 +73,18 @@ public class MainActivity extends AppCompatActivity {
         connectionIdleResource.increment();
       }
       setTitle(connectionStatus.toString());
+    });
+
+    /**
+     * Listen for the scan_complete message type to run
+     * View Scan Fragment tests.
+     */
+    Server.messages.observeOn(AndroidSchedulers.mainThread()).subscribe(message -> {
+      if (message.type == "scan_complete") {
+        progressIdleResource.decrement();
+      } else if (progressIdleResource.isIdleNow()) {
+        progressIdleResource.increment();
+      }
     });
 
     // Listen for a tap on the tab bar or swipe on pager.
