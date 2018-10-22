@@ -74,12 +74,11 @@ public class GalleryDetailFragment extends Fragment {
     image = v.findViewById(R.id.galleryDetailImage);
     image.setImageBitmap(scan.getImage());
     name = v.findViewById(R.id.galleryDetailName);
-    name.setText(getString(R.string.gallery_detail_label_name) + scan.getName());
+    name.setText(scan.getName());
     description = v.findViewById(R.id.galleryDetailDescription);
-    description.setText(getString(R.string.gallery_detail_label_description)
-            + scan.getDescription());
+    description.setText(scan.getDescription());
     date = v.findViewById(R.id.galleryDetailDate);
-    date.setText(getString(R.string.gallery_detail_label_date) + scan.getCreatedAt());
+    date.setText(scan.getCreatedAt().toString());
   }
 
   /**

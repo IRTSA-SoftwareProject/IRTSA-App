@@ -27,33 +27,32 @@
         android:id="@+id/galleryDetailName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="placeholder"
-        app:layout_constraintBottom_toTopOf="@+id/galleryDetailDescription"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline10"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginBottom="16dp"
+        android:text="nameTextView"
+        app:layout_constraintBottom_toTopOf="@+id/textView7"
+        app:layout_constraintStart_toStartOf="@+id/textView7" />
 
     <TextView
         android:id="@+id/galleryDetailDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="placeholder"
-        app:layout_constraintBottom_toTopOf="@+id/galleryDetailDate"
-        app:layout_constraintEnd_toEndOf="@+id/galleryDetailName"
-        app:layout_constraintStart_toStartOf="@+id/galleryDetailName"
-        app:layout_constraintTop_toBottomOf="@+id/galleryDetailName" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="descriptionTextView"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintEnd_toStartOf="@+id/guideline11"
+        app:layout_constraintStart_toStartOf="@+id/guideline10"
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
     <TextView
         android:id="@+id/galleryDetailDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="placeholder"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/galleryDetailDescription"
-        app:layout_constraintStart_toStartOf="@+id/galleryDetailDescription"
-        app:layout_constraintTop_toBottomOf="@+id/galleryDetailDescription" />
+        app:layout_constraintStart_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline10"
@@ -61,5 +60,46 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Name:"
+        app:layout_constraintBottom_toTopOf="@+id/galleryDetailName"
+        app:layout_constraintStart_toStartOf="@+id/galleryDetailName" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Description:"
+        app:layout_constraintBottom_toTopOf="@+id/galleryDetailDescription"
+        app:layout_constraintStart_toStartOf="@+id/galleryDetailDescription" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Date Saved:"
+        app:layout_constraintStart_toStartOf="@+id/galleryDetailDescription"
+        app:layout_constraintTop_toBottomOf="@+id/galleryDetailDescription" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
 
 </android.support.constraint.ConstraintLayout>
