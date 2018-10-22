@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -30,9 +29,6 @@ public class MainActivity extends AppCompatActivity {
   private ViewPagerAdapter pagerAdapter;
   private TabLayout tabLayout;
   private String previouslyFocusedFragment;
-
-  CountingIdlingResource connectionIdleResource = new CountingIdlingResource("CONNECTING_TO_PI");
-  CountingIdlingResource progressIdleResource = new CountingIdlingResource("SCAN_PROGRESS");
 
   public String getPreviouslyFocusedFragment() {
     return previouslyFocusedFragment;
@@ -66,28 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Observer the server's connection status and set the title bar of the app accordingly.
     Server.status.observeOn(AndroidSchedulers.mainThread()).subscribe(connectionStatus -> {
-      /**
-       * If condition to allow tests to wait for the connection
-       * to be established before running.
-       */
-      if (connectionStatus == Status.CONNECTED && !connectionIdleResource.isIdleNow()) {
-        connectionIdleResource.decrement();
-      } else if (connectionIdleResource.isIdleNow()) {
-        connectionIdleResource.increment();
-      }
       setTitle(connectionStatus.toString());
-    });
-
-    /**
-     * Listen for the scan_complete message type to run
-     * View Scan Fragment tests.
-     */
-    Server.messages.observeOn(AndroidSchedulers.mainThread()).subscribe(message -> {
-      if (message.type == "scan_complete") {
-        progressIdleResource.decrement();
-      } else if (progressIdleResource.isIdleNow()) {
-        progressIdleResource.increment();
-      }
     });
 
     // Listen for a tap on the tab bar or swipe on pager.

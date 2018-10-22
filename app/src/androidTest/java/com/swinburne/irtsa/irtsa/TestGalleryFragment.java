@@ -9,17 +9,27 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
+import android.graphics.BitmapFactory;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 
 import android.support.test.runner.AndroidJUnit4;
+
+import com.swinburne.irtsa.irtsa.model.Scan;
+import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Date;
 
 /**
  * Class to test the UI of the Gallery Fragment.
@@ -46,7 +56,8 @@ public class TestGalleryFragment {
    */
   @Test
   public void recyclerViewIsVisible() {
-    onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
+    onView(withId(R.id.recyclerView))
+            .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
   }
 
   /**
@@ -71,25 +82,13 @@ public class TestGalleryFragment {
   }
 
   /**
-   * Ensure that the start scan fragment is shown on bottom
-   * navigation scan item press.
-   */
-  @Test
-  public void backToStartScanFragmentByHitScanButton() {
-    onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
-    onView(allOf(withText("Scan"), isDescendantOfA(withId(R.id.tabLayout))))
-        .perform(click());
-    onView(withId(R.id.startScanButton)).check(matches(isCompletelyDisplayed()));
-
-  }
-
-  /**
    * Ensure that start scan is shown after swiping left.
    */
   @Test
   public void backToStartScanFragmentBySwipeRight() {
-    onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
-    onView(withId(R.id.recyclerView)).perform(swipeRight());
-    onView(withId(R.id.startScanButton)).check(matches(isCompletelyDisplayed()));
+    onView(withId(R.id.recyclerView))
+            .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+    onView(withId(R.id.viewPager)).perform(swipeRight());
+    onView(withId(R.id.startScanButton)).check(matches(isDisplayed()));
   }
 }

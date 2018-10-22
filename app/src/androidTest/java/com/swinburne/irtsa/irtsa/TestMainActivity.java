@@ -53,8 +53,6 @@ public class TestMainActivity {
     onView(withId(R.id.beginFrameRangeEditText)).check(matches(isCompletelyDisplayed()));
     onView(withId(R.id.endFrameRangeEditText)).check(matches(isCompletelyDisplayed()));
     onView(withId(R.id.allCheckBox)).check(matches(isCompletelyDisplayed()));
-    onView(withId(R.id.guideline9)).check(matches(isCompletelyDisplayed()));
-    onView(withId(R.id.guideline3)).check(matches(isCompletelyDisplayed()));
   }
 
   /**

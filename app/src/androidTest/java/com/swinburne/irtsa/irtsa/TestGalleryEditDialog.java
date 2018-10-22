@@ -26,7 +26,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  * For these tests to pass, at least one scan must be saved to the devices database.
  */
 @RunWith(AndroidJUnit4.class)
-public class TestEditDialogFragment {
+public class TestGalleryEditDialog {
   /**
    * Launch the MainActivity.
    */
@@ -40,7 +40,7 @@ public class TestEditDialogFragment {
   public void setup(){
     onView(withId(R.id.viewPager)).perform(swipeLeft());
     try {
-      Thread.sleep(2000);
+      Thread.sleep(1000);
     } catch (Exception e ) {
 
     }
@@ -48,6 +48,14 @@ public class TestEditDialogFragment {
             click()));
 
     onView(withId(R.id.edit)).perform(click());
+  }
+
+  /**
+   * Assert that the dialog is present with the correct title
+   */
+  @Test
+  public void dialogTitleIsCorrect() {
+    onView(withText("Rename Scan")).check(matches(isDisplayed()));
   }
 
   /**
