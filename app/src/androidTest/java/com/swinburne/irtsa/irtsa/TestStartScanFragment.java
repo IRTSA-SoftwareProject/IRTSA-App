@@ -1,7 +1,6 @@
 package com.swinburne.irtsa.irtsa;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -10,6 +9,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ public class TestStartScanFragment {
    * Assert the Start Scan Button is displayed.
    */
   @Test
-  public void startScanButton_IsVisible() {
+  public void startScanButtonIsVisible() {
     onView(withId(R.id.startScanButton)).check(matches(isDisplayed()));
   }
 
@@ -38,7 +38,7 @@ public class TestStartScanFragment {
    * Assert the Start Scan Button contains the correct text.
    */
   @Test
-  public void startScanButton_CorrectText() {
+  public void startScanButtonCorrectText() {
     onView(withId(R.id.startScanButton)).check(matches(withText("Start Scan")));
   }
 
@@ -46,21 +46,7 @@ public class TestStartScanFragment {
    * Assert the toolbar is displaying the correct options.
    */
   @Test
-  public void toolbar_HasCorrectOptions() {
-    //onView(withId(R.id.settings)).check(matches(isDisplayed()));
-    onView(withId(R.id.delete)).check(doesNotExist());
-    onView(withId(R.id.share)).check(doesNotExist());
+  public void toolbarHasCorrectOptions() {
     onView(withId(R.id.save)).check(doesNotExist());
-  }
-
-  /**
-   * Assert the start scan button removes the Start Scan Fragment
-   * and displays the View Scan Fragment.
-   */
-  @Test
-  public void startScanButton_NavigatesToViewScanFragment() {
-    onView(withId(R.id.startScanButton)).perform(click());
-    onView(withId(R.id.startScanButton)).check(doesNotExist());
-    onView(withId(R.id.scanImage)).check(matches(isDisplayed()));
   }
 }

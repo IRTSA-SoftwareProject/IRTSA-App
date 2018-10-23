@@ -2,22 +2,16 @@ package com.swinburne.irtsa.irtsa;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.swinburne.irtsa.irtsa.gallery.GalleryFragment;
-import com.swinburne.irtsa.irtsa.model.Scan;
-import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 import com.swinburne.irtsa.irtsa.scan.ViewScanFragment;
 import com.swinburne.irtsa.irtsa.server.Server;
 import com.swinburne.irtsa.irtsa.server.Status;
