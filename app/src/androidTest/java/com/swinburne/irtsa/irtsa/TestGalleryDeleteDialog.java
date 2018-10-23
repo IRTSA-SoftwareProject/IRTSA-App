@@ -1,14 +1,5 @@
 package com.swinburne.irtsa.irtsa;
 
-import android.support.test.espresso.contrib.RecyclerViewActions;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -18,6 +9,15 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
+import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Class to test the UI of the Edit Scan Dialog Fragment.
@@ -35,13 +35,14 @@ public class TestGalleryDeleteDialog {
    * Navigate to the GalleryDeleteDialog.
    */
   @Before
-  public void setup(){
+  public void setup() {
     onView(withId(R.id.viewPager)).perform(swipeLeft());
     try {
       Thread.sleep(1000);
-    } catch (Exception e ) {
-
+    } catch (Exception e) {
+      System.out.println("Error performing sleep during test");
     }
+
     onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition(0,
             click()));
 
@@ -49,7 +50,7 @@ public class TestGalleryDeleteDialog {
   }
 
   /**
-   * Assert that the dialog is present with the correct title
+   * Assert that the dialog is present with the correct title.
    */
   @Test
   public void dialogTitleIsCorrect() {

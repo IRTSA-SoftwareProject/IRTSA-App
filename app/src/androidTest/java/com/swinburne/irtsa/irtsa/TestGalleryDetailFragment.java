@@ -9,21 +9,14 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
-import android.graphics.BitmapFactory;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-
-import com.swinburne.irtsa.irtsa.model.Scan;
-import com.swinburne.irtsa.irtsa.model.ScanAccessObject;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.Date;
 
 /**
  * Class to test the UI of the Save Dialog Fragment.
@@ -42,13 +35,14 @@ public class TestGalleryDetailFragment {
    * Navigate to the GalleryDetailFragment.
    */
   @Before
-  public void setup(){
+  public void setup() {
     onView(withId(R.id.viewPager)).perform(swipeLeft());
     try {
       Thread.sleep(1000);
-    } catch (Exception e ) {
-
+    } catch (Exception e) {
+      System.out.println("Error performing sleep during test");
     }
+
     onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition(0,
             click()));
   }
